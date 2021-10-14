@@ -1,18 +1,29 @@
 import type { NextPage } from "next";
 import Head from "next/head";
 import Image from "next/image";
-import React from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
-import { Team } from "../types/types";
+import { Card, Team } from "../types/types";
 import TeamComponent from "../components/Team";
 import CardComponent from "../components/Card";
 
 const Home: NextPage = () => {
+  const [card, setCard] = useState<Card>({
+    targetWord: "Bank",
+    tabooWords: ["Money", "ATM", "Loan", "Teller", "Credit Card"],
+  });
+
   const mockTeam: Team = {
     members: [{ name: "Mohammad" }, { name: "Hussein" }],
   };
+
   const mockTeam2: Team = {
-    members: [{ name: "Ahamad" }, { name: "Alvina" }],
+    members: [{ name: "Ahmad" }, { name: "Alvina" }],
+  };
+
+  const mockCard2: Card = {
+    targetWord: "Chicken",
+    tabooWords: ["Food", "Bird", "Nugget", "Tenders", "Turkey"],
   };
 
   return (
@@ -31,8 +42,9 @@ const Home: NextPage = () => {
 
       <ContentContainer>
         <TeamComponent team={mockTeam} />
-        <MainContainer></MainContainer>
-
+        <MainContainer>
+          <CardComponent card={card} onCorrect={() => setCard(mockCard2)} onTaboo={() => alert("bye")} />
+        </MainContainer>
         <TeamComponent team={mockTeam2} />
       </ContentContainer>
     </Container>

@@ -5,3 +5,8 @@ export interface Team {
 export interface User {
   name: string;
 }
+
+export interface Card {
+  targetWord: string;
+  tabooWords: string[];
+}
