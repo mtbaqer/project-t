@@ -3,12 +3,17 @@ import Head from "next/head";
 import Image from "next/image";
 import React from "react";
 import styled from "styled-components";
+import { Team } from "../types/types";
+import TeamComponent from "../components/Team";
+import CardComponent from "../components/Card";
 
 const Home: NextPage = () => {
-  function calc() {
-    return 7;
-  }
-  const num = calc();
+  const mockTeam: Team = {
+    members: [{ name: "Mohammad" }, { name: "Hussein" }],
+  };
+  const mockTeam2: Team = {
+    members: [{ name: "Ahamad" }, { name: "Alvina" }],
+  };
 
   return (
     <Container>
@@ -25,32 +30,10 @@ const Home: NextPage = () => {
       </HUD>
 
       <ContentContainer>
-        <TeamContainer>
-          <Username>Mohammad</Username>
-          <Username>Hussein</Username>
-        </TeamContainer>
+        <TeamComponent team={mockTeam} />
+        <MainContainer></MainContainer>
 
-        <MainContainer>
-          <CardContainer>
-            <Card>
-              <MainWord>Chicken</MainWord>
-              <TabooWord>Food</TabooWord>
-              <TabooWord>Bird</TabooWord>
-              <TabooWord>Nugget</TabooWord>
-              <TabooWord>Tenders</TabooWord>
-              <TabooWord>Turkey</TabooWord>
-            </Card>
-            <ButtonsContainer>
-              <Button>Correct</Button>
-              <Button>Taboo</Button>
-            </ButtonsContainer>
-          </CardContainer>
-        </MainContainer>
-
-        <TeamContainer>
-          <Username>Ahmad</Username>
-          <Username>Alvina</Username>
-        </TeamContainer>
+        <TeamComponent team={mockTeam2} />
       </ContentContainer>
     </Container>
   );
@@ -70,47 +53,11 @@ const ContentContainer = styled.div`
   justify-content: space-between;
 `;
 
-const TeamContainer = styled.div`
-  background-color: blue;
-`;
-
-const Username = styled.p`
-  font-size: 32px;
-`;
-
 const MainContainer = styled.div`
   background-color: green;
   flex-grow: 1;
   display: flex;
   justify-content: center;
 `;
-
-const CardContainer = styled.div`
-  background-color: purple;
-  display: flex;
-`;
-
-const ButtonsContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-end;
-`;
-
-const Button = styled.button`
-  background-color: pink;
-`;
-
-const Card = styled.div`
-  padding: 20px;
-  background-color: red;
-  display: flex;
-  flex-direction: column;
-`;
-
-const MainWord = styled.p`
-  margin-bottom: 20px;
-`;
-
-const TabooWord = styled.p``;
 
 export default Home;
