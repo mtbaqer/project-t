@@ -1,5 +1,6 @@
 import React, { FunctionComponent } from "react";
 import styled from "styled-components";
+import tw from "twin.macro";
 import { Team as TeamType } from "../types/types";
 
 interface Props {
@@ -8,16 +9,16 @@ interface Props {
 
 const Team: FunctionComponent<Props> = ({ team }) => {
   return (
-    <TeamContainer>
+    <Container>
       {team.members.map((member) => (
         <Username>{member.name}</Username>
       ))}
-    </TeamContainer>
+    </Container>
   );
 };
 
-const TeamContainer = styled.div`
-  background-color: blue;
+const Container = tw.div`
+  justify-center
 `;
 
 const Username = styled.p`
