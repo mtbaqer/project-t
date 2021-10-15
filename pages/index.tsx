@@ -6,24 +6,32 @@ import styled from "styled-components";
 import { Card, Team } from "../types/types";
 import TeamComponent from "../components/Team";
 import CardComponent from "../components/Card";
+import useRoom from "../hooks/useRoom";
 
 const Home: NextPage = () => {
+  const room = useRoom();
   const [card, setCard] = useState<Card>({
     targetWord: "Bank",
     tabooWords: ["Money", "ATM", "Loan", "Teller", "Credit Card"],
+    orientation: "up",
+    side: "front",
   });
 
   const mockTeam: Team = {
     members: [{ name: "Mohammad" }, { name: "Hussein" }],
+    score: 0,
   };
 
   const mockTeam2: Team = {
     members: [{ name: "Ahmad" }, { name: "Alvina" }],
+    score: 0,
   };
 
   const mockCard2: Card = {
     targetWord: "Chicken",
     tabooWords: ["Food", "Bird", "Nugget", "Tenders", "Turkey"],
+    orientation: "up",
+    side: "front",
   };
 
   return (
