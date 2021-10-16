@@ -27,7 +27,8 @@ export interface Room {
   coHosts: User[];
   currentCardIndex: number;
   currentTeamIndex: number;
-  timer: Timer;
+  turnTimeLeft:number;
+  turnEndTime: number;
   settings: Settings;
   seenWords: Card[];
   status: RoomStatus;
@@ -35,10 +36,6 @@ export interface Room {
 
 export type RoomStatus = "waiting" | "playing" | "paused" | "ended";
 
-export interface Timer {
-  countdown: number;
-  paused: boolean;
-}
 
 export interface Settings {
   maxRounds: number;

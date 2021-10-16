@@ -9,6 +9,7 @@ import CardComponent from "../components/Card";
 import useRoom from "../hooks/useRoom";
 import useCards from "../hooks/useCards";
 import { setCurrentScreen } from "firebase/analytics";
+import Timer from "../components/Timer";
 
 const Home: NextPage = () => {
   const { room, startTurn } = useRoom();
@@ -21,15 +22,12 @@ const Home: NextPage = () => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <HUD>
-        <TimerContainer>
-          <p>1:30</p>
-        </TimerContainer>
-      </HUD>
-
-      <ContentContainer>
-        {room && (
-          <>
+      {room && (
+        <>
+          <HUD>
+            <Timer turnEndTime={room.turnEndTime} status={room.status} />
+          </HUD>
+          <ContentContainer>
             <TeamComponent team={room.teams[0]} />
             <MainContainer>
               <CardComponent
@@ -41,9 +39,9 @@ const Home: NextPage = () => {
               />
             </MainContainer>
             <TeamComponent team={room.teams[1]} />
-          </>
-        )}
-      </ContentContainer>
+          </ContentContainer>
+        </>
+      )}
     </Container>
   );
 };
@@ -54,8 +52,6 @@ const HUD = styled.div`
   display: flex;
   justify-content: center;
 `;
-
-const TimerContainer = styled.div``;
 
 const ContentContainer = styled.div`
   display: flex;

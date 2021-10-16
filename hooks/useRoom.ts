@@ -4,6 +4,8 @@ import { child, Database, getDatabase, increment, onValue, push, ref, set, updat
 import useUser from "./useUser";
 import { v4 as uuidv4 } from "uuid";
 import useCards from "./useCards";
+import useTimer from "./useTimer";
+import { settings } from "firebase/analytics";
 
 const database = getDatabase();
 
@@ -17,13 +19,11 @@ const DefaultRoom: Room = {
   deck: [],
   currentCardIndex: 0,
   round: 0,
+  turnEndTime: 0,
+  turnTimeLeft: 60,
   host: null,
   coHosts: [],
   currentTeamIndex: 0,
-  timer: {
-    countdown: 60,
-    paused: true,
-  },
   settings: {
     maxRounds: 5,
     timePerRound: 60,
@@ -43,7 +43,7 @@ export default function useRoom() {
   const {cards, fetchCards} = useCards();
 
   useEffect(() => {
-    //createRoom();
+    // createRoom();
     subscribeToRoom();
   }, []);
 
@@ -70,7 +70,8 @@ export default function useRoom() {
 
   async function startTurn() {
     await fetchCards();
-    update(roomRef, {currentCardIndex:0, status: "playing"});
+    const turnEndTime = +new Date() + room!.settings.timePerRound * 1000;
+    update(roomRef, {currentCardIndex:0, status: "playing", turnEndTime});
   }
 
   function onCorrect() {
