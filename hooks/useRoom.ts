@@ -15,7 +15,7 @@ const DefaultRoom: Room = {
   ],
   spectators: [],
   deck: [],
-  currentCardIndex: -1,
+  currentCardIndex: 0,
   round: 0,
   host: null,
   coHosts: [],
@@ -40,11 +40,11 @@ export default function useRoom() {
   const [room, setRoom] = useState<Room | null>(null);
 
   const { user, setUser } = useUser();
-  const cards = useCards();
+  const {cards, fetchCards} = useCards();
 
   useEffect(() => {
-    createRoom();
-    //subscribeToRoom();
+    //createRoom();
+    subscribeToRoom();
   }, []);
 
   /*useEffect(() => {
@@ -68,15 +68,22 @@ export default function useRoom() {
     });
   }
 
-  function startTurn() {
-    update(roomRef, {currentCardIndex:0});
+  async function startTurn() {
+    await fetchCards();
+    update(roomRef, {currentCardIndex:0, status: "playing"});
   }
 
   function onCorrect() {
-    update(roomRef, {currentCardIndex:increment(1)});
+    onNextCard(1);
   }
 
   function onTaboo() {
+    onNextCard(-1);
+  }
+
+  function onNextCard(scoreIncrement:number) {
+    const teamRef = child(teamsRef, room!.currentTeamIndex.toString());
+    update(teamRef, {score:increment(scoreIncrement)});
     update(roomRef, {currentCardIndex:increment(1)});
   }
 

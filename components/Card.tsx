@@ -1,15 +1,16 @@
 import React, { FunctionComponent } from "react";
 import styled from "styled-components";
-import { Card as CardType } from "../types/types";
+import { Card as CardType, RoomStatus } from "../types/types";
 
 interface Props {
+  status: RoomStatus;
   card?: CardType | null;
   onCorrect: () => void;
   onTaboo: () => void;
   onStartTurn: () => void;
 }
 
-const Card: FunctionComponent<Props> = ({ card, onCorrect, onTaboo, onStartTurn }) => {
+const Card: FunctionComponent<Props> = ({ status, card, onCorrect, onTaboo, onStartTurn }) => {
   return (
     <Container>
       <WordsContainer>
@@ -18,14 +19,14 @@ const Card: FunctionComponent<Props> = ({ card, onCorrect, onTaboo, onStartTurn 
           <TabooWord>{word}</TabooWord>
         ))}
       </WordsContainer>
-      {card ? (
+      {status === "waiting" || status === "paused" ? (
         <ButtonsContainer>
-          <Button onClick={onCorrect}>Correct</Button>
-          <Button onClick={onTaboo}>Taboo</Button>
+          <Button onClick={onStartTurn}>Start</Button>
         </ButtonsContainer>
       ) : (
         <ButtonsContainer>
-          <Button onClick={onStartTurn}>Start</Button>
+          <Button onClick={onCorrect}>Correct</Button>
+          <Button onClick={onTaboo}>Taboo</Button>
         </ButtonsContainer>
       )}
     </Container>

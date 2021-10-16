@@ -28,16 +28,21 @@ const Home: NextPage = () => {
       </HUD>
 
       <ContentContainer>
-        <TeamComponent team={room?.teams[0]} />
-        <MainContainer>
-          <CardComponent
-            card={room?.currentCardIndex != -1 ? room?.deck[room?.currentCardIndex] : null}
-            onCorrect={() => {}}
-            onTaboo={() => alert("bye")}
-            onStartTurn={startTurn}
-          />
-        </MainContainer>
-        <TeamComponent team={room?.teams[1]} />
+        {room && (
+          <>
+            <TeamComponent team={room.teams[0]} />
+            <MainContainer>
+              <CardComponent
+                card={room.deck?.[room.currentCardIndex]}
+                status={room.status}
+                onCorrect={() => {}}
+                onTaboo={() => alert("bye")}
+                onStartTurn={startTurn}
+              />
+            </MainContainer>
+            <TeamComponent team={room.teams[1]} />
+          </>
+        )}
       </ContentContainer>
     </Container>
   );

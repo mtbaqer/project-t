@@ -30,8 +30,10 @@ export interface Room {
   timer: Timer;
   settings: Settings;
   seenWords: Card[];
-  status: "waiting" | "playing" | "paused" | "ended";
+  status: RoomStatus;
 }
+
+export type RoomStatus = "waiting" | "playing" | "paused" | "ended";
 
 export interface Timer {
   countdown: number;

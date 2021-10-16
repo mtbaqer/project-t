@@ -29,5 +29,5 @@ export default function useCards() {
     //}
   }
 
-  return cards;
+  return {cards, fetchCards};
 }
