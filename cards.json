@@ -1,0 +1,46 @@
+{
+    "cards":{
+        "thrifty":{
+            "targetWord":"thrifty",
+            "tabooWords":["cheap","spend","money","stingy"],
+            "orientation": "up",
+            "side": "front"
+        },
+        "double":{
+            "targetWord":"double",
+            "tabooWords":["twice","number","triple","amount"],
+            "orientation": "up",
+            "side": "front"
+        },
+        "tragedy":{
+            "targetWord":"tragedy",
+            "tabooWords":["terrible","sad","victim","disaster"],
+            "orientation": "up",
+            "side": "front"
+        },
+        "lawn":{
+            "targetWord":"lawn",
+            "tabooWords":["grass","mow","green","yard"],
+            "orientation": "up",
+            "side": "front"
+        },
+        "arrest":{
+            "targetWord":"arrest",
+            "tabooWords":["jail","criminal","police","handcuffs"],
+            "orientation": "up",
+            "side": "front"
+        },
+        "educate":{
+            "targetWord":"educate",
+            "tabooWords":["child","teach","learn","school"],
+            "orientation": "up",
+            "side": "front"
+        },
+        "survey":{
+            "targetWord":"survey",
+            "tabooWords":["ask","questions","opinion","fill out"],
+            "orientation": "up",
+            "side": "front"
+        }
+    }
+}

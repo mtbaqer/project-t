@@ -1,3 +1,5 @@
+import Card from "../components/Card"
+
 export interface Team {
   members: User[];
   score: number;
@@ -20,14 +22,15 @@ export interface Room {
   teams: Team[];
   spectators: User[];
   deck: Card[];
-  currentCard: Card | null;
   round: number;
   host: User | null;
   coHosts: User[];
+  currentCardIndex: number;
   currentTeamIndex: number;
   timer: Timer;
   settings: Settings;
-  ended: boolean;
+  seenWords: Card[];
+  status: "waiting" | "playing" | "paused" | "ended";
 }
 
 export interface Timer {

@@ -1,8 +1,9 @@
 import { useEffect, useState } from "react";
 import { Room, User } from "../types/types";
-import { child, Database, getDatabase, onValue, push, ref, set, update } from "firebase/database";
+import { child, Database, getDatabase, increment, onValue, push, ref, set, update } from "firebase/database";
 import useUser from "./useUser";
 import { v4 as uuidv4 } from "uuid";
+import useCards from "./useCards";
 
 const database = getDatabase();
 
@@ -14,7 +15,7 @@ const DefaultRoom: Room = {
   ],
   spectators: [],
   deck: [],
-  currentCard: null,
+  currentCardIndex: -1,
   round: 0,
   host: null,
   coHosts: [],
@@ -27,7 +28,9 @@ const DefaultRoom: Room = {
     maxRounds: 5,
     timePerRound: 60,
   },
-  ended: false,
+  status: "waiting",
+  seenWords: [],
+
 };
 
 const roomRef = ref(database, `rooms/${DefaultRoom.id}`);
@@ -37,13 +40,14 @@ export default function useRoom() {
   const [room, setRoom] = useState<Room | null>(null);
 
   const { user, setUser } = useUser();
+  const cards = useCards();
 
   useEffect(() => {
-    // createRoom();
-    fetchRoom();
+    createRoom();
+    //subscribeToRoom();
   }, []);
 
-  useEffect(() => {
+  /*useEffect(() => {
     if (room && !user) {
       const id = uuidv4();
       const username = prompt("Enter your username");
@@ -51,17 +55,29 @@ export default function useRoom() {
       addUser(user);
       setUser(user);
     }
-  }, [room]);
+  }, [room]);*/
 
   function createRoom() {
     set(roomRef, DefaultRoom);
   }
 
-  function fetchRoom() {
+  function subscribeToRoom() {
     onValue(roomRef, (snapshot) => {
       const room = snapshot.val() as Room;
       setRoom(room);
     });
+  }
+
+  function startTurn() {
+    update(roomRef, {currentCardIndex:0});
+  }
+
+  function onCorrect() {
+    update(roomRef, {currentCardIndex:increment(1)});
+  }
+
+  function onTaboo() {
+    update(roomRef, {currentCardIndex:increment(1)});
   }
 
   function addUser(user: User) {
@@ -72,6 +88,7 @@ export default function useRoom() {
     const members = [...(room!.teams[teamIndex].members || []), user];
 
     update(teamRef, { members });
+
   }
 
   function getSmallestTeamIndex() {
@@ -80,5 +97,5 @@ export default function useRoom() {
     return firstLength > secondLength ? 1 : 0;
   }
 
-  return { room, addUser };
+  return { room, addUser, startTurn };
 }

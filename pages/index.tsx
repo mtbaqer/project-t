@@ -7,9 +7,11 @@ import { Card, Team } from "../types/types";
 import TeamComponent from "../components/Team";
 import CardComponent from "../components/Card";
 import useRoom from "../hooks/useRoom";
+import useCards from "../hooks/useCards";
+import { setCurrentScreen } from "firebase/analytics";
 
 const Home: NextPage = () => {
-  const { room } = useRoom();
+  const { room, startTurn } = useRoom();
 
   return (
     <Container>
@@ -28,7 +30,12 @@ const Home: NextPage = () => {
       <ContentContainer>
         <TeamComponent team={room?.teams[0]} />
         <MainContainer>
-          <CardComponent card={room?.currentCard} onCorrect={() => {}} onTaboo={() => alert("bye")} />
+          <CardComponent
+            card={room?.currentCardIndex != -1 ? room?.deck[room?.currentCardIndex] : null}
+            onCorrect={() => {}}
+            onTaboo={() => alert("bye")}
+            onStartTurn={startTurn}
+          />
         </MainContainer>
         <TeamComponent team={room?.teams[1]} />
       </ContentContainer>

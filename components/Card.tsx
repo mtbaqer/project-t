@@ -1,14 +1,15 @@
 import React, { FunctionComponent } from "react";
 import styled from "styled-components";
-import { Card } from "../types/types";
+import { Card as CardType } from "../types/types";
 
 interface Props {
-  card?: Card | null;
+  card?: CardType | null;
   onCorrect: () => void;
   onTaboo: () => void;
+  onStartTurn: () => void;
 }
 
-const Name: FunctionComponent<Props> = ({ card, onCorrect, onTaboo }) => {
+const Card: FunctionComponent<Props> = ({ card, onCorrect, onTaboo, onStartTurn }) => {
   return (
     <Container>
       <WordsContainer>
@@ -17,10 +18,16 @@ const Name: FunctionComponent<Props> = ({ card, onCorrect, onTaboo }) => {
           <TabooWord>{word}</TabooWord>
         ))}
       </WordsContainer>
-      <ButtonsContainer>
-        <Button onClick={onCorrect}>Correct</Button>
-        <Button onClick={onTaboo}>Taboo</Button>
-      </ButtonsContainer>
+      {card ? (
+        <ButtonsContainer>
+          <Button onClick={onCorrect}>Correct</Button>
+          <Button onClick={onTaboo}>Taboo</Button>
+        </ButtonsContainer>
+      ) : (
+        <ButtonsContainer>
+          <Button onClick={onStartTurn}>Start</Button>
+        </ButtonsContainer>
+      )}
     </Container>
   );
 };
@@ -53,4 +60,4 @@ const TargetWord = styled.p`
 
 const TabooWord = styled.p``;
 
-export default Name;
+export default Card;
