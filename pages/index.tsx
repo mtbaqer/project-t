@@ -1,7 +1,7 @@
 import type { NextPage } from "next";
 import Head from "next/head";
 import Image from "next/image";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import { Card, Team } from "../types/types";
 import TeamComponent from "../components/Team";
@@ -9,30 +9,7 @@ import CardComponent from "../components/Card";
 import useRoom from "../hooks/useRoom";
 
 const Home: NextPage = () => {
-  const room = useRoom();
-  const [card, setCard] = useState<Card>({
-    targetWord: "Bank",
-    tabooWords: ["Money", "ATM", "Loan", "Teller", "Credit Card"],
-    orientation: "up",
-    side: "front",
-  });
-
-  const mockTeam: Team = {
-    members: [{ name: "Mohammad" }, { name: "Hussein" }],
-    score: 0,
-  };
-
-  const mockTeam2: Team = {
-    members: [{ name: "Ahmad" }, { name: "Alvina" }],
-    score: 0,
-  };
-
-  const mockCard2: Card = {
-    targetWord: "Chicken",
-    tabooWords: ["Food", "Bird", "Nugget", "Tenders", "Turkey"],
-    orientation: "up",
-    side: "front",
-  };
+  const { room } = useRoom();
 
   return (
     <Container>
@@ -49,11 +26,11 @@ const Home: NextPage = () => {
       </HUD>
 
       <ContentContainer>
-        <TeamComponent team={mockTeam} />
+        <TeamComponent team={room?.teams[0]} />
         <MainContainer>
-          <CardComponent card={card} onCorrect={() => setCard(mockCard2)} onTaboo={() => alert("bye")} />
+          <CardComponent card={room?.currentCard} onCorrect={() => {}} onTaboo={() => alert("bye")} />
         </MainContainer>
-        <TeamComponent team={mockTeam2} />
+        <TeamComponent team={room?.teams[1]} />
       </ContentContainer>
     </Container>
   );

@@ -3,7 +3,7 @@ import styled from "styled-components";
 import { Card } from "../types/types";
 
 interface Props {
-  card: Card;
+  card?: Card | null;
   onCorrect: () => void;
   onTaboo: () => void;
 }
@@ -12,8 +12,8 @@ const Name: FunctionComponent<Props> = ({ card, onCorrect, onTaboo }) => {
   return (
     <Container>
       <WordsContainer>
-        <TargetWord>{card.targetWord}</TargetWord>
-        {card.tabooWords.map((word) => (
+        <TargetWord>{card?.targetWord}</TargetWord>
+        {card?.tabooWords.map((word) => (
           <TabooWord>{word}</TabooWord>
         ))}
       </WordsContainer>

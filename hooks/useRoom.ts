@@ -1,12 +1,17 @@
 import { useEffect, useState } from "react";
-import { Room } from "../types/types";
-import { getDatabase, onValue, ref, set } from "firebase/database";
+import { Room, User } from "../types/types";
+import { child, Database, getDatabase, onValue, push, ref, set, update } from "firebase/database";
+import useUser from "./useUser";
+import { v4 as uuidv4 } from "uuid";
 
 const database = getDatabase();
 
 const DefaultRoom: Room = {
   id: "default",
-  teams: [],
+  teams: [
+    { members: [], score: 0 },
+    { members: [], score: 0 },
+  ],
   spectators: [],
   deck: [],
   currentCard: null,
@@ -25,25 +30,55 @@ const DefaultRoom: Room = {
   ended: false,
 };
 
+const roomRef = ref(database, `rooms/${DefaultRoom.id}`);
+const teamsRef = child(roomRef, "teams");
+
 export default function useRoom() {
-  const [room, setRoom] = useState();
+  const [room, setRoom] = useState<Room | null>(null);
+
+  const { user, setUser } = useUser();
 
   useEffect(() => {
     // createRoom();
     fetchRoom();
   }, []);
 
+  useEffect(() => {
+    if (room && !user) {
+      const id = uuidv4();
+      const username = prompt("Enter your username");
+      const user = { name: username ?? "Bitch", id };
+      addUser(user);
+      setUser(user);
+    }
+  }, [room]);
+
   function createRoom() {
-    set(ref(database, `rooms/${DefaultRoom.id}`), DefaultRoom);
+    set(roomRef, DefaultRoom);
   }
 
   function fetchRoom() {
-    const roomRef = ref(database, `rooms/${DefaultRoom.id}`);
     onValue(roomRef, (snapshot) => {
       const room = snapshot.val() as Room;
-      console.log(room);
+      setRoom(room);
     });
   }
 
-  return room;
+  function addUser(user: User) {
+    const teamIndex = getSmallestTeamIndex();
+
+    const teamRef = child(teamsRef, teamIndex.toString());
+
+    const members = [...(room!.teams[teamIndex].members || []), user];
+
+    update(teamRef, { members });
+  }
+
+  function getSmallestTeamIndex() {
+    const firstLength = room!.teams[0].members?.length ?? 0;
+    const secondLength = room!.teams[1].members?.length ?? 0;
+    return firstLength > secondLength ? 1 : 0;
+  }
+
+  return { room, addUser };
 }
