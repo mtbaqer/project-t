@@ -34,7 +34,7 @@ const Card: FunctionComponent<Props> = ({ status, card, onCorrect, onTaboo, onSt
 };
 
 const Container = styled.div`
-  background-color: purple;
+  background-color: rgba(38, 28, 92, 0.5);
   display: flex;
 `;
 
@@ -45,12 +45,14 @@ const ButtonsContainer = styled.div`
 `;
 
 const Button = styled.button`
-  background-color: pink;
+  background-color: rgb(255, 255, 255);
+  box-shadow: rgb(48 26 107) 0px 6px 0px 0px;
+  margin-bottom: 20px;
+  border-radius: 10px;
 `;
 
 const WordsContainer = styled.div`
   padding: 20px;
-  background-color: red;
   display: flex;
   flex-direction: column;
 `;

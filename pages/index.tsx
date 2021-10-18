@@ -1,14 +1,10 @@
 import type { NextPage } from "next";
 import Head from "next/head";
-import Image from "next/image";
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
-import { Card, Team } from "../types/types";
 import TeamComponent from "../components/Team";
 import CardComponent from "../components/Card";
 import useRoom from "../hooks/useRoom";
-import useCards from "../hooks/useCards";
-import { setCurrentScreen } from "firebase/analytics";
 import Timer from "../components/Timer";
 
 const Home: NextPage = () => {
@@ -46,7 +42,13 @@ const Home: NextPage = () => {
   );
 };
 
-const Container = styled.div``;
+const Container = styled.div`
+  background-image: url("/images/textura.png");
+  background-position: center center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  height: 100vh;
+`;
 
 const HUD = styled.div`
   display: flex;
@@ -59,7 +61,6 @@ const ContentContainer = styled.div`
 `;
 
 const MainContainer = styled.div`
-  background-color: green;
   flex-grow: 1;
   display: flex;
   justify-content: center;
