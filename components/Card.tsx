@@ -13,21 +13,25 @@ interface Props {
 const Card: FunctionComponent<Props> = ({ status, card, onCorrect, onTaboo, onStartTurn }) => {
   return (
     <Container>
-      <WordsContainer>
-        <TargetWord>{card?.targetWord}</TargetWord>
-        {card?.tabooWords.map((word) => (
-          <TabooWord>{word}</TabooWord>
-        ))}
-      </WordsContainer>
-      {status === "waiting" || status === "paused" ? (
+      {status === "waiting" ? (
         <ButtonsContainer>
           <Button onClick={onStartTurn}>Start</Button>
         </ButtonsContainer>
+      ) : status === "paused" ? (
+        <p>game is paused</p>
       ) : (
-        <ButtonsContainer>
-          <Button onClick={onCorrect}>Correct</Button>
-          <Button onClick={onTaboo}>Taboo</Button>
-        </ButtonsContainer>
+        <>
+          <WordsContainer>
+            <TargetWord>{card?.targetWord}</TargetWord>
+            {card?.tabooWords.map((word) => (
+              <TabooWord>{word}</TabooWord>
+            ))}
+          </WordsContainer>
+          <ButtonsContainer>
+            <Button onClick={onCorrect}>Correct</Button>
+            <Button onClick={onTaboo}>Taboo</Button>
+          </ButtonsContainer>
+        </>
       )}
     </Container>
   );

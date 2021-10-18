@@ -1,4 +1,4 @@
-import Card from "../components/Card"
+import Card from "../components/Card";
 
 export interface Team {
   members: User[];
@@ -27,15 +27,15 @@ export interface Room {
   coHosts: User[];
   currentCardIndex: number;
   currentTeamIndex: number;
-  turnTimeLeft:number;
+  turnTimeLeft: number;
   turnEndTime: number;
   settings: Settings;
   seenWords: Card[];
   status: RoomStatus;
+  hostQueue: { [key: number]: string };
 }
 
 export type RoomStatus = "waiting" | "playing" | "paused" | "ended";
-
 
 export interface Settings {
   maxRounds: number;

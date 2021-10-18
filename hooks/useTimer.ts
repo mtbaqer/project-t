@@ -1,16 +1,24 @@
-import { useEffect, useState } from "react";
-import { addDoc, collection, doc, getDocs, getFirestore, limit, query, setDoc } from "firebase/firestore";
+import { useEffect, useRef, useState } from "react";
 
-const database = getFirestore();
-
-export default function useTimer(turnEndTime: number, isPlaying:boolean) {
+export default function useTimer(turnEndTime: number, isPlaying: boolean) {
   const [timeLeft, setTimeLeft] = useState<number>(turnEndTime - +new Date());
-  useEffect(() => {
-    if(timeLeft > 0 && isPlaying) setTimeout(()=>setTimeLeft(turnEndTime- +new Date()), 1000);
-  }, [timeLeft, isPlaying]);
+  const intervalRef = useRef<NodeJS.Timer | null>(null);
 
   useEffect(() => {
-    setTimeLeft(turnEndTime- +new Date());
+    if (isPlaying && !intervalRef.current) {
+      intervalRef.current = setInterval(() => {
+        setTimeLeft(turnEndTime - +new Date());
+        // console.log("from interval");
+      }, 1000);
+    } else if (intervalRef.current) {
+      console.log("from else");
+      clearInterval(intervalRef.current);
+      intervalRef.current = null;
+    }
+  }, [isPlaying]);
+
+  useEffect(() => {
+    setTimeLeft(turnEndTime - +new Date());
   }, [turnEndTime]);
 
   function formatTimeLeft() {
@@ -20,12 +28,12 @@ export default function useTimer(turnEndTime: number, isPlaying:boolean) {
 
     const minutesLeft = Math.floor((timeLeft / 1000 / 60) % 60);
     const secondsLeft = Math.floor((timeLeft / 1000) % 60);
-    
+
     const formattedMinutes = `0${minutesLeft}`;
     const formattedSeconds = `${secondsLeft < 10 ? "0" : ""}${secondsLeft}`;
 
     return `${formattedMinutes}:${formattedSeconds}`;
   }
-  
+
   return formatTimeLeft();
 }

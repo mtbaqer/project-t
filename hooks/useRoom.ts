@@ -1,6 +1,18 @@
 import { useEffect, useState } from "react";
-import { Room, User } from "../types/types";
-import { child, Database, getDatabase, increment, onValue, push, ref, set, update } from "firebase/database";
+import { Room, RoomStatus, User } from "../types/types";
+import {
+  child,
+  Database,
+  getDatabase,
+  increment,
+  onDisconnect,
+  onValue,
+  push,
+  ref,
+  runTransaction,
+  set,
+  update,
+} from "firebase/database";
 import useUser from "./useUser";
 import { v4 as uuidv4 } from "uuid";
 import useCards from "./useCards";
@@ -20,7 +32,7 @@ const DefaultRoom: Room = {
   currentCardIndex: 0,
   round: 0,
   turnEndTime: 0,
-  turnTimeLeft: 60,
+  turnTimeLeft: 60 * 1000,
   host: null,
   coHosts: [],
   currentTeamIndex: 0,
@@ -30,7 +42,7 @@ const DefaultRoom: Room = {
   },
   status: "waiting",
   seenWords: [],
-
+  hostQueue: {},
 };
 
 const roomRef = ref(database, `rooms/${DefaultRoom.id}`);
@@ -40,14 +52,14 @@ export default function useRoom() {
   const [room, setRoom] = useState<Room | null>(null);
 
   const { user, setUser } = useUser();
-  const {cards, fetchCards} = useCards();
+  const { cards, fetchCards } = useCards();
 
   useEffect(() => {
     // createRoom();
     subscribeToRoom();
   }, []);
 
-  /*useEffect(() => {
+  useEffect(() => {
     if (room && !user) {
       const id = uuidv4();
       const username = prompt("Enter your username");
@@ -55,7 +67,7 @@ export default function useRoom() {
       addUser(user);
       setUser(user);
     }
-  }, [room]);*/
+  }, [room]);
 
   function createRoom() {
     set(roomRef, DefaultRoom);
@@ -71,7 +83,7 @@ export default function useRoom() {
   async function startTurn() {
     await fetchCards();
     const turnEndTime = +new Date() + room!.settings.timePerRound * 1000;
-    update(roomRef, {currentCardIndex:0, status: "playing", turnEndTime});
+    update(roomRef, { currentCardIndex: 0, status: "playing", turnEndTime });
   }
 
   function onCorrect() {
@@ -82,10 +94,10 @@ export default function useRoom() {
     onNextCard(-1);
   }
 
-  function onNextCard(scoreIncrement:number) {
+  function onNextCard(scoreIncrement: number) {
     const teamRef = child(teamsRef, room!.currentTeamIndex.toString());
-    update(teamRef, {score:increment(scoreIncrement)});
-    update(roomRef, {currentCardIndex:increment(1)});
+    update(teamRef, { score: increment(scoreIncrement) });
+    update(roomRef, { currentCardIndex: increment(1) });
   }
 
   function addUser(user: User) {
@@ -96,7 +108,6 @@ export default function useRoom() {
     const members = [...(room!.teams[teamIndex].members || []), user];
 
     update(teamRef, { members });
-
   }
 
   function getSmallestTeamIndex() {
@@ -105,5 +116,27 @@ export default function useRoom() {
     return firstLength > secondLength ? 1 : 0;
   }
 
-  return { room, addUser, startTurn };
+  function onPause() {
+    runTransaction(roomRef, (room: Room) => {
+      const newRoom: Room = {
+        ...room,
+        status: "paused",
+        turnTimeLeft: room!.turnEndTime - +new Date(),
+      };
+      return newRoom;
+    });
+  }
+
+  function onResume() {
+    runTransaction(roomRef, (room: Room) => {
+      const newRoom: Room = {
+        ...room,
+        status: "playing",
+        turnEndTime: +new Date() + room.turnTimeLeft,
+      };
+      return newRoom;
+    });
+  }
+
+  return { room, addUser, startTurn, onPause, onResume, createRoom };
 }

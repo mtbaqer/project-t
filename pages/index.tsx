@@ -8,7 +8,7 @@ import useRoom from "../hooks/useRoom";
 import Timer from "../components/Timer";
 
 const Home: NextPage = () => {
-  const { room, startTurn } = useRoom();
+  const { room, startTurn, onPause, onResume, createRoom } = useRoom();
 
   return (
     <Container>
@@ -21,7 +21,13 @@ const Home: NextPage = () => {
       {room && (
         <>
           <HUD>
-            <Timer turnEndTime={room.turnEndTime} status={room.status} />
+            <button onClick={createRoom}>Create room</button>
+            <Timer
+              turnEndTime={room.turnEndTime}
+              isPlaying={room.status === "playing"}
+              onPause={onPause}
+              onResume={onResume}
+            />
           </HUD>
           <ContentContainer>
             <TeamComponent team={room.teams[0]} />
