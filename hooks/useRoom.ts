@@ -24,8 +24,8 @@ const database = getDatabase();
 const DefaultRoom: Room = {
   id: "default",
   teams: [
-    { members: [], score: 0 },
-    { members: [], score: 0 },
+    { members: {}, score: 0 },
+    { members: {}, score: 0 },
   ],
   spectators: [],
   deck: [],
@@ -33,8 +33,6 @@ const DefaultRoom: Room = {
   round: 0,
   turnEndTime: 0,
   turnTimeLeft: 60 * 1000,
-  host: null,
-  coHosts: [],
   currentTeamIndex: 0,
   settings: {
     maxRounds: 5,
@@ -68,6 +66,14 @@ export default function useRoom() {
       setUser(user);
     }
   }, [room]);
+
+  useEffect(() => {
+    if (user) {
+      const myHostQueueRef = child(roomRef, `hostQueue/${+new Date()}`);
+      set(myHostQueueRef, user.id);
+      onDisconnect(myHostQueueRef).remove();
+    }
+  }, [user]);
 
   function createRoom() {
     set(roomRef, DefaultRoom);
@@ -103,16 +109,15 @@ export default function useRoom() {
   function addUser(user: User) {
     const teamIndex = getSmallestTeamIndex();
 
-    const teamRef = child(teamsRef, teamIndex.toString());
+    const memberRef = child(teamsRef, `${teamIndex.toString()}/members/${user.id}`);
 
-    const members = [...(room!.teams[teamIndex].members || []), user];
-
-    update(teamRef, { members });
+    update(memberRef, user);
+    onDisconnect(memberRef).remove();
   }
 
   function getSmallestTeamIndex() {
-    const firstLength = room!.teams[0].members?.length ?? 0;
-    const secondLength = room!.teams[1].members?.length ?? 0;
+    const firstLength = Object.keys(room!.teams[0].members ?? {}).length ?? 0;
+    const secondLength = Object.keys(room!.teams[1].members ?? {}).length ?? 0;
     return firstLength > secondLength ? 1 : 0;
   }
 

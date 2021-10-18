@@ -11,9 +11,7 @@ const Team: FunctionComponent<Props> = ({ team }) => {
   return (
     <Container>
       <Title>TEAM</Title>
-      {team?.members?.map((member) => (
-        <Username>{member.name}</Username>
-      ))}
+      {team?.members && Object.values(team?.members).map((member) => <Username>{member.name}</Username>)}
     </Container>
   );
 };
@@ -21,6 +19,7 @@ const Team: FunctionComponent<Props> = ({ team }) => {
 const Container = styled.div`
   background-color: rgba(38, 28, 92, 0.5);
   display: flex;
+  flex-direction: column;
   justify-content: center;
   border-radius: 10px;
   width: 200px;

@@ -1,7 +1,7 @@
 import Card from "../components/Card";
 
 export interface Team {
-  members: User[];
+  members: { [key: string]: User };
   score: number;
 }
 
@@ -23,8 +23,6 @@ export interface Room {
   spectators: User[];
   deck: Card[];
   round: number;
-  host: User | null;
-  coHosts: User[];
   currentCardIndex: number;
   currentTeamIndex: number;
   turnTimeLeft: number;
