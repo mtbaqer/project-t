@@ -6,12 +6,8 @@ export default function useTimer(turnEndTime: number, isPlaying: boolean) {
 
   useEffect(() => {
     if (isPlaying && !intervalRef.current) {
-      intervalRef.current = setInterval(() => {
-        setTimeLeft(turnEndTime - +new Date());
-        // console.log("from interval");
-      }, 1000);
+      intervalRef.current = setInterval(() => setTimeLeft(turnEndTime - +new Date()), 1000);
     } else if (intervalRef.current) {
-      console.log("from else");
       clearInterval(intervalRef.current);
       intervalRef.current = null;
     }
