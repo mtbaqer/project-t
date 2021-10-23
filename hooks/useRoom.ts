@@ -30,11 +30,11 @@ const DefaultRoom: Room = {
   currentCardIndex: 0,
   round: 0,
   turnEndTime: 0,
-  turnTimeLeft: 60 * 1000,
+  turnTimeLeft: 5 * 1000,
   currentTeamIndex: 0,
   settings: {
     maxRounds: 5,
-    timePerRound: 60,
+    timePerRound: 5,
   },
   status: "waiting",
   seenWords: [],
@@ -50,7 +50,7 @@ export default function useRoom() {
   const { user, setUser } = useUser();
   const { cards, fetchCards } = useCards();
 
-  const { setPlaying, setTurnEndTime, timer } = useTimer();
+  const { setPlaying, setTurnEndTime, timeLeft } = useTimer();
 
   useEffect(() => {
     // createRoom();
@@ -151,6 +151,9 @@ export default function useRoom() {
   }
 
   function getStatus(): RoomStatus {
+    if (room!.status === "playing") {
+      return timeLeft > 0 ? "playing" : "waiting";
+    }
     return room!.status;
   }
 

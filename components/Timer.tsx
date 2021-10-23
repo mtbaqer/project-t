@@ -10,10 +10,25 @@ interface Props {
 }
 
 const Timer: FunctionComponent<Props> = ({ turnEndTime, isPlaying, onPause, onResume }) => {
-  const { timer } = useTimer();
+  const { timeLeft } = useTimer();
+
+  function formatTimeLeft() {
+    if (timeLeft <= 0) {
+      return "00:00";
+    }
+
+    const minutesLeft = Math.floor((timeLeft / 1000 / 60) % 60);
+    const secondsLeft = Math.floor((timeLeft / 1000) % 60);
+
+    const formattedMinutes = `0${minutesLeft}`;
+    const formattedSeconds = `${secondsLeft < 10 ? "0" : ""}${secondsLeft}`;
+
+    return `${formattedMinutes}:${formattedSeconds}`;
+  }
+
   return (
     <TimerContainer>
-      <Text>{timer}</Text>
+      <Text>{formatTimeLeft()}</Text>
       <Button onClick={isPlaying ? onPause : onResume}>{isPlaying ? "||" : "|>"}</Button>
     </TimerContainer>
   );
