@@ -99,6 +99,7 @@ export default function useRoom() {
   }
 
   async function onStartTurn() {
+    console.log("started");
     const deck = await fetchCards();
     runTransaction(roomRef, (room: Room) => {
       const currentTeamIndex = (room.currentTeamIndex + 1) % room.teams.length;
@@ -109,10 +110,11 @@ export default function useRoom() {
         ...room,
         currentCardIndex: 0,
         status: "playing",
-        turnEndTime: +new Date() + room.settings.timePerRound * 1000,
+        turnEndTime: +new Date() + 5 * 1000,
         currentTeamIndex,
         deck,
       };
+
       return newRoom;
     });
   }

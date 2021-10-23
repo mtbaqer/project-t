@@ -1,6 +1,7 @@
 import React, { FunctionComponent } from "react";
 import styled from "styled-components";
-import { Card as CardType, RoomStatus } from "../types/types";
+import useUser from "../hooks/useUser";
+import { Card as CardType, RoomStatus, Team } from "../types/types";
 
 interface Props {
   status: RoomStatus;
@@ -8,9 +9,36 @@ interface Props {
   onCorrect: () => void;
   onTaboo: () => void;
   onStartTurn: () => void;
+  currentTeam: Team;
+  currentUserTimestamp: number;
 }
 
-const Card: FunctionComponent<Props> = ({ status, card, onCorrect, onTaboo, onStartTurn }) => {
+const Card: FunctionComponent<Props> = ({
+  status,
+  card,
+  onCorrect,
+  onTaboo,
+  onStartTurn,
+  currentTeam,
+  currentUserTimestamp,
+}) => {
+  const { userId } = useUser();
+
+  const canSeeCard = getCanSeeCard();
+
+  function getCanSeeCard() {
+    return !isInCurrentTeam() || isHinter();
+  }
+
+  function isHinter() {
+    const hinterId = currentTeam?.members?.[currentUserTimestamp]?.id;
+    return hinterId === userId;
+  }
+
+  function isInCurrentTeam(): boolean {
+    return Object.values(currentTeam?.members || {}).findIndex((member) => member.id === userId) !== -1;
+  }
+
   return (
     <Container>
       {status === "waiting" ? (
@@ -19,7 +47,7 @@ const Card: FunctionComponent<Props> = ({ status, card, onCorrect, onTaboo, onSt
         </ButtonsContainer>
       ) : status === "paused" ? (
         <p>game is paused</p>
-      ) : (
+      ) : canSeeCard ? (
         <>
           <WordsContainer>
             <TargetWord>{card?.targetWord}</TargetWord>
@@ -32,7 +60,7 @@ const Card: FunctionComponent<Props> = ({ status, card, onCorrect, onTaboo, onSt
             <Button onClick={onTaboo}>Taboo</Button>
           </ButtonsContainer>
         </>
-      )}
+      ) : null}
     </Container>
   );
 };

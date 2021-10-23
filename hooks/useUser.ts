@@ -18,11 +18,8 @@ export default function useUser() {
   function subscribeToSignIn() {
     onAuthStateChanged(auth, (user) => {
       if (user) {
-        console.log("loggedIn");
-
         setUserId(user.uid);
       } else {
-        console.log("asked to sign in");
         signIn();
       }
     });

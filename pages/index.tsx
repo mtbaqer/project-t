@@ -38,6 +38,8 @@ const Home: NextPage = () => {
                 onCorrect={onCorrect}
                 onTaboo={onTaboo}
                 onStartTurn={onStartTurn}
+                currentTeam={room.teams[room.currentTeamIndex]}
+                currentUserTimestamp={room.teams[room.currentCardIndex].currentUserTimestamp}
               />
             </MainContainer>
             <TeamComponent teamIndex={1} team={room.teams[1]} currentTeamIndex={room.currentTeamIndex} />
