@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Room, RoomStatus, User } from "../types/types";
+import { Room, RoomStatus, Team, User } from "../types/types";
 import {
   child,
   getDatabase,
@@ -23,8 +23,8 @@ const database = getDatabase();
 const DefaultRoom: Room = {
   id: "default",
   teams: [
-    { members: {}, score: 0 },
-    { members: {}, score: 0 },
+    { members: {}, score: 0, currentUserTimestamp: 0 },
+    { members: {}, score: 0, currentUserTimestamp: 0 },
   ],
   spectators: [],
   deck: [],
@@ -48,7 +48,7 @@ const teamsRef = child(roomRef, "teams");
 export default function useRoom() {
   const [room, setRoom] = useState<Room | null>(null);
 
-  const { user, setUser } = useUser();
+  const { userId } = useUser();
 
   const { setPlaying, setTurnEndTime, timeLeft } = useTimer();
 
@@ -58,14 +58,19 @@ export default function useRoom() {
   }, []);
 
   useEffect(() => {
-    if (room && !user) {
-      const id = uuidv4();
+    if (room && userId) {
+      for (const team of room.teams) {
+        for (const member of Object.values(team.members || {})) {
+          if (member.id === userId) {
+            return () => {};
+          }
+        }
+      }
       const username = prompt("Enter your username");
-      const user = { name: username ? username : "Bitch", id };
+      const user = { name: username ? username : "Bitch", id: userId };
       addUser(user);
-      setUser(user);
     }
-  }, [room]);
+  }, [room, userId]);
 
   useEffect(() => {
     if (room) {
@@ -75,12 +80,12 @@ export default function useRoom() {
   }, [room]);
 
   useEffect(() => {
-    if (user) {
+    if (userId) {
       const myHostQueueRef = child(roomRef, `hostQueue/${+new Date()}`);
-      set(myHostQueueRef, user.id);
+      set(myHostQueueRef, userId);
       onDisconnect(myHostQueueRef).remove();
     }
-  }, [user]);
+  }, [userId]);
 
   function createRoom() {
     set(roomRef, DefaultRoom);
@@ -96,16 +101,39 @@ export default function useRoom() {
   async function onStartTurn() {
     const deck = await fetchCards();
     runTransaction(roomRef, (room: Room) => {
+      const currentTeamIndex = (room.currentTeamIndex + 1) % room.teams.length;
+      const currentUserTimestamp = getNextPlayingUserTimestamp(room.teams[currentTeamIndex]);
+      //If you did this, kill yourself
+      room.teams[currentTeamIndex].currentUserTimestamp = currentUserTimestamp;
       const newRoom: Room = {
         ...room,
         currentCardIndex: 0,
         status: "playing",
         turnEndTime: +new Date() + room.settings.timePerRound * 1000,
-        currentTeamIndex: (room.currentTeamIndex + 1) % room.teams.length,
+        currentTeamIndex,
         deck,
       };
       return newRoom;
     });
+  }
+
+  function getNextPlayingUserTimestamp(team: Team) {
+    const { currentUserTimestamp } = team;
+    const sortedTimestamps = Object.keys(team.members || {})
+      .sort()
+      .map(Number);
+
+    let nextUserIndex = 0;
+    for (let i = 0; i < sortedTimestamps.length; i++) {
+      const timestamp = sortedTimestamps[i];
+      if (timestamp > currentUserTimestamp) {
+        nextUserIndex = i;
+        break;
+      }
+    }
+
+    const nextUserTimestamp = sortedTimestamps[nextUserIndex];
+    return nextUserTimestamp;
   }
 
   function onCorrect() {
@@ -125,7 +153,7 @@ export default function useRoom() {
   function addUser(user: User) {
     const teamIndex = getSmallestTeamIndex();
 
-    const memberRef = child(teamsRef, `${teamIndex.toString()}/members/${user.id}`);
+    const memberRef = child(teamsRef, `${teamIndex.toString()}/members/${+new Date()}`);
 
     update(memberRef, user);
     onDisconnect(memberRef).remove();

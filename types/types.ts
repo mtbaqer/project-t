@@ -3,6 +3,7 @@ import Card from "../components/Card";
 export interface Team {
   members: { [key: string]: User };
   score: number;
+  currentUserTimestamp: number;
 }
 
 export interface User {
