@@ -2,14 +2,12 @@ import { useEffect, useState } from "react";
 import { Card } from "../types/types";
 import { addDoc, collection, doc, getDocs, getFirestore, limit, query, setDoc } from "firebase/firestore";
 
-
 const database = getFirestore();
 
 export default function useCards() {
   const [cards, setCards] = useState<Card[]>([]);
 
   useEffect(() => {
-    //createCards();
     fetchCards();
   }, []);
 
@@ -23,11 +21,5 @@ export default function useCards() {
     setCards(tempCards);
   }
 
-  async function createCards() {
-    //for(let [key,entry] of Object.entries(wordsJson)){
-    //  await addDoc(collection(database, "words"), entry);
-    //}
-  }
-
-  return {cards, fetchCards};
+  return { cards, fetchCards };
 }

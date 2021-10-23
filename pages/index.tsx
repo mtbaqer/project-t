@@ -8,7 +8,7 @@ import useRoom from "../hooks/useRoom";
 import Timer from "../components/Timer";
 
 const Home: NextPage = () => {
-  const { room, startTurn, onPause, onResume, createRoom } = useRoom();
+  const { room, onStartTurn, onPause, onResume, createRoom, onCorrect, onTaboo } = useRoom();
 
   return (
     <Container>
@@ -30,17 +30,17 @@ const Home: NextPage = () => {
             />
           </HUD>
           <ContentContainer>
-            <TeamComponent team={room.teams[0]} />
+            <TeamComponent teamIndex={0} team={room.teams[0]} currentTeamIndex={room.currentTeamIndex} />
             <MainContainer>
               <CardComponent
                 card={room.deck?.[room.currentCardIndex]}
                 status={room.status}
-                onCorrect={() => {}}
-                onTaboo={() => alert("bye")}
-                onStartTurn={startTurn}
+                onCorrect={onCorrect}
+                onTaboo={onTaboo}
+                onStartTurn={onStartTurn}
               />
             </MainContainer>
-            <TeamComponent team={room.teams[1]} />
+            <TeamComponent teamIndex={1} team={room.teams[1]} currentTeamIndex={room.currentTeamIndex} />
           </ContentContainer>
         </>
       )}

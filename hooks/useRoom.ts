@@ -16,6 +16,7 @@ import { v4 as uuidv4 } from "uuid";
 import useCards from "./useCards";
 import useTimer from "./useTimer";
 import { settings } from "firebase/analytics";
+import fetchCards from "../utils/fetchCards";
 
 const database = getDatabase();
 
@@ -31,7 +32,7 @@ const DefaultRoom: Room = {
   round: 0,
   turnEndTime: 0,
   turnTimeLeft: 60 * 1000,
-  currentTeamIndex: 0,
+  currentTeamIndex: -1,
   settings: {
     maxRounds: 5,
     timePerRound: 60,
@@ -48,7 +49,6 @@ export default function useRoom() {
   const [room, setRoom] = useState<Room | null>(null);
 
   const { user, setUser } = useUser();
-  const { cards, fetchCards } = useCards();
 
   const { setPlaying, setTurnEndTime, timeLeft } = useTimer();
 
@@ -61,7 +61,7 @@ export default function useRoom() {
     if (room && !user) {
       const id = uuidv4();
       const username = prompt("Enter your username");
-      const user = { name: username ?? "Bitch", id };
+      const user = { name: username ? username : "Bitch", id };
       addUser(user);
       setUser(user);
     }
@@ -93,10 +93,19 @@ export default function useRoom() {
     });
   }
 
-  async function startTurn() {
-    await fetchCards();
-    const turnEndTime = +new Date() + room!.settings.timePerRound * 1000;
-    update(roomRef, { currentCardIndex: 0, status: "playing", turnEndTime });
+  async function onStartTurn() {
+    const deck = await fetchCards();
+    runTransaction(roomRef, (room: Room) => {
+      const newRoom: Room = {
+        ...room,
+        currentCardIndex: 0,
+        status: "playing",
+        turnEndTime: +new Date() + room.settings.timePerRound * 1000,
+        currentTeamIndex: (room.currentTeamIndex + 1) % room.teams.length,
+        deck,
+      };
+      return newRoom;
+    });
   }
 
   function onCorrect() {
@@ -160,7 +169,9 @@ export default function useRoom() {
   return {
     room: room ? { ...room!, status: getStatus() } : undefined,
     addUser,
-    startTurn,
+    onStartTurn,
+    onCorrect,
+    onTaboo,
     onPause,
     onResume,
     createRoom,
