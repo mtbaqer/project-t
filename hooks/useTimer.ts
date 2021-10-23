@@ -1,21 +1,30 @@
+import { atom, useAtom } from "jotai";
 import { useEffect, useRef, useState } from "react";
 
-export default function useTimer(turnEndTime: number, isPlaying: boolean) {
-  const [timeLeft, setTimeLeft] = useState<number>(turnEndTime - +new Date());
-  const intervalRef = useRef<NodeJS.Timer | null>(null);
+const timeLeftAtom = atom(0);
+const timeoutRefAtom = atom<NodeJS.Timer | null>(null);
+const turnEndTimeAtom = atom(0);
+const playingAtom = atom(true);
 
-  useEffect(() => {
-    if (isPlaying && !intervalRef.current) {
-      intervalRef.current = setInterval(() => setTimeLeft(turnEndTime - +new Date()), 1000);
-    } else if (intervalRef.current) {
-      clearInterval(intervalRef.current);
-      intervalRef.current = null;
-    }
-  }, [isPlaying]);
+export default function useTimer() {
+  const [timeLeft, setTimeLeft] = useAtom(timeLeftAtom);
+  const [timeoutRef, setTimeoutRef] = useAtom(timeoutRefAtom);
+
+  const [turnEndTime, setTurnEndTime] = useAtom(turnEndTimeAtom);
+  const [playing, setPlaying] = useAtom(playingAtom);
 
   useEffect(() => {
     setTimeLeft(turnEndTime - +new Date());
   }, [turnEndTime]);
+
+  useEffect(() => {
+    if (playing && timeLeft) {
+      setTimeoutRef(setTimeout(() => setTimeLeft(turnEndTime - +new Date()), 1000));
+    } else if (timeoutRef) {
+      clearTimeout(timeoutRef);
+      setTimeoutRef(null);
+    }
+  }, [timeLeft, playing]);
 
   function formatTimeLeft() {
     if (timeLeft <= 0) {
@@ -31,5 +40,5 @@ export default function useTimer(turnEndTime: number, isPlaying: boolean) {
     return `${formattedMinutes}:${formattedSeconds}`;
   }
 
-  return formatTimeLeft();
+  return { timer: formatTimeLeft(), setTurnEndTime, setPlaying };
 }

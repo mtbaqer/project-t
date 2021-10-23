@@ -10,7 +10,7 @@ interface Props {
 }
 
 const Timer: FunctionComponent<Props> = ({ turnEndTime, isPlaying, onPause, onResume }) => {
-  const timer = useTimer(turnEndTime, isPlaying);
+  const { timer } = useTimer();
   return (
     <TimerContainer>
       <Text>{timer}</Text>

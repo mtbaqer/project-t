@@ -2,12 +2,10 @@ import { useEffect, useState } from "react";
 import { Room, RoomStatus, User } from "../types/types";
 import {
   child,
-  Database,
   getDatabase,
   increment,
   onDisconnect,
   onValue,
-  push,
   ref,
   runTransaction,
   set,
@@ -52,6 +50,8 @@ export default function useRoom() {
   const { user, setUser } = useUser();
   const { cards, fetchCards } = useCards();
 
+  const { setPlaying, setTurnEndTime, timer } = useTimer();
+
   useEffect(() => {
     // createRoom();
     subscribeToRoom();
@@ -64,6 +64,13 @@ export default function useRoom() {
       const user = { name: username ?? "Bitch", id };
       addUser(user);
       setUser(user);
+    }
+  }, [room]);
+
+  useEffect(() => {
+    if (room) {
+      setPlaying(room.status === "playing");
+      setTurnEndTime(room.turnEndTime);
     }
   }, [room]);
 
@@ -143,5 +150,16 @@ export default function useRoom() {
     });
   }
 
-  return { room, addUser, startTurn, onPause, onResume, createRoom };
+  function getStatus(): RoomStatus {
+    return room!.status;
+  }
+
+  return {
+    room: room ? { ...room!, status: getStatus() } : undefined,
+    addUser,
+    startTurn,
+    onPause,
+    onResume,
+    createRoom,
+  };
 }
