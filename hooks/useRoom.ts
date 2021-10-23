@@ -30,11 +30,11 @@ const DefaultRoom: Room = {
   currentCardIndex: 0,
   round: 0,
   turnEndTime: 0,
-  turnTimeLeft: 5 * 1000,
+  turnTimeLeft: 60 * 1000,
   currentTeamIndex: 0,
   settings: {
     maxRounds: 5,
-    timePerRound: 5,
+    timePerRound: 60,
   },
   status: "waiting",
   seenWords: [],
