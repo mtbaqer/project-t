@@ -12,35 +12,12 @@ import {
   update,
 } from "firebase/database";
 import useUser from "./useUser";
-import { v4 as uuidv4 } from "uuid";
 import useCards from "./useCards";
 import useTimer from "./useTimer";
-import { settings } from "firebase/analytics";
 import fetchCards from "../utils/fetchCards";
+import { DefaultRoom } from "../constants/room";
 
 const database = getDatabase();
-
-const DefaultRoom: Room = {
-  id: "default",
-  teams: [
-    { members: {}, score: 0, currentUserTimestamp: 0 },
-    { members: {}, score: 0, currentUserTimestamp: 0 },
-  ],
-  spectators: [],
-  deck: [],
-  currentCardIndex: 0,
-  round: 0,
-  turnEndTime: 0,
-  turnTimeLeft: 60 * 1000,
-  currentTeamIndex: -1,
-  settings: {
-    maxRounds: 5,
-    timePerRound: 60,
-  },
-  status: "waiting",
-  seenWords: [],
-  hostQueue: {},
-};
 
 const roomRef = ref(database, `rooms/${DefaultRoom.id}`);
 const teamsRef = child(roomRef, "teams");
@@ -53,9 +30,20 @@ export default function useRoom() {
   const { setPlaying, setTurnEndTime, timeLeft } = useTimer();
 
   useEffect(() => {
-    // createRoom();
+    createRoom();
     subscribeToRoom();
   }, []);
+
+  function createRoom() {
+    set(roomRef, DefaultRoom);
+  }
+
+  function subscribeToRoom() {
+    onValue(roomRef, (snapshot) => {
+      const room = snapshot.val() as Room;
+      setRoom(room);
+    });
+  }
 
   useEffect(() => {
     if (room && userId) {
@@ -87,24 +75,11 @@ export default function useRoom() {
     }
   }, [userId]);
 
-  function createRoom() {
-    set(roomRef, DefaultRoom);
-  }
-
-  function subscribeToRoom() {
-    onValue(roomRef, (snapshot) => {
-      const room = snapshot.val() as Room;
-      setRoom(room);
-    });
-  }
-
   async function onStartTurn() {
-    console.log("started");
     const deck = await fetchCards();
     runTransaction(roomRef, (room: Room) => {
       const currentTeamIndex = (room.currentTeamIndex + 1) % room.teams.length;
       const currentUserTimestamp = getNextPlayingUserTimestamp(room.teams[currentTeamIndex]);
-      //If you did this, kill yourself
       room.teams[currentTeamIndex].currentUserTimestamp = currentUserTimestamp;
       const newRoom: Room = {
         ...room,

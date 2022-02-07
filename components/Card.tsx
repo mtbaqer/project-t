@@ -51,8 +51,8 @@ const Card: FunctionComponent<Props> = ({
         <>
           <WordsContainer>
             <TargetWord>{card?.targetWord}</TargetWord>
-            {card?.tabooWords.map((word) => (
-              <TabooWord>{word}</TabooWord>
+            {card?.tabooWords.map((word, index) => (
+              <TabooWord key={index}>{word}</TabooWord>
             ))}
           </WordsContainer>
           <ButtonsContainer>
