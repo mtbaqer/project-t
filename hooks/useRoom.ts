@@ -1,42 +1,27 @@
-import { useEffect, useState } from "react";
-import { Room, RoomStatus, Team, User } from "../types/types";
-import {
-  child,
-  getDatabase,
-  increment,
-  onDisconnect,
-  onValue,
-  ref,
-  runTransaction,
-  set,
-  update,
-} from "firebase/database";
+import { useEffect } from "react";
+import { Room, RoomStatus, User } from "../types/types";
+import { child, getDatabase, onDisconnect, onValue, ref, set, update } from "firebase/database";
 import useUser from "./useUser";
 import useCards from "./useCards";
 import useTimer from "./useTimer";
-import fetchCards from "../utils/fetchCards";
 import { DefaultRoom } from "../constants/room";
+import { atom, useAtom } from "jotai";
+import { roomAtom } from "../atoms/room";
 
 const database = getDatabase();
-
 const roomRef = ref(database, `rooms/${DefaultRoom.id}`);
 const teamsRef = child(roomRef, "teams");
 
 export default function useRoom() {
-  const [room, setRoom] = useState<Room | null>(null);
+  const [room, setRoom] = useAtom(roomAtom);
 
   const { userId } = useUser();
 
-  const { setPlaying, setTurnEndTime, timeLeft } = useTimer();
+  useTimer();
 
   useEffect(() => {
-    createRoom();
     subscribeToRoom();
   }, []);
-
-  function createRoom() {
-    set(roomRef, DefaultRoom);
-  }
 
   function subscribeToRoom() {
     onValue(roomRef, (snapshot) => {
@@ -61,71 +46,12 @@ export default function useRoom() {
   }, [room, userId]);
 
   useEffect(() => {
-    if (room) {
-      setPlaying(room.status === "playing");
-      setTurnEndTime(room.turnEndTime);
-    }
-  }, [room]);
-
-  useEffect(() => {
     if (userId) {
       const myHostQueueRef = child(roomRef, `hostQueue/${+new Date()}`);
       set(myHostQueueRef, userId);
       onDisconnect(myHostQueueRef).remove();
     }
   }, [userId]);
-
-  async function onStartTurn() {
-    const deck = await fetchCards();
-    runTransaction(roomRef, (room: Room) => {
-      const currentTeamIndex = (room.currentTeamIndex + 1) % room.teams.length;
-      const currentUserTimestamp = getNextPlayingUserTimestamp(room.teams[currentTeamIndex]);
-      room.teams[currentTeamIndex].currentUserTimestamp = currentUserTimestamp;
-      const newRoom: Room = {
-        ...room,
-        currentCardIndex: 0,
-        status: "playing",
-        turnEndTime: +new Date() + 5 * 1000,
-        currentTeamIndex,
-        deck,
-      };
-
-      return newRoom;
-    });
-  }
-
-  function getNextPlayingUserTimestamp(team: Team) {
-    const { currentUserTimestamp } = team;
-    const sortedTimestamps = Object.keys(team.members || {})
-      .sort()
-      .map(Number);
-
-    let nextUserIndex = 0;
-    for (let i = 0; i < sortedTimestamps.length; i++) {
-      const timestamp = sortedTimestamps[i];
-      if (timestamp > currentUserTimestamp) {
-        nextUserIndex = i;
-        break;
-      }
-    }
-
-    const nextUserTimestamp = sortedTimestamps[nextUserIndex];
-    return nextUserTimestamp;
-  }
-
-  function onCorrect() {
-    onNextCard(1);
-  }
-
-  function onTaboo() {
-    onNextCard(-1);
-  }
-
-  function onNextCard(scoreIncrement: number) {
-    const teamRef = child(teamsRef, room!.currentTeamIndex.toString());
-    update(teamRef, { score: increment(scoreIncrement) });
-    update(roomRef, { currentCardIndex: increment(1) });
-  }
 
   function addUser(user: User) {
     const teamIndex = getSmallestTeamIndex();
@@ -142,43 +68,5 @@ export default function useRoom() {
     return firstLength > secondLength ? 1 : 0;
   }
 
-  function onPause() {
-    runTransaction(roomRef, (room: Room) => {
-      const newRoom: Room = {
-        ...room,
-        status: "paused",
-        turnTimeLeft: room!.turnEndTime - +new Date(),
-      };
-      return newRoom;
-    });
-  }
-
-  function onResume() {
-    runTransaction(roomRef, (room: Room) => {
-      const newRoom: Room = {
-        ...room,
-        status: "playing",
-        turnEndTime: +new Date() + room.turnTimeLeft,
-      };
-      return newRoom;
-    });
-  }
-
-  function getStatus(): RoomStatus {
-    if (room!.status === "playing") {
-      return timeLeft > 0 ? "playing" : "waiting";
-    }
-    return room!.status;
-  }
-
-  return {
-    room: room ? { ...room!, status: getStatus() } : undefined,
-    addUser,
-    onStartTurn,
-    onCorrect,
-    onTaboo,
-    onPause,
-    onResume,
-    createRoom,
-  };
+  return { room };
 }

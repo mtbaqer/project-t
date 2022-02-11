@@ -34,7 +34,7 @@ export interface Room {
   hostQueue: { [key: number]: string };
 }
 
-export type RoomStatus = "waiting" | "playing" | "paused" | "ended";
+export type RoomStatus = "loading" | "waiting" | "playing" | "paused" | "ended";
 
 export interface Settings {
   maxRounds: number;

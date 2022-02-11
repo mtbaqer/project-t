@@ -17,7 +17,7 @@ export const DefaultRoom: Room = {
     maxRounds: 5,
     timePerRound: 60,
   },
-  status: "waiting",
+  status: "loading",
   seenWords: [],
   hostQueue: {},
 };

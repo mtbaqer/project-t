@@ -1,14 +1,19 @@
 import type { NextPage } from "next";
 import Head from "next/head";
-import React, { useEffect, useState } from "react";
+import React from "react";
 import styled from "styled-components";
 import TeamComponent from "../components/Team";
 import CardComponent from "../components/Card";
 import useRoom from "../hooks/useRoom";
 import Timer from "../components/Timer";
+import useRoomActions from "../hooks/useRoomActions";
+import { useAtomValue } from "jotai/utils";
+import { roomAtom } from "../atoms/room";
 
 const Home: NextPage = () => {
-  const { room, onStartTurn, onPause, onResume, createRoom, onCorrect, onTaboo } = useRoom();
+  useRoom();
+  const room = useAtomValue(roomAtom);
+  const { onStartTurn, onPause, onResume, onCorrect, onTaboo } = useRoomActions();
 
   return (
     <Container>
@@ -18,22 +23,16 @@ const Home: NextPage = () => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      {room && (
+      {room.status !== "loading" && (
         <>
           <HUD>
-            <button onClick={createRoom}>Create room</button>
-            <Timer
-              turnEndTime={room.turnEndTime}
-              isPlaying={room.status === "playing"}
-              onPause={onPause}
-              onResume={onResume}
-            />
+            <Timer isPlaying={room.status == "playing"} onPause={onPause} onResume={onResume} />
           </HUD>
           <ContentContainer>
             <TeamComponent teamIndex={0} team={room.teams[0]} currentTeamIndex={room.currentTeamIndex} />
             <MainContainer>
               <CardComponent
-                card={room.deck?.[room.currentCardIndex]}
+                card={room.deck[room.currentCardIndex]}
                 status={room.status}
                 onCorrect={onCorrect}
                 onTaboo={onTaboo}

@@ -1,16 +1,17 @@
+import { useAtomValue } from "jotai/utils";
 import React, { FunctionComponent, useState } from "react";
 import styled from "styled-components";
+import { timeLeftAtom } from "../atoms/timeLeft";
 import useTimer from "../hooks/useTimer";
 
 interface Props {
-  turnEndTime: number;
   isPlaying: boolean;
   onPause: () => void;
   onResume: () => void;
 }
 
-const Timer: FunctionComponent<Props> = ({ turnEndTime, isPlaying, onPause, onResume }) => {
-  const { timeLeft } = useTimer();
+const Timer: FunctionComponent<Props> = ({ isPlaying, onPause, onResume }) => {
+  const timeLeft = useAtomValue(timeLeftAtom);
 
   function formatTimeLeft() {
     if (timeLeft <= 0) {

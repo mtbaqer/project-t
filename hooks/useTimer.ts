@@ -1,30 +1,27 @@
 import { atom, useAtom } from "jotai";
-import { useEffect, useRef, useState } from "react";
+import { selectAtom, useAtomValue, useUpdateAtom } from "jotai/utils";
+import { useEffect, useRef } from "react";
+import { roomAtom } from "../atoms/room";
+import { timeLeftAtom } from "../atoms/timeLeft";
 
-const timeLeftAtom = atom(0);
-const timeoutRefAtom = atom<NodeJS.Timer | null>(null);
-const turnEndTimeAtom = atom(0);
-const playingAtom = atom(true);
+const turnEndTimeAtom = selectAtom(roomAtom, (room) => room.turnEndTime);
+const roomStatusAtom = selectAtom(roomAtom, (room) => room.status);
 
 export default function useTimer() {
-  const [timeLeft, setTimeLeft] = useAtom(timeLeftAtom);
-  const [timeoutRef, setTimeoutRef] = useAtom(timeoutRefAtom);
-
-  const [turnEndTime, setTurnEndTime] = useAtom(turnEndTimeAtom);
-  const [playing, setPlaying] = useAtom(playingAtom);
+  const setTimeLeft = useUpdateAtom(timeLeftAtom);
+  const turnEndTime = useAtomValue(turnEndTimeAtom);
+  const roomStatus = useAtomValue(roomStatusAtom);
+  const intervalRef = useRef<number>();
 
   useEffect(() => {
-    setTimeLeft(turnEndTime - +new Date());
+    setTimeLeft(turnEndTime - Date.now());
   }, [turnEndTime]);
 
   useEffect(() => {
-    if (playing && timeLeft > 0) {
-      setTimeoutRef(setTimeout(() => setTimeLeft(turnEndTime - +new Date()), 1000));
-    } else if (timeoutRef) {
-      clearTimeout(timeoutRef);
-      setTimeoutRef(null);
+    if (roomStatus === "playing") {
+      intervalRef.current = window.setInterval(() => setTimeLeft(turnEndTime - Date.now()), 1000);
+    } else {
+      window.clearInterval(intervalRef.current);
     }
-  }, [timeLeft, playing]);
-
-  return { timeLeft, setTurnEndTime, setPlaying };
+  }, [roomStatus]);
 }
