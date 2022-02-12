@@ -2,7 +2,7 @@ import { useAtomValue } from "jotai/utils";
 import React, { FunctionComponent } from "react";
 import styled from "styled-components";
 import { roomAtom } from "../atoms/room";
-import useUser from "../hooks/useUser";
+import { userIdAtom } from "../atoms/user";
 
 interface Props {
   onCorrect: () => void;
@@ -11,7 +11,7 @@ interface Props {
 }
 
 const Card: FunctionComponent<Props> = ({ onCorrect, onTaboo, onStartTurn }) => {
-  const { userId } = useUser();
+  const userId = useAtomValue(userIdAtom);
   const room = useAtomValue(roomAtom);
 
   const card = room.deck?.[room.currentCardIndex];

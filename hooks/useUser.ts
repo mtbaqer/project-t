@@ -1,14 +1,12 @@
-import { atom, useAtom } from "jotai";
-import { useEffect, useState } from "react";
-import { User } from "../types/types";
+import { useAtom } from "jotai";
+import { useEffect } from "react";
 import { getAuth, onAuthStateChanged, signInAnonymously } from "firebase/auth";
+
+import { userIdAtom } from "../atoms/user";
 
 const auth = getAuth();
 
-const userIdAtom = atom<string | null>(null);
-
 export default function useUser() {
-  // const [user, setUser] = useAtom(userAtom);
   const [userId, setUserId] = useAtom(userIdAtom);
 
   useEffect(() => {
@@ -17,11 +15,8 @@ export default function useUser() {
 
   function subscribeToSignIn() {
     onAuthStateChanged(auth, (user) => {
-      if (user) {
-        setUserId(user.uid);
-      } else {
-        signIn();
-      }
+      if (user) setUserId(user.uid);
+      else signIn();
     });
   }
 
