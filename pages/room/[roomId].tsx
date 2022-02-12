@@ -1,6 +1,5 @@
 import { useAtomValue } from "jotai/utils";
 import type { NextPage } from "next";
-import { useRouter } from "next/router";
 import Head from "next/head";
 import React from "react";
 import styled from "styled-components";
@@ -11,7 +10,7 @@ import useRoomActions from "../../hooks/useRoomActions";
 import Team from "../../components/Team";
 import Card from "../../components/Card";
 
-const RomePage: NextPage = () => {
+const RoomPage: NextPage = () => {
   useRoom();
   const room = useAtomValue(roomAtom);
   const { onStartTurn, onPause, onResume, onCorrect, onTaboo } = useRoomActions();
@@ -74,4 +73,4 @@ const MainContainer = styled.div`
   justify-content: center;
 `;
 
-export default RomePage;
+export default RoomPage;

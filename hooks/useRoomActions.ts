@@ -74,7 +74,7 @@ export default function useRoomActions() {
       const newRoom: Room = {
         ...room,
         status: "paused",
-        turnTimeLeft: room!.turnEndTime - +new Date(),
+        turnTimeLeft: room!.turnEndTime - Date.now(),
       };
       return newRoom;
     });
@@ -85,7 +85,7 @@ export default function useRoomActions() {
       const newRoom: Room = {
         ...room,
         status: "playing",
-        turnEndTime: +new Date() + room.turnTimeLeft,
+        turnEndTime: Date.now() + room.turnTimeLeft,
       };
       return newRoom;
     });

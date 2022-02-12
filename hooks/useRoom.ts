@@ -2,10 +2,8 @@ import { useEffect } from "react";
 import { Room, RoomStatus, User } from "../types/types";
 import { child, getDatabase, onDisconnect, onValue, ref, set, update } from "firebase/database";
 import useUser from "./useUser";
-import useCards from "./useCards";
 import useTimer from "./useTimer";
-import { DefaultRoom, TestRoom } from "../constants/room";
-import { atom, useAtom } from "jotai";
+import { useAtom } from "jotai";
 import { roomAtom } from "../atoms/room";
 import { useRouter } from "next/router";
 
