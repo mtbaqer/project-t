@@ -7,38 +7,43 @@ import useTimer from "./useTimer";
 import { DefaultRoom, TestRoom } from "../constants/room";
 import { atom, useAtom } from "jotai";
 import { roomAtom } from "../atoms/room";
+import { useRouter } from "next/router";
 
 const database = getDatabase();
 
 export default function useRoom() {
+  useTimer();
+
   const [room, setRoom] = useAtom(roomAtom);
-  const roomId = "test"; //TODO: change this to be dynamic based on url
+
+  const router = useRouter();
+  const { roomId } = router.query;
+
+  const { userId } = useUser();
 
   const roomRef = ref(database, `rooms/${roomId}`);
   const teamsRef = child(roomRef, "teams");
 
-  const { userId } = useUser();
-
-  useTimer();
-
   useEffect(() => {
-    createRoom();
-    subscribeToRoom();
-  }, []);
-
-  function createRoom() {
-    set(roomRef, TestRoom);
-  }
+    if (roomId) subscribeToRoom();
+  }, [roomId]);
 
   function subscribeToRoom() {
     onValue(roomRef, (snapshot) => {
-      const room = snapshot.val() as Room;
-      setRoom(room);
+      if (!snapshot.exists()) createRoom();
+      else {
+        const room = snapshot.val() as Room;
+        setRoom(room);
+      }
     });
   }
 
+  function createRoom() {
+    set(roomRef, { ...DefaultRoom, id: roomId });
+  }
+
   useEffect(() => {
-    if (room && userId) {
+    if (room.id !== "default" && userId) {
       for (const team of room.teams) {
         for (const member of Object.values(team.members || {})) {
           if (member.id === userId) {
@@ -47,26 +52,34 @@ export default function useRoom() {
         }
       }
       const username = prompt("Enter your username");
-      const user = { name: username ? username : "Bitch", id: userId };
+      const user = { name: username ? username : "Filled", id: userId };
       addUser(user);
     }
   }, [room, userId]);
 
-  useEffect(() => {
-    if (userId) {
-      const myHostQueueRef = child(roomRef, `hostQueue/${+new Date()}`);
-      set(myHostQueueRef, userId);
-      onDisconnect(myHostQueueRef).remove();
-    }
-  }, [userId]);
-
   function addUser(user: User) {
+    addToHostQueue();
+
     const teamIndex = getSmallestTeamIndex();
 
     const memberRef = child(teamsRef, `${teamIndex.toString()}/members/${+new Date()}`);
 
     update(memberRef, user);
     onDisconnect(memberRef).remove();
+  }
+
+  function addToHostQueue() {
+    if (isFirstPlayerToJoin()) {
+      const status: RoomStatus = "waiting";
+      update(roomRef, { status });
+    }
+    const myHostQueueRef = child(roomRef, `hostQueue/${+new Date()}`);
+    set(myHostQueueRef, userId);
+    onDisconnect(myHostQueueRef).remove();
+  }
+
+  function isFirstPlayerToJoin() {
+    return !room.hostQueue;
   }
 
   function getSmallestTeamIndex() {
