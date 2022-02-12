@@ -17,10 +17,10 @@ const UserPrompt: FunctionComponent<Props> = ({}) => {
   return (
     <Container>
       <SubContainer>
-        <H4>CHOOSE A CHARACTER AND A NICKNAME</H4>
+        <H4>CHOOSE A NICKNAME</H4>
         <Input onChange={(e) => setUsername(e.target.value)} value={username} />
         <Button onClick={onStart}>
-          <Image src="/images/ic_play.svg" alt="play button" width={23} height={29} />
+          <Image src="/images/play.svg" alt="play button" width={23} height={29} />
           <Strong>START</Strong>
         </Button>
       </SubContainer>

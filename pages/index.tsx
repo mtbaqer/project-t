@@ -16,7 +16,7 @@ const Home: NextPage = () => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <Button onClick={navigateToNewRoom}>
-        <Image src="/images/ic_play.svg" alt="play button" width={23} height={29} />
+        <Image src="/images/play.svg" alt="play button" width={23} height={29} />
         <Strong>START</Strong>
       </Button>
     </Container>
