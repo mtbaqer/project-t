@@ -23,7 +23,7 @@ export default function useRoomActions() {
         ...room,
         currentCardIndex: 0,
         status: "playing",
-        turnEndTime: +new Date() + 50 * 1000,
+        turnEndTime: +new Date() + 5 * 1000,
         currentTeamIndex,
         deck,
       };
@@ -48,7 +48,7 @@ export default function useRoomActions() {
     }
 
     const nextUserTimestamp = sortedTimestamps[nextUserIndex];
-    return nextUserTimestamp;
+    return nextUserTimestamp ?? null;
   }
 
   function onCorrect() {
