@@ -1,5 +1,3 @@
-import Card from "../components/Card";
-
 export interface Team {
   members: { [key: string]: User };
   score: number;

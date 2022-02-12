@@ -33,6 +33,8 @@ const Container = styled.div`
   background-repeat: no-repeat;
   background-size: cover;
   height: 100vh;
+  display: flex;
+  flex-direction: column;
 `;
 
 export default RoomPage;
