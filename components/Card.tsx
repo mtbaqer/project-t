@@ -1,28 +1,23 @@
+import { useAtomValue } from "jotai/utils";
 import React, { FunctionComponent } from "react";
 import styled from "styled-components";
+import { roomAtom } from "../atoms/room";
 import useUser from "../hooks/useUser";
-import { Card as CardType, RoomStatus, Team } from "../types/types";
 
 interface Props {
-  status: RoomStatus;
-  card?: CardType | null;
   onCorrect: () => void;
   onTaboo: () => void;
   onStartTurn: () => void;
-  currentTeam: Team;
-  currentUserTimestamp: number;
 }
 
-const Card: FunctionComponent<Props> = ({
-  status,
-  card,
-  onCorrect,
-  onTaboo,
-  onStartTurn,
-  currentTeam,
-  currentUserTimestamp,
-}) => {
+const Card: FunctionComponent<Props> = ({ onCorrect, onTaboo, onStartTurn }) => {
   const { userId } = useUser();
+  const room = useAtomValue(roomAtom);
+
+  const card = room.deck?.[room.currentCardIndex];
+  const status = room.status;
+  const currentTeam = room.teams[room.currentTeamIndex];
+  const currentUserTimestamp = room.teams[room.currentTeamIndex]?.currentUserTimestamp;
 
   const canSeeCard = getCanSeeCard();
 

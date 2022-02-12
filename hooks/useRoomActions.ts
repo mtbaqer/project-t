@@ -27,7 +27,7 @@ export default function useRoomActions() {
         round: currentTeamIndex === 0 ? room.round + 1 : room.round,
         currentCardIndex: 0,
         status: "playing",
-        turnEndTime: Date.now() + 60 * 1000,
+        turnEndTime: Date.now() + 5 * 1000,
         currentTeamIndex,
         deck,
       };

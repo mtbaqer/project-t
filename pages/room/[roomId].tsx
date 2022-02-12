@@ -31,15 +31,7 @@ const RoomPage: NextPage = () => {
           <ContentContainer>
             <Team teamIndex={0} team={room.teams[0]} currentTeamIndex={room.currentTeamIndex} />
             <MainContainer>
-              <Card
-                card={room.deck?.[room.currentCardIndex]}
-                status={room.status}
-                onCorrect={onCorrect}
-                onTaboo={onTaboo}
-                onStartTurn={onStartTurn}
-                currentTeam={room.teams[room.currentTeamIndex]}
-                currentUserTimestamp={room.teams[room.currentTeamIndex]?.currentUserTimestamp}
-              />
+              <Card onCorrect={onCorrect} onTaboo={onTaboo} onStartTurn={onStartTurn} />
             </MainContainer>
             <Team teamIndex={1} team={room.teams[1]} currentTeamIndex={room.currentTeamIndex} />
           </ContentContainer>
