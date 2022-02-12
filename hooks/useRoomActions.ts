@@ -21,6 +21,7 @@ export default function useRoomActions() {
       room.teams[currentTeamIndex].currentUserTimestamp = currentUserTimestamp;
       const newRoom: Room = {
         ...room,
+        round: currentTeamIndex === 0 ? room.round + 1 : room.round,
         currentCardIndex: 0,
         status: "playing",
         turnEndTime: +new Date() + 5 * 1000,
