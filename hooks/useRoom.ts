@@ -30,16 +30,12 @@ export default function useRoom() {
 
   function subscribeToRoom() {
     onValue(roomRef, (snapshot) => {
-      if (!snapshot.exists()) createRoom();
+      if (!snapshot.exists()) router.push("/");
       else {
         const room = snapshot.val() as Room;
         setRoom(room);
       }
     });
-  }
-
-  function createRoom() {
-    set(roomRef, { ...DefaultRoom, id: roomId });
   }
 
   useEffect(() => {

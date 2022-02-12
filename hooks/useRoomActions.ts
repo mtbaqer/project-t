@@ -1,7 +1,7 @@
 import { child, getDatabase, increment, ref, runTransaction, update } from "firebase/database";
 import { useAtomValue } from "jotai/utils";
+import { useRouter } from "next/router";
 import { roomAtom } from "../atoms/room";
-import { TestRoom } from "../constants/room";
 import { Room, Team } from "../types/types";
 import fetchCards from "../utils/fetchCards";
 
@@ -10,7 +10,10 @@ const database = getDatabase();
 export default function useRoomActions() {
   const room = useAtomValue(roomAtom);
 
-  const roomRef = ref(database, `rooms/${TestRoom.id}`);
+  const router = useRouter();
+  const { roomId } = router.query;
+
+  const roomRef = ref(database, `rooms/${roomId}`);
   const teamsRef = child(roomRef, "teams");
 
   async function onStartTurn() {
@@ -24,7 +27,7 @@ export default function useRoomActions() {
         round: currentTeamIndex === 0 ? room.round + 1 : room.round,
         currentCardIndex: 0,
         status: "playing",
-        turnEndTime: +new Date() + 5 * 1000,
+        turnEndTime: Date.now() + 60 * 1000,
         currentTeamIndex,
         deck,
       };
