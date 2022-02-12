@@ -4,24 +4,31 @@ import { child, getDatabase, onDisconnect, onValue, ref, set, update } from "fir
 import useUser from "./useUser";
 import useCards from "./useCards";
 import useTimer from "./useTimer";
-import { DefaultRoom } from "../constants/room";
+import { DefaultRoom, TestRoom } from "../constants/room";
 import { atom, useAtom } from "jotai";
 import { roomAtom } from "../atoms/room";
 
 const database = getDatabase();
-const roomRef = ref(database, `rooms/${DefaultRoom.id}`);
-const teamsRef = child(roomRef, "teams");
 
 export default function useRoom() {
   const [room, setRoom] = useAtom(roomAtom);
+  const roomId = "test"; //TODO: change this to be dynamic based on url
+
+  const roomRef = ref(database, `rooms/${roomId}`);
+  const teamsRef = child(roomRef, "teams");
 
   const { userId } = useUser();
 
   useTimer();
 
   useEffect(() => {
+    createRoom();
     subscribeToRoom();
   }, []);
+
+  function createRoom() {
+    set(roomRef, TestRoom);
+  }
 
   function subscribeToRoom() {
     onValue(roomRef, (snapshot) => {

@@ -32,7 +32,7 @@ const Home: NextPage = () => {
             <TeamComponent teamIndex={0} team={room.teams[0]} currentTeamIndex={room.currentTeamIndex} />
             <MainContainer>
               <CardComponent
-                card={room.deck[room.currentCardIndex]}
+                card={room.deck?.[room.currentCardIndex]}
                 status={room.status}
                 onCorrect={onCorrect}
                 onTaboo={onTaboo}

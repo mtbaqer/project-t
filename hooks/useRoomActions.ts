@@ -1,16 +1,17 @@
 import { child, getDatabase, increment, ref, runTransaction, update } from "firebase/database";
 import { useAtomValue } from "jotai/utils";
 import { roomAtom } from "../atoms/room";
-import { DefaultRoom } from "../constants/room";
+import { TestRoom } from "../constants/room";
 import { Room, Team } from "../types/types";
 import fetchCards from "../utils/fetchCards";
 
 const database = getDatabase();
-const roomRef = ref(database, `rooms/${DefaultRoom.id}`);
-const teamsRef = child(roomRef, "teams");
 
 export default function useRoomActions() {
   const room = useAtomValue(roomAtom);
+
+  const roomRef = ref(database, `rooms/${TestRoom.id}`);
+  const teamsRef = child(roomRef, "teams");
 
   async function onStartTurn() {
     const deck = await fetchCards();
