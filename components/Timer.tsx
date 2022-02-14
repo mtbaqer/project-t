@@ -13,50 +13,49 @@ interface Props {
 
 const Timer: FunctionComponent<Props> = ({ isPlaying, onPause, onResume }) => {
   const timeLeft = useAtomValue(timeLeftAtom);
-
-  function formatTimeLeft() {
-    if (timeLeft <= 0) {
-      return "00:00";
-    }
-
-    const minutesLeft = Math.floor((timeLeft / 1000 / 60) % 60);
-    const secondsLeft = Math.floor((timeLeft / 1000) % 60);
-
-    const formattedMinutes = `0${minutesLeft}`;
-    const formattedSeconds = `${secondsLeft < 10 ? "0" : ""}${secondsLeft}`;
-
-    return `${formattedMinutes}:${formattedSeconds}`;
-  }
+  let radius = 15;
+  let circumference = 2 * radius * Math.PI;
+  let progress = (60000 - timeLeft) / 60000;
 
   return (
-    <TimerContainer>
-      <Text>{formatTimeLeft()}</Text>
-      <Button onClick={isPlaying ? onPause : onResume}>
-        {isPlaying ? (
-          <Image src="/images/pause.svg" alt="pause" width={30} height={30} />
-        ) : (
-          <Image src="/images/play.svg" alt="play" width={30} height={30} />
-        )}
-      </Button>
-    </TimerContainer>
+    <Button onClick={isPlaying ? onPause : onResume}>
+      <TimerContainer>
+        <Svg>
+          <circle
+            strokeDasharray={circumference}
+            strokeDashoffset={circumference * progress}
+            cx={36}
+            cy={36}
+            r={radius}
+            fill="none"
+            stroke="white"
+            strokeWidth={2 * radius}
+          />
+        </Svg>
+      </TimerContainer>
+    </Button>
   );
 };
 
 const TimerContainer = styled.div`
   display: flex;
+  border-radius: 100px;
+  border: 6px solid white;
+  margin-top: 18px;
+  margin-bottom: -18px;
 `;
 
-const Text = styled.p``;
-
 const Button = styled.button`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  border-radius: 7px;
-  margin-left: 10px;
-  background-color: rgb(255, 255, 255);
-  box-shadow: rgb(48, 26, 107) 0px 6px 0px 0px;
-  padding: 10px;
+  transition: opacity 0.15s;
+  &:hover {
+    opacity: 0.5;
+  }
+`;
+
+const Svg = styled.svg`
+  width: 72px;
+  height: 72px;
+  transform: rotateY(-180deg) rotateZ(-90deg);
 `;
 
 export default Timer;

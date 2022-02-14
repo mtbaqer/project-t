@@ -19,7 +19,7 @@ export default function useTimer() {
 
   useEffect(() => {
     if (roomStatus === "playing") {
-      intervalRef.current = window.setInterval(() => setTimeLeft(turnEndTime - Date.now()), 1000);
+      intervalRef.current = window.setInterval(() => setTimeLeft(turnEndTime - Date.now()), 10);
     } else {
       window.clearInterval(intervalRef.current);
     }
