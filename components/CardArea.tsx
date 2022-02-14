@@ -38,21 +38,24 @@ const CardArea: FunctionComponent<Props> = ({ onCorrect, onTaboo, onStartTurn })
   return (
     <Container>
       {status === "waiting" ? (
-        <ButtonsContainer>
-          <Button onClick={onStartTurn}>Start</Button>
-        </ButtonsContainer>
+        <Button onClick={onStartTurn}>
+          <Image src="/images/play.svg" alt="play button" width={23} height={29} />
+          <Strong>START</Strong>
+        </Button>
       ) : status === "paused" ? (
-        <p>game is paused</p>
+        <Div>
+          <Strong>PAUSED</Strong>
+        </Div>
       ) : canSeeCard ? (
         <SubContainer>
           <Card />
           <ButtonsContainer>
-            <Button onClick={onCorrect}>
+            <MiniButton onClick={onCorrect}>
               <Image src="/images/correct.svg" alt="correct" width={33} height={37} />
-            </Button>
-            <Button onClick={onTaboo}>
+            </MiniButton>
+            <MiniButton onClick={onTaboo}>
               <Image src="/images/wrong.svg" alt="wrong" width={33} height={37} />
-            </Button>
+            </MiniButton>
           </ButtonsContainer>
         </SubContainer>
       ) : null}
@@ -83,6 +86,34 @@ const ButtonsContainer = styled.div`
 `;
 
 const Button = styled.button`
+  background-color: rgb(255, 255, 255);
+  border-color: rgb(48, 26, 107);
+  color: rgb(48, 26, 107);
+  display: flex;
+  align-items: center;
+  border-radius: 7px;
+  box-shadow: rgb(48, 26, 107) 0px 6px 0px 0px;
+  width: 220px;
+  height: 50px;
+  padding: 0 10px;
+  transform: scale(1.2);
+
+  &:hover {
+    background-color: rgb(203, 181, 233);
+  }
+  &:active {
+    margin-bottom: -8px;
+    box-shadow: rgb(48, 26, 107) 0px 2px 0px 0px;
+  }
+`;
+
+const Strong = styled.strong`
+  font-size: 19px;
+  flex: 1;
+  font-weight: 800;
+`;
+
+const MiniButton = styled.button`
   margin-top: 20px;
   background-color: rgb(255, 255, 255);
   border-radius: 7px;
@@ -90,6 +121,21 @@ const Button = styled.button`
   align-items: center;
   padding: 5px;
   box-shadow: rgb(48, 26, 107) 0px 6px 0px 0px;
+`;
+
+const Div = styled.div`
+  background-color: rgb(255, 255, 255);
+  border-color: rgb(48, 26, 107);
+  color: rgb(48, 26, 107);
+  display: flex;
+  align-items: center;
+  text-align: center;
+  border-radius: 7px;
+  box-shadow: rgb(48, 26, 107) 0px 6px 0px 0px;
+  width: 220px;
+  height: 50px;
+  padding: 0 10px;
+  transform: scale(1.2);
 `;
 
 export default CardArea;

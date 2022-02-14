@@ -3,6 +3,7 @@ import React, { FunctionComponent, useState } from "react";
 import styled from "styled-components";
 import { timeLeftAtom } from "../atoms/timeLeft";
 import useTimer from "../hooks/useTimer";
+import Image from "next/image";
 
 interface Props {
   isPlaying: boolean;
@@ -30,7 +31,13 @@ const Timer: FunctionComponent<Props> = ({ isPlaying, onPause, onResume }) => {
   return (
     <TimerContainer>
       <Text>{formatTimeLeft()}</Text>
-      <Button onClick={isPlaying ? onPause : onResume}>{isPlaying ? "||" : "|>"}</Button>
+      <Button onClick={isPlaying ? onPause : onResume}>
+        {isPlaying ? (
+          <Image src="/images/pause.svg" alt="pause" width={30} height={30} />
+        ) : (
+          <Image src="/images/play.svg" alt="play" width={30} height={30} />
+        )}
+      </Button>
     </TimerContainer>
   );
 };
@@ -42,11 +49,14 @@ const TimerContainer = styled.div`
 const Text = styled.p``;
 
 const Button = styled.button`
-  border: 1px solid black;
-  border-radius: 30px;
-  width: 30px;
-  height: 30px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 7px;
   margin-left: 10px;
+  background-color: rgb(255, 255, 255);
+  box-shadow: rgb(48, 26, 107) 0px 6px 0px 0px;
+  padding: 10px;
 `;
 
 export default Timer;
