@@ -15,7 +15,10 @@ const Team: FunctionComponent<Props> = ({ team, teamIndex = 0, currentTeamIndex 
   return (
     <div>
       <Container currentlyPlaying={currentlyPlaying}>
-        <Title>TEAM {teamIndex + 1}</Title>
+        <Title>
+          TEAM {teamIndex + 1}
+          <Score>{team?.score}</Score>
+        </Title>
         <Members>
           {team?.members &&
             Object.values(team?.members).map((member) => (
@@ -49,6 +52,8 @@ const Container = styled.div<{ currentlyPlaying: boolean }>`
         `
       : ""}
 `;
+
+const Score = styled.span``;
 
 const Title = styled.h3`
   color: rgb(92, 255, 182);
