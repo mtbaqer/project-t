@@ -10,7 +10,7 @@ import Timer from "./Timer";
 interface Props {}
 
 const Board: FunctionComponent<Props> = ({}) => {
-  const { onStartTurn, onPause, onResume, onCorrect, onTaboo } = useRoomActions();
+  const { onStartTurn, onPause, onResume, onCorrect, onTaboo, onEndTurn } = useRoomActions();
   const room = useAtomValue(roomAtom);
   return (
     <>
@@ -20,7 +20,7 @@ const Board: FunctionComponent<Props> = ({}) => {
       <ContentContainer>
         <Team teamIndex={0} team={room.teams[0]} currentTeamIndex={room.currentTeamIndex} />
         <MainContainer>
-          <CardArea onCorrect={onCorrect} onTaboo={onTaboo} onStartTurn={onStartTurn} />
+          <CardArea onCorrect={onCorrect} onTaboo={onTaboo} onStartTurn={onStartTurn} onEndTurn={onEndTurn} />
         </MainContainer>
         <Team teamIndex={1} team={room.teams[1]} currentTeamIndex={room.currentTeamIndex} />
       </ContentContainer>

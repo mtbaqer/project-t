@@ -10,9 +10,10 @@ interface Props {
   onCorrect: () => void;
   onTaboo: () => void;
   onStartTurn: () => void;
+  onEndTurn: () => void;
 }
 
-const CardArea: FunctionComponent<Props> = ({ onCorrect, onTaboo, onStartTurn }) => {
+const CardArea: FunctionComponent<Props> = ({ onCorrect, onTaboo, onStartTurn, onEndTurn }) => {
   const userId = useAtomValue(userIdAtom);
   const room = useAtomValue(roomAtom);
 
@@ -43,9 +44,18 @@ const CardArea: FunctionComponent<Props> = ({ onCorrect, onTaboo, onStartTurn })
           <Strong>START</Strong>
         </Button>
       ) : status === "paused" ? (
-        <Div>
-          <Strong>PAUSED</Strong>
-        </Div>
+        <>
+          <Div>
+            <Strong>PAUSED</Strong>
+          </Div>
+          <br />
+          {/* don't know if there is a better way^ */}
+          <Div>
+            <Button onClick={onEndTurn}>
+              <Strong>END TURN</Strong>
+            </Button>
+          </Div>
+        </>
       ) : canSeeCard ? (
         <SubContainer>
           <Card />

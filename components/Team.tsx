@@ -11,12 +11,21 @@ interface Props {
 }
 
 const Team: FunctionComponent<Props> = ({ team, teamIndex = 0, currentTeamIndex }) => {
+  const currentlyPlaying = teamIndex === currentTeamIndex;
   return (
     <div>
-      <Container currentlyPlaying={teamIndex === currentTeamIndex}>
+      <Container currentlyPlaying={currentlyPlaying}>
         <Title>TEAM {teamIndex + 1}</Title>
         <Members>
-          {team?.members && Object.values(team?.members).map((member) => <Player key={member.id} user={member} />)}
+          {team?.members &&
+            Object.values(team?.members).map((member) => (
+              <Player
+                key={member.id}
+                user={member}
+                hinterId={currentlyPlaying ? team?.members?.[team.currentUserTimestamp]?.id : "0"}
+                // not the cleanest^..
+              />
+            ))}
         </Members>
       </Container>
     </div>

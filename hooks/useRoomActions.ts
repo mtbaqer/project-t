@@ -91,5 +91,15 @@ export default function useRoomActions() {
     });
   }
 
-  return { onStartTurn, onCorrect, onTaboo, onPause, onResume };
+  function onEndTurn(){
+    runTransaction(roomRef, (room: Room) => {
+      const newRoom: Room = {
+        ...room,
+        status: "waiting",
+      };
+      return newRoom;
+    });
+  }
+
+  return { onStartTurn, onCorrect, onTaboo, onPause, onResume, onEndTurn };
 }

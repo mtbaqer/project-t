@@ -1,15 +1,16 @@
 import React, { FunctionComponent } from "react";
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 import { User } from "../types/types";
 import Image from "next/image";
 
 interface Props {
   user: User;
+  hinterId: string;
 }
 
-const Player: FunctionComponent<Props> = ({ user }) => {
+const Player: FunctionComponent<Props> = ({ user, hinterId }) => {
   return (
-    <Container>
+    <Container isHinter={hinterId === user.id}>
       <AvatarContainer>
         <Image alt="avatar image" src={"/images/avatar_placeholder.png"} width={49} height={56} />
       </AvatarContainer>
@@ -18,7 +19,7 @@ const Player: FunctionComponent<Props> = ({ user }) => {
   );
 };
 
-const Container = styled.div`
+const Container = styled.div<{ isHinter: boolean }>`
   margin: 5px 10px;
   background-color: rgba(255, 255, 255, 0.7);
   display: flex;
@@ -28,6 +29,12 @@ const Container = styled.div`
   border-top-left-radius: 100px;
   border-bottom-right-radius: 25px;
   border-top-right-radius: 25px;
+  ${({ isHinter }) =>
+    isHinter
+      ? css`
+          border: 5px solid black;
+        `
+      : ""}
 `;
 
 const AvatarContainer = styled.div`
