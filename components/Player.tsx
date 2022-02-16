@@ -5,12 +5,12 @@ import Image from "next/image";
 
 interface Props {
   user: User;
-  hinterId: string;
+  isHinter: boolean;
 }
 
-const Player: FunctionComponent<Props> = ({ user, hinterId }) => {
+const Player: FunctionComponent<Props> = ({ user, isHinter }) => {
   return (
-    <Container isHinter={hinterId === user.id}>
+    <Container isHinter={isHinter}>
       <AvatarContainer>
         <Image alt="avatar image" src={"/images/avatar_placeholder.png"} width={49} height={56} />
       </AvatarContainer>
@@ -32,7 +32,7 @@ const Container = styled.div<{ isHinter: boolean }>`
   ${({ isHinter }) =>
     isHinter
       ? css`
-          border: 5px solid black;
+          border: 3px solid rgb(67 216 162);
         `
       : ""}
 `;

@@ -17,7 +17,7 @@ const Team: FunctionComponent<Props> = ({ team, teamIndex = 0, currentTeamIndex 
       <Container currentlyPlaying={currentlyPlaying}>
         <Title>
           TEAM {teamIndex + 1}
-          <Score>{team?.score}</Score>
+          <Score leftAlign={teamIndex % 2 == 1}>{team?.score}</Score>
         </Title>
         <Members>
           {team?.members &&
@@ -25,7 +25,7 @@ const Team: FunctionComponent<Props> = ({ team, teamIndex = 0, currentTeamIndex 
               <Player
                 key={member.id}
                 user={member}
-                hinterId={currentlyPlaying ? team?.members?.[team.currentUserTimestamp]?.id : "0"}
+                isHinter={currentlyPlaying && member.id === team?.members?.[team.currentUserTimestamp]?.id}
                 // not the cleanest^..
               />
             ))}
@@ -44,16 +44,15 @@ const Container = styled.div<{ currentlyPlaying: boolean }>`
   width: 356px;
   margin: 0 18px;
   padding: 13px 0;
+  position: relative;
 
   ${({ currentlyPlaying }) =>
     currentlyPlaying
       ? css`
-          border: 1px solid yellow;
+          border: 4px solid rgb(67 216 162);
         `
       : ""}
 `;
-
-const Score = styled.span``;
 
 const Title = styled.h3`
   color: rgb(92, 255, 182);
@@ -71,6 +70,18 @@ const Title = styled.h3`
     rgb(23, 5, 87) -0.137119px -2.99686px 0px, rgb(23, 5, 87) 0.850987px -2.87677px 0px,
     rgb(23, 5, 87) 1.74541px -2.43999px 0px, rgb(23, 5, 87) 2.44769px -1.73459px 0px,
     rgb(23, 5, 87) 2.88051px -0.838247px 0px;
+`;
+
+const Score = styled.span<{ leftAlign: boolean }>`
+  position: absolute;
+  ${({ leftAlign }) =>
+    leftAlign
+      ? css`
+          left: 20px;
+        `
+      : css`
+          right: 20px;
+        `}
 `;
 
 const Members = styled.div`
