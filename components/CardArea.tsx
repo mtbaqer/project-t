@@ -44,18 +44,14 @@ const CardArea: FunctionComponent<Props> = ({ onCorrect, onTaboo, onStartTurn, o
           <Strong>START</Strong>
         </Button>
       ) : status === "paused" ? (
-        <>
+        <PauseContainer>
           <Div>
             <Strong>PAUSED</Strong>
           </Div>
-          <br />
-          {/* don't know if there is a better way^ */}
-          <Div>
-            <Button onClick={onEndTurn}>
-              <Strong>END TURN</Strong>
-            </Button>
-          </Div>
-        </>
+          <Button onClick={onEndTurn}>
+            <Strong>END TURN</Strong>
+          </Button>
+        </PauseContainer>
       ) : canSeeCard ? (
         <SubContainer>
           <Card />
@@ -77,22 +73,6 @@ const Container = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: center;
-`;
-
-const SubContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-  position: relative;
-`;
-
-const ButtonsContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-end;
-  position: absolute;
-  right: -60px;
-  bottom: 0px;
-  margin-bottom: 10px;
 `;
 
 const Button = styled.button`
@@ -123,16 +103,6 @@ const Strong = styled.strong`
   font-weight: 800;
 `;
 
-const MiniButton = styled.button`
-  margin-top: 20px;
-  background-color: rgb(255, 255, 255);
-  border-radius: 7px;
-  display: flex;
-  align-items: center;
-  padding: 5px;
-  box-shadow: rgb(48, 26, 107) 0px 6px 0px 0px;
-`;
-
 const Div = styled.div`
   background-color: rgb(255, 255, 255);
   border-color: rgb(48, 26, 107);
@@ -142,10 +112,43 @@ const Div = styled.div`
   text-align: center;
   border-radius: 7px;
   box-shadow: rgb(48, 26, 107) 0px 6px 0px 0px;
-  width: 220px;
+  width: 175px;
   height: 50px;
   padding: 0 10px;
   transform: scale(1.2);
+  margin-bottom: 25px;
+`;
+
+const PauseContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+`;
+
+const SubContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  position: relative;
+`;
+
+const ButtonsContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  position: absolute;
+  right: -60px;
+  bottom: 0px;
+  margin-bottom: 10px;
+`;
+
+const MiniButton = styled.button`
+  margin-top: 20px;
+  background-color: rgb(255, 255, 255);
+  border-radius: 7px;
+  display: flex;
+  align-items: center;
+  padding: 5px;
+  box-shadow: rgb(48, 26, 107) 0px 6px 0px 0px;
 `;
 
 export default CardArea;
