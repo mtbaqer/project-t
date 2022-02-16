@@ -1,24 +1,23 @@
 import { useAtomValue } from "jotai/utils";
-import React, { FunctionComponent, useState } from "react";
+import React, { FunctionComponent } from "react";
 import styled from "styled-components";
 import { timeLeftAtom } from "../atoms/timeLeft";
-import useTimer from "../hooks/useTimer";
-import Image from "next/image";
+import { roomAtom } from "../atoms/room";
 
 interface Props {
-  isPlaying: boolean;
   onPause: () => void;
   onResume: () => void;
 }
 
-const Timer: FunctionComponent<Props> = ({ isPlaying, onPause, onResume }) => {
+const Timer: FunctionComponent<Props> = ({ onPause, onResume }) => {
+  const room = useAtomValue(roomAtom);
   const timeLeft = useAtomValue(timeLeftAtom);
   let radius = 15;
   let circumference = 2 * radius * Math.PI;
   let progress = (60000 - timeLeft) / 60000;
 
-  return (
-    <Button onClick={isPlaying ? onPause : onResume}>
+  return room.status != "waiting" ? (
+    <Button onClick={room.status == "playing" ? onPause : onResume}>
       <TimerContainer>
         <Svg>
           <circle
@@ -34,22 +33,22 @@ const Timer: FunctionComponent<Props> = ({ isPlaying, onPause, onResume }) => {
         </Svg>
       </TimerContainer>
     </Button>
-  );
+  ) : null;
 };
+
+const Button = styled.button`
+  position: absolute;
+  top: 18px;
+  transition: opacity 0.15s;
+  &:hover {
+    opacity: 0.5;
+  }
+`;
 
 const TimerContainer = styled.div`
   display: flex;
   border-radius: 100px;
   border: 6px solid white;
-  margin-top: 18px;
-  margin-bottom: -18px;
-`;
-
-const Button = styled.button`
-  transition: opacity 0.15s;
-  &:hover {
-    opacity: 0.5;
-  }
 `;
 
 const Svg = styled.svg`

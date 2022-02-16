@@ -15,7 +15,7 @@ const Board: FunctionComponent<Props> = ({}) => {
   return (
     <>
       <HUD>
-        <Timer isPlaying={room.status == "playing"} onPause={onPause} onResume={onResume} />
+        <Timer onPause={onPause} onResume={onResume} />
       </HUD>
       <ContentContainer>
         <Team teamIndex={0} team={room.teams[0]} currentTeamIndex={room.currentTeamIndex} />
@@ -31,12 +31,14 @@ const Board: FunctionComponent<Props> = ({}) => {
 const HUD = styled.div`
   display: flex;
   justify-content: center;
+  position: relative;
 `;
 
 const ContentContainer = styled.div`
   display: flex;
   justify-content: space-between;
   flex-grow: 1;
+  padding-top: 5%;
 `;
 
 const MainContainer = styled.div`
