@@ -2,7 +2,7 @@ import { child, getDatabase, increment, ref, runTransaction, update } from "fire
 import { useAtomValue } from "jotai/utils";
 import { useRouter } from "next/router";
 import { roomAtom } from "../atoms/room";
-import { Room, Team } from "../types/types";
+import { Card, Room, Team } from "../types/types";
 import fetchCards from "../utils/fetchCards";
 
 const database = getDatabase();
@@ -91,7 +91,7 @@ export default function useRoomActions() {
     });
   }
 
-  function onEndTurn(){
+  function onEndTurn() {
     runTransaction(roomRef, (room: Room) => {
       const newRoom: Room = {
         ...room,
@@ -101,5 +101,18 @@ export default function useRoomActions() {
     });
   }
 
-  return { onStartTurn, onCorrect, onTaboo, onPause, onResume, onEndTurn };
+  function onFlipCard() {
+    const currentCardRef = child(roomRef, `deck/${room.currentCardIndex}`);
+    runTransaction(currentCardRef, (card: Card) => ({ ...card, orientation: increment(2) }));
+  }
+
+  function onRotateCard() {
+    const currentCardRef = child(roomRef, `deck/${room.currentCardIndex}`);
+    runTransaction(currentCardRef, (card: Card) => ({
+      ...card,
+      orientation: increment(card.orientation % 2 == 0 ? 1 : -1),
+    }));
+  }
+
+  return { onStartTurn, onCorrect, onTaboo, onPause, onResume, onEndTurn, onFlipCard, onRotateCard };
 }

@@ -56,12 +56,14 @@ const CardArea: FunctionComponent<Props> = ({ onCorrect, onTaboo, onStartTurn, o
         <SubContainer>
           <Card />
           <ButtonsContainer>
-            <MiniButton onClick={onCorrect}>
-              <Image src="/images/correct.svg" alt="correct" width={33} height={37} />
-            </MiniButton>
-            <MiniButton onClick={onTaboo}>
-              <Image src="/images/wrong.svg" alt="wrong" width={33} height={37} />
-            </MiniButton>
+            <Button onClick={onTaboo}>
+              <Image src="/images/wrong.svg" alt="play button" width={23} height={29} />
+              <Strong>TABOO</Strong>
+            </Button>
+            <Button onClick={onCorrect}>
+              <Image src="/images/correct.svg" alt="play button" width={23} height={29} />
+              <Strong>CORRECT</Strong>
+            </Button>
           </ButtonsContainer>
         </SubContainer>
       ) : null}
@@ -87,6 +89,7 @@ const Button = styled.button`
   height: 50px;
   padding: 0 10px;
   transform: scale(1.2);
+  margin: 0 50px;
 
   &:hover {
     background-color: rgb(203, 181, 233);
@@ -128,27 +131,13 @@ const PauseContainer = styled.div`
 const SubContainer = styled.div`
   display: flex;
   flex-direction: column;
-  position: relative;
+  align-items: center;
 `;
 
 const ButtonsContainer = styled.div`
   display: flex;
-  flex-direction: column;
-  justify-content: flex-end;
-  position: absolute;
-  right: -60px;
-  bottom: 0px;
-  margin-bottom: 10px;
-`;
-
-const MiniButton = styled.button`
-  margin-top: 20px;
-  background-color: rgb(255, 255, 255);
-  border-radius: 7px;
-  display: flex;
-  align-items: center;
-  padding: 5px;
-  box-shadow: rgb(48, 26, 107) 0px 6px 0px 0px;
+  justify-content: space-between;
+  margin-top: 50px;
 `;
 
 export default CardArea;

@@ -11,10 +11,20 @@ export interface User {
 }
 
 export interface Card {
+  orientation: Orientation;
+  words: Word[];
+}
+
+export enum Orientation {
+  FrontTop,
+  FrontBottom,
+  BackTop,
+  BackBottom,
+}
+
+export interface Word {
   targetWord: string;
   tabooWords: string[];
-  orientation: "up" | "down";
-  side: "front" | "back";
 }
 
 export interface Room {
