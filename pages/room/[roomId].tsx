@@ -8,11 +8,18 @@ import useRoom from "../../hooks/useRoom";
 import { userAtom } from "../../atoms/user";
 import Board from "../../components/Board";
 import UserPrompt from "../../components/UserPrompt";
+import { useHotkeys } from "react-hotkeys-hook";
+import useSound from "../../hooks/useSound";
+
+const SqueakpeaPath = "/sounds/Squeakpea.mp3";
 
 const RoomPage: NextPage = () => {
   useRoom();
   const room = useAtomValue(roomAtom);
   const user = useAtomValue(userAtom);
+
+  const { play } = useSound(SqueakpeaPath);
+  useHotkeys("Space", play);
 
   return (
     <Container>
