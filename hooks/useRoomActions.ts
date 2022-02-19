@@ -1,11 +1,13 @@
 import { child, getDatabase, increment, ref, runTransaction, update } from "firebase/database";
+import { doc, getFirestore, setDoc } from "firebase/firestore";
 import { useAtomValue } from "jotai/utils";
 import { useRouter } from "next/router";
 import { roomAtom } from "../atoms/room";
-import { Card, Room, Team } from "../types/types";
+import { Card, Room, Team, Word } from "../types/types";
 import fetchCards from "../utils/fetchCards";
 
 const database = getDatabase();
+const firestore = getFirestore();
 
 export default function useRoomActions() {
   const room = useAtomValue(roomAtom);
@@ -103,7 +105,10 @@ export default function useRoomActions() {
 
   function onFlipCard() {
     const currentCardRef = child(roomRef, `deck/${room.currentCardIndex}`);
-    runTransaction(currentCardRef, (card: Card) => ({ ...card, orientation: increment(2) }));
+    runTransaction(currentCardRef, (card: Card) => ({
+      ...card,
+      orientation: increment(card.orientation >= 2 ? -2 : 2),
+    }));
   }
 
   function onRotateCard() {
@@ -114,5 +119,13 @@ export default function useRoomActions() {
     }));
   }
 
-  return { onStartTurn, onCorrect, onTaboo, onPause, onResume, onEndTurn, onFlipCard, onRotateCard };
+  function onFlagCard() {
+    const currentCard = room.deck?.[room.currentCardIndex];
+    const currentWord = currentCard.words[currentCard.orientation];
+    const currentWordRef = doc(firestore, `words/${currentWord.id}`);
+    const newWord: Word = { ...currentWord, needsChange: true };
+    setDoc(currentWordRef, newWord);
+  }
+
+  return { onStartTurn, onCorrect, onTaboo, onPause, onResume, onEndTurn, onFlipCard, onRotateCard, onFlagCard };
 }

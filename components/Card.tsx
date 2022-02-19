@@ -10,7 +10,7 @@ interface Props {}
 
 const Card: FunctionComponent<Props> = ({}) => {
   const room = useAtomValue(roomAtom);
-  const { onFlipCard, onRotateCard } = useRoomActions();
+  const { onFlipCard, onRotateCard, onFlagCard } = useRoomActions();
 
   const card = room.deck?.[room.currentCardIndex];
 
@@ -34,11 +34,16 @@ const Card: FunctionComponent<Props> = ({}) => {
         </FlippationContainer>
       </RotationContainer>
       <ButtonsContainer>
+        <MiniButton onClick={onFlagCard}>
+          <Image src="/images/flag.svg" alt="flag" width={39.6} height={44.4} />
+        </MiniButton>
+      </ButtonsContainer>
+      <ButtonsContainer bottom>
         <MiniButton onClick={onFlipCard}>
-          <Image src="/images/flip.svg" alt="flip" width={33} height={37} />
+          <Image src="/images/flip.svg" alt="flip" width={39.6} height={44.4} />
         </MiniButton>
         <MiniButton onClick={onRotateCard}>
-          <Image src="/images/rotate.svg" alt="rotate" width={33} height={37} />
+          <Image src="/images/rotate.svg" alt="rotate" width={39.6} height={44.4} />
         </MiniButton>
       </ButtonsContainer>
     </Container>
@@ -102,24 +107,27 @@ const Side = styled.div<{ flipped?: boolean }>`
       : ""}
 `;
 
-const ButtonsContainer = styled.div`
+const ButtonsContainer = styled.div<{ bottom?: boolean }>`
   position: absolute;
   display: flex;
   flex-direction: column;
   justify-content: flex-end;
-  right: -60px;
-  bottom: 0px;
-  margin-bottom: 10px;
+  right: -55px;
+  margin: 5px 0;
+  ${({ bottom }) =>
+    bottom
+      ? css`
+          bottom: 0;
+        `
+      : css`
+          top: 0;
+        `}
 `;
 
 const MiniButton = styled.button`
-  margin-top: 20px;
-  background-color: rgb(255, 255, 255);
-  border-radius: 7px;
+  margin: 5px 0;
   display: flex;
   align-items: center;
-  padding: 5px;
-  box-shadow: rgb(48, 26, 107) 0px 6px 0px 0px;
 `;
 
 export default Card;

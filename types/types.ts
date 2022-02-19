@@ -23,8 +23,11 @@ export enum Orientation {
 }
 
 export interface Word {
+  id: string;
   targetWord: string;
   tabooWords: string[];
+  index: number;
+  needsChange: boolean;
 }
 
 export interface Room {
