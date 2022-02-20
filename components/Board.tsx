@@ -18,11 +18,11 @@ const Board: FunctionComponent<Props> = ({}) => {
         <Timer onPause={onPause} onResume={onResume} />
       </HUD>
       <ContentContainer>
-        <Team teamIndex={0} team={room.teams[0]} currentTeamIndex={room.currentTeamIndex} />
+        <TeamsContainer>{room.teams.map((_team, i) => i % 2 === 0 && <Team key={i} teamIndex={i} />)}</TeamsContainer>
         <MainContainer>
           <CardArea onCorrect={onCorrect} onTaboo={onTaboo} onStartTurn={onStartTurn} onEndTurn={onEndTurn} />
         </MainContainer>
-        <Team teamIndex={1} team={room.teams[1]} currentTeamIndex={room.currentTeamIndex} />
+        <TeamsContainer>{room.teams.map((_team, i) => i % 2 !== 0 && <Team key={i} teamIndex={i} />)}</TeamsContainer>
       </ContentContainer>
     </>
   );
@@ -38,7 +38,13 @@ const ContentContainer = styled.div`
   display: flex;
   justify-content: space-between;
   flex-grow: 1;
-  padding-top: 5%;
+`;
+
+const TeamsContainer = styled.div`
+  padding: 5% 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
 `;
 
 const MainContainer = styled.div`

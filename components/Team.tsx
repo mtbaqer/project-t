@@ -1,17 +1,23 @@
-import React, { FunctionComponent, useEffect, useState } from "react";
+import { selectAtom, useAtomValue } from "jotai/utils";
+import React, { FunctionComponent } from "react";
 import styled, { css } from "styled-components";
-import tw from "twin.macro";
-import { Team as TeamType } from "../types/types";
+import { roomAtom } from "../atoms/room";
 import Player from "./Player";
 
+const teamsAtom = selectAtom(roomAtom, (room) => room.teams);
+const currentTeamIndexAtom = selectAtom(roomAtom, (room) => room.currentTeamIndex);
+
 interface Props {
-  team?: TeamType;
   teamIndex?: number;
-  currentTeamIndex?: number;
 }
 
-const Team: FunctionComponent<Props> = ({ team, teamIndex = 0, currentTeamIndex }) => {
-  const currentlyPlaying = teamIndex === currentTeamIndex;
+const Team: FunctionComponent<Props> = ({ teamIndex = 0 }) => {
+  const teams = useAtomValue(teamsAtom);
+  const currentTeamIndex = useAtomValue(currentTeamIndexAtom);
+
+  const team = teams[teamIndex];
+  const currentlyPlaying = currentTeamIndex === teamIndex;
+
   return (
     <div>
       <Container currentlyPlaying={currentlyPlaying}>
