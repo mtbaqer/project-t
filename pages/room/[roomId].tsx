@@ -10,6 +10,7 @@ import Board from "../../components/Board";
 import UserPrompt from "../../components/UserPrompt";
 import { useHotkeys } from "react-hotkeys-hook";
 import useSound from "../../hooks/useSound";
+import Lobby from "../../components/Lobby";
 
 const SqueakpeaPath = "/sounds/Squeakpea.mp3";
 
@@ -29,7 +30,7 @@ const RoomPage: NextPage = () => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      {!user ? <UserPrompt /> : room.status !== "loading" ? <Board /> : null}
+      {!user ? <UserPrompt /> : room.status === "loading" ? <Lobby /> : <Board />}
     </Container>
   );
 };

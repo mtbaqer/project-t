@@ -37,7 +37,6 @@ const Team: FunctionComponent<Props> = ({ teamIndex = 0 }) => {
                     timestamp={timestamp}
                     user={member}
                     isHinter={currentlyPlaying && member.id === team?.members?.[team.currentUserTimestamp]?.id}
-                    // not the cleanest^..
                   />
                 ))}
               {provided.placeholder}

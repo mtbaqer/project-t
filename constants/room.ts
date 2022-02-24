@@ -5,8 +5,6 @@ export const DefaultRoom: Room = {
   teams: [
     { members: {}, score: 0, currentUserTimestamp: 0 },
     { members: {}, score: 0, currentUserTimestamp: 0 },
-    { members: {}, score: 0, currentUserTimestamp: 0 },
-    { members: {}, score: 0, currentUserTimestamp: 0 },
   ],
   spectators: [],
   deck: [],

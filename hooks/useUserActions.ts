@@ -38,8 +38,8 @@ export default function useUserActions() {
 
   async function addToHostQueue() {
     if (isFirstPlayerToJoin()) {
-      const status: RoomStatus = "waiting";
-      update(roomRef, { status });
+      // const status: RoomStatus = "loadin";
+      // update(roomRef, { status });
     }
     const myHostQueueRef = child(roomRef, `hostQueue/${Date.now()}`);
     await set(myHostQueueRef, userId);
