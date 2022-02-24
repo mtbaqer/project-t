@@ -3,7 +3,7 @@ import { doc, getFirestore, setDoc } from "firebase/firestore";
 import { useAtomValue } from "jotai/utils";
 import { useRouter } from "next/router";
 import { roomAtom } from "../atoms/room";
-import { Card, Room, Team, Word } from "../types/types";
+import { Card, Room, Team, User, Word } from "../types/types";
 import fetchCards from "../utils/fetchCards";
 
 const database = getDatabase();
@@ -127,5 +127,31 @@ export default function useRoomActions() {
     setDoc(currentWordRef, newWord);
   }
 
-  return { onStartTurn, onCorrect, onTaboo, onPause, onResume, onEndTurn, onFlipCard, onRotateCard, onFlagCard };
+  function onPlayerTeamChange(sourceTeamIndex: number, destinationTeamIndex: number, memberTimestamp: string) {
+    runTransaction(teamsRef, (teams: Team[]) => {
+      const sourceTeam = teams[sourceTeamIndex];
+      const destinationTeam = teams[destinationTeamIndex];
+
+      const member = sourceTeam.members[memberTimestamp];
+      delete sourceTeam.members[memberTimestamp];
+
+      destinationTeam.members = destinationTeam.members ?? {};
+      destinationTeam.members[Date.now()] = member;
+
+      return teams;
+    });
+  }
+
+  return {
+    onStartTurn,
+    onCorrect,
+    onTaboo,
+    onPause,
+    onResume,
+    onEndTurn,
+    onFlipCard,
+    onRotateCard,
+    onFlagCard,
+    onPlayerTeamChange,
+  };
 }

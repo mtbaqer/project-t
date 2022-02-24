@@ -6,14 +6,20 @@ import useRoomActions from "../hooks/useRoomActions";
 import CardArea from "./CardArea";
 import Team from "./Team";
 import Timer from "./Timer";
+import { DragDropContext, DropResult } from "react-beautiful-dnd";
 
 interface Props {}
 
 const Board: FunctionComponent<Props> = ({}) => {
-  const { onStartTurn, onPause, onResume, onCorrect, onTaboo, onEndTurn } = useRoomActions();
+  const { onStartTurn, onPause, onResume, onCorrect, onTaboo, onEndTurn, onPlayerTeamChange } = useRoomActions();
   const room = useAtomValue(roomAtom);
+
+  function onDragEnd(result: DropResult) {
+    onPlayerTeamChange(Number(result.source.droppableId), Number(result.destination?.droppableId), result.draggableId);
+  }
+
   return (
-    <>
+    <DragDropContext onDragEnd={onDragEnd}>
       <HUD>
         <Timer onPause={onPause} onResume={onResume} />
       </HUD>
@@ -24,7 +30,7 @@ const Board: FunctionComponent<Props> = ({}) => {
         </MainContainer>
         <TeamsContainer>{room.teams.map((_team, i) => i % 2 !== 0 && <Team key={i} teamIndex={i} />)}</TeamsContainer>
       </ContentContainer>
-    </>
+    </DragDropContext>
   );
 };
 

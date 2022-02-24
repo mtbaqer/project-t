@@ -3,6 +3,7 @@ import React, { FunctionComponent } from "react";
 import styled, { css } from "styled-components";
 import { roomAtom } from "../atoms/room";
 import Player from "./Player";
+import { Droppable } from "react-beautiful-dnd";
 
 const teamsAtom = selectAtom(roomAtom, (room) => room.teams);
 const currentTeamIndexAtom = selectAtom(roomAtom, (room) => room.currentTeamIndex);
@@ -20,23 +21,30 @@ const Team: FunctionComponent<Props> = ({ teamIndex = 0 }) => {
 
   return (
     <div>
-      <Container currentlyPlaying={currentlyPlaying}>
-        <Title>
-          TEAM {teamIndex + 1}
-          <Score leftAlign={teamIndex % 2 == 1}>{team?.score}</Score>
-        </Title>
-        <Members>
-          {team?.members &&
-            Object.values(team?.members).map((member) => (
-              <Player
-                key={member.id}
-                user={member}
-                isHinter={currentlyPlaying && member.id === team?.members?.[team.currentUserTimestamp]?.id}
-                // not the cleanest^..
-              />
-            ))}
-        </Members>
-      </Container>
+      <Droppable droppableId={teamIndex.toString()}>
+        {(provided, snapshot) => (
+          <Container currentlyPlaying={currentlyPlaying} ref={provided.innerRef} {...provided.droppableProps}>
+            <Title>
+              TEAM {teamIndex + 1}
+              <Score leftAlign={teamIndex % 2 == 1}>{team?.score}</Score>
+            </Title>
+            <Members>
+              {team?.members &&
+                Object.entries(team?.members).map(([timestamp, member], index) => (
+                  <Player
+                    index={index}
+                    key={member.id}
+                    timestamp={timestamp}
+                    user={member}
+                    isHinter={currentlyPlaying && member.id === team?.members?.[team.currentUserTimestamp]?.id}
+                    // not the cleanest^..
+                  />
+                ))}
+              {provided.placeholder}
+            </Members>
+          </Container>
+        )}
+      </Droppable>
     </div>
   );
 };

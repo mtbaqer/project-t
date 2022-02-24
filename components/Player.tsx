@@ -2,20 +2,32 @@ import React, { FunctionComponent } from "react";
 import styled, { css } from "styled-components";
 import { User } from "../types/types";
 import Image from "next/image";
+import { Draggable } from "react-beautiful-dnd";
 
 interface Props {
   user: User;
   isHinter: boolean;
+  timestamp: string;
+  index: number;
 }
 
-const Player: FunctionComponent<Props> = ({ user, isHinter }) => {
+const Player: FunctionComponent<Props> = ({ user, isHinter, timestamp, index }) => {
   return (
-    <Container isHinter={isHinter}>
-      <AvatarContainer>
-        <Image alt="avatar image" src={"/images/avatar_placeholder.png"} width={49} height={56} />
-      </AvatarContainer>
-      <Name>{user.name}</Name>
-    </Container>
+    <Draggable draggableId={timestamp} index={index}>
+      {(provided, snapshot) => (
+        <Container
+          isHinter={isHinter}
+          ref={provided.innerRef}
+          {...provided.draggableProps}
+          {...provided.dragHandleProps}
+        >
+          <AvatarContainer>
+            <Image alt="avatar image" src={"/images/avatar_placeholder.png"} width={49} height={56} />
+          </AvatarContainer>
+          <Name>{user.name}</Name>
+        </Container>
+      )}
+    </Draggable>
   );
 };
 
