@@ -56,7 +56,7 @@ const Container = styled.div<{ currentlyPlaying: boolean }>`
   align-items: center;
   border-radius: 10px;
   width: 356px;
-  margin: 0 18px;
+  margin: 5px 18px;
   padding: 13px 0;
   position: relative;
 

@@ -128,6 +128,7 @@ export default function useRoomActions() {
   }
 
   function onPlayerTeamChange(sourceTeamIndex: number, destinationTeamIndex: number, memberTimestamp: string) {
+    if(sourceTeamIndex === destinationTeamIndex) return;
     runTransaction(teamsRef, (teams: Team[]) => {
       const sourceTeam = teams[sourceTeamIndex];
       const destinationTeam = teams[destinationTeamIndex];

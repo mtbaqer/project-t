@@ -36,10 +36,10 @@ export default function useLobbyActions() {
   }
 
   function onPlayerChooseTeam(sourceTeamIndex: number, destinationTeamIndex: number, memberTimestamp: string) {        
+    if(sourceTeamIndex === destinationTeamIndex) return;
     runTransaction(roomRef, (room: Room) => {
-      // think of a cleaner way
       let member = null;
-      console.log(sourceTeamIndex);
+      console.log(destinationTeamIndex);
       if(sourceTeamIndex === -1) {
         member = room.spectators[memberTimestamp];
         delete room.spectators[memberTimestamp];
@@ -49,10 +49,15 @@ export default function useLobbyActions() {
         delete sourceTeam.members[memberTimestamp];
       }
       
-      const destinationTeam = room.teams[destinationTeamIndex];
+      if(destinationTeamIndex === -1){
+        room.spectators = room.spectators ?? {};
+        room.spectators[Date.now()] = member;
+      } else {
+        const destinationTeam = room.teams[destinationTeamIndex];
 
-      destinationTeam.members = destinationTeam.members ?? {};
-      destinationTeam.members[Date.now()] = member;
+        destinationTeam.members = destinationTeam.members ?? {};
+        destinationTeam.members[Date.now()] = member;
+      }
       const newRoom: Room = {
         ...room,
         spectators: room.spectators ?? {},

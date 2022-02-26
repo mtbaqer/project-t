@@ -29,7 +29,7 @@ export default function useUserActions() {
       const teamIndex = getSmallestTeamIndex();
 
       // const memberRef = child(teamsRef, `${teamIndex.toString()}/members/${Date.now()}`);
-      const memberRef = child(spectatorsRef, `${Date.now()}`);
+      const memberRef = child(roomRef, `spectators/${Date.now()}`); //TODO: this overrides db array rather than appends
 
       await update(memberRef, user);
       await onDisconnect(memberRef).remove();
