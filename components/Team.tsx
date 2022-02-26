@@ -10,9 +10,10 @@ const currentTeamIndexAtom = selectAtom(roomAtom, (room) => room.currentTeamInde
 
 interface Props {
   teamIndex?: number;
+  showScore?: boolean;
 }
 
-const Team: FunctionComponent<Props> = ({ teamIndex = 0 }) => {
+const Team: FunctionComponent<Props> = ({ teamIndex = 0, showScore = true }) => {
   const teams = useAtomValue(teamsAtom);
   const currentTeamIndex = useAtomValue(currentTeamIndexAtom);
 
@@ -26,7 +27,7 @@ const Team: FunctionComponent<Props> = ({ teamIndex = 0 }) => {
           <Container currentlyPlaying={currentlyPlaying} ref={provided.innerRef} {...provided.droppableProps}>
             <Title>
               TEAM {teamIndex + 1}
-              <Score leftAlign={teamIndex % 2 == 1}>{team?.score}</Score>
+              {showScore && <Score leftAlign={teamIndex % 2 == 1}>{team?.score}</Score>}
             </Title>
             <Members>
               {team?.members &&

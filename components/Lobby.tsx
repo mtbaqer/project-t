@@ -6,54 +6,78 @@ import Player from "./Player";
 import { DragDropContext, DropResult, Droppable } from "react-beautiful-dnd";
 import Image from "next/image";
 import Team from "./Team";
+import useLobbyActions from "../hooks/useLobbyActions";
 
 interface Props {}
 
 const Lobby: FunctionComponent<Props> = ({}) => {
+  const { onPlayerChooseTeam, onAddTeam, onRemoveTeam, onStartGame } = useLobbyActions();
   const room = useAtomValue(roomAtom);
 
-  function onDragEnd(result: DropResult) {}
-
-  const user = { id: "userId", name: "some name", avatarUrl: "" };
+  function onDragEnd(result: DropResult) {
+    onPlayerChooseTeam(Number(result.source.droppableId), Number(result.destination?.droppableId), result.draggableId);
+  }
 
   return (
     <DragDropContext onDragEnd={onDragEnd}>
       {/* need to have draggable (player) inside of droppable, need to also implement hard coded logic*/}
       <ButtonContainer>
-        <Button onClick={undefined}>
+        <Button onClick={onAddTeam}>
           <Image src="/images/correct.svg" alt="play button" width={23} height={29} />
           <Strong>ADD TEAM</Strong>
         </Button>
-        <Button onClick={undefined}>
+        <Button onClick={onRemoveTeam}>
           <Image src="/images/correct.svg" alt="play button" width={23} height={29} />
           <Strong>REMOVE TEAM</Strong>
         </Button>
       </ButtonContainer>
-      <Droppable droppableId="0">
-        {(provided, snapshot) => (
-          <PlayersContainer ref={provided.innerRef} {...provided.droppableProps}>
-            {/* ugly, can fix by adding players array to room instead of adding members to team directly */}
-            {room.teams.map(
-              (team) =>
-                team?.members &&
-                Object.values(team?.members).map((member) => (
-                  <Player user={member} isHinter={false} timestamp={String(Date.now())} index={0} />
-                ))
+      <ContentContainer>
+        <Droppable droppableId="-1">
+          {(provided, snapshot) => (
+            <PlayersContainer ref={provided.innerRef} {...provided.droppableProps}>
+              {room.spectators &&
+                Object.entries(room.spectators).map(([timestamp, member]) => (
+                  <Player key={member.id} user={member} isHinter={false} timestamp={timestamp} index={0} />
+                ))}
+            </PlayersContainer>
+          )}
+        </Droppable>
+
+        <TeamsContainer>
+          {room.teams &&
+            room.teams.map(
+              (_team, i) =>
+                i % 2 === 0 && (
+                  <Droppable droppableId={i.toString()}>
+                    {(provided, snapshot) => (
+                      <div ref={provided.innerRef} {...provided.droppableProps}>
+                        <Team key={i} teamIndex={i} showScore={false} />
+                      </div>
+                    )}
+                  </Droppable>
+                )
             )}
-          </PlayersContainer>
-        )}
-      </Droppable>
-      <Droppable droppableId="1">
-        {(provided, snapshot) => (
-          <TeamsContainer ref={provided.innerRef} {...provided.droppableProps}>
-            {room.teams.map((_team, i) => (
-              <Team key={i} teamIndex={i} />
-            ))}
-          </TeamsContainer>
-        )}
-      </Droppable>
+        </TeamsContainer>
+
+        <TeamsContainer>
+          {room.teams &&
+            room.teams.map(
+              (_team, i) =>
+                i % 2 === 1 && (
+                  <Droppable droppableId={i.toString()}>
+                    {(provided, snapshot) => (
+                      <div ref={provided.innerRef} {...provided.droppableProps}>
+                        <Team key={i} teamIndex={i} showScore={false} />
+                      </div>
+                    )}
+                  </Droppable>
+                )
+            )}
+        </TeamsContainer>
+      </ContentContainer>
+
       <ButtonContainer>
-        <Button onClick={undefined}>
+        <Button onClick={onStartGame}>
           <Image src="/images/play.svg" alt="play button" width={23} height={29} />
           <Strong>START GAME</Strong>
         </Button>
@@ -98,11 +122,17 @@ const Strong = styled.strong`
   font-weight: 800;
 `;
 
+const ContentContainer = styled.div`
+  display: flex;
+  justify-content: space-between;
+`;
+
 const PlayersContainer = styled.div`
   padding: 5% 0;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+  flex-grow: 1;
 `;
 
 const TeamsContainer = styled.div`
@@ -110,6 +140,7 @@ const TeamsContainer = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+  flex-grow: 8;
 `;
 
 export default Lobby;

@@ -18,7 +18,8 @@ export default function useUserActions() {
   const { roomId } = router.query;
 
   const roomRef = ref(database, `rooms/${roomId}`);
-  const teamsRef = child(roomRef, "teams");
+  // const teamsRef = child(roomRef, "teams");
+  const spectatorsRef = child(roomRef, "spectators");
 
   async function addUser(name: string, avatarUrl: string) {
     if (userId) {
@@ -27,7 +28,8 @@ export default function useUserActions() {
 
       const teamIndex = getSmallestTeamIndex();
 
-      const memberRef = child(teamsRef, `${teamIndex.toString()}/members/${Date.now()}`);
+      // const memberRef = child(teamsRef, `${teamIndex.toString()}/members/${Date.now()}`);
+      const memberRef = child(spectatorsRef, `${Date.now()}`);
 
       await update(memberRef, user);
       await onDisconnect(memberRef).remove();
@@ -38,7 +40,7 @@ export default function useUserActions() {
 
   async function addToHostQueue() {
     if (isFirstPlayerToJoin()) {
-      // const status: RoomStatus = "loadin";
+      // const status: RoomStatus = "waiting";
       // update(roomRef, { status });
     }
     const myHostQueueRef = child(roomRef, `hostQueue/${Date.now()}`);

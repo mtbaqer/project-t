@@ -33,7 +33,7 @@ export interface Word {
 export interface Room {
   id: string;
   teams: Team[];
-  spectators: User[];
+  spectators: { [key: string]: User };
   deck: Card[];
   round: number;
   currentCardIndex: number;
