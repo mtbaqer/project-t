@@ -1,13 +1,10 @@
 import { child, getDatabase, increment, ref, runTransaction, update } from "firebase/database";
-import { doc, getFirestore, setDoc } from "firebase/firestore";
 import { useAtomValue } from "jotai/utils";
 import { useRouter } from "next/router";
 import { roomAtom } from "../atoms/room";
-import { Card, Room, RoomStatus, Team, User, Word } from "../types/types";
-import fetchCards from "../utils/fetchCards";
+import { Room, RoomStatus, Team } from "../types/types";
 
 const database = getDatabase();
-const firestore = getFirestore();
 
 export default function useLobbyActions() {
   const room = useAtomValue(roomAtom);
@@ -24,23 +21,12 @@ export default function useLobbyActions() {
     update(roomRef, { currentCardIndex: increment(1) });
   }
 
-  function onPause() {
-    runTransaction(roomRef, (room: Room) => {
-      const newRoom: Room = {
-        ...room,
-        status: "paused",
-        turnTimeLeft: room!.turnEndTime - Date.now(),
-      };
-      return newRoom;
-    });
-  }
-
-  function onPlayerChooseTeam(sourceTeamIndex: number, destinationTeamIndex: number, memberTimestamp: string) {        
-    if(sourceTeamIndex === destinationTeamIndex) return;
+  function onPlayerChooseTeam(sourceTeamIndex: number, destinationTeamIndex: number, memberTimestamp: string) {
+    if (sourceTeamIndex === destinationTeamIndex) return;
     runTransaction(roomRef, (room: Room) => {
       let member = null;
       console.log(destinationTeamIndex);
-      if(sourceTeamIndex === -1) {
+      if (sourceTeamIndex === -1) {
         member = room.spectators[memberTimestamp];
         delete room.spectators[memberTimestamp];
       } else {
@@ -48,8 +34,8 @@ export default function useLobbyActions() {
         member = sourceTeam.members[memberTimestamp];
         delete sourceTeam.members[memberTimestamp];
       }
-      
-      if(destinationTeamIndex === -1){
+
+      if (destinationTeamIndex === -1) {
         room.spectators = room.spectators ?? {};
         room.spectators[Date.now()] = member;
       } else {
@@ -69,20 +55,20 @@ export default function useLobbyActions() {
 
   function onAddTeam() {
     runTransaction(teamsRef, (teams: Team[]) => {
-      if(teams) teams[teams.length] = { members: {}, score: 0, currentUserTimestamp: 0 };
-      else teams = [{ members: {}, score: 0, currentUserTimestamp: 0 }];
+      teams = teams ?? [];
+      teams.push({ members: {}, score: 0, currentUserTimestamp: 0 });
       return teams;
     });
   }
 
   function onRemoveTeam() {
-    runTransaction(teamsRef, (teams: Team[]) => {
-      if(teams) teams.pop();
+    runTransaction(teamsRef, (teams?: Team[]) => {
+      teams?.pop();
       return teams;
     });
   }
 
-  function onStartGame(){
+  function onStartGame() {
     const status: RoomStatus = "waiting";
     update(roomRef, { status });
   }
