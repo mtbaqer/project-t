@@ -1,9 +1,11 @@
 import { selectAtom, useAtomValue } from "jotai/utils";
-import React, { FunctionComponent } from "react";
+import React, { FunctionComponent, useEffect, useMemo, useState } from "react";
 import styled, { css } from "styled-components";
 import { roomAtom } from "../atoms/room";
 import Player from "./Player";
 import { Droppable } from "react-beautiful-dnd";
+import { SortableContext, verticalListSortingStrategy } from "@dnd-kit/sortable";
+import { useDroppable } from "@dnd-kit/core";
 
 const teamsAtom = selectAtom(roomAtom, (room) => room.teams);
 const currentTeamIndexAtom = selectAtom(roomAtom, (room) => room.currentTeamIndex);
@@ -19,37 +21,40 @@ const Team: FunctionComponent<Props> = ({ teamIndex = 0, showScore = true }) => 
 
   const team = teams[teamIndex];
   const currentlyPlaying = currentTeamIndex === teamIndex;
+  const teamIdsArray = useMemo(() => Object.values(team.members).map((member) => member.id), [team.members]);
+
+  const { setNodeRef } = useDroppable({ id: teamIndex.toString() });
 
   return (
-    <Container>
-      <SubContainer currentlyPlaying={currentlyPlaying}>
-        <Title>
-          TEAM {teamIndex + 1}
-          {showScore && <Score leftAlign={teamIndex % 2 == 1}>{team?.score}</Score>}
-        </Title>
-        <Droppable droppableId={teamIndex.toString()}>
-          {(provided, snapshot) => (
-            <Members ref={provided.innerRef} {...provided.droppableProps}>
-              {team?.members &&
-                Object.entries(team?.members).map(([timestamp, member], index) => (
-                  <Player
-                    index={index}
-                    key={member.id}
-                    timestamp={timestamp}
-                    user={member}
-                    isHinter={currentlyPlaying && member.id === team?.members?.[team.currentUserTimestamp]?.id}
-                  />
-                ))}
-              {provided.placeholder}
-            </Members>
-          )}
-        </Droppable>
-      </SubContainer>
-    </Container>
+    <SortableContext items={teamIdsArray} id={teamIndex.toString()} strategy={verticalListSortingStrategy}>
+      <Container>
+        <SubContainer currentlyPlaying={currentlyPlaying}>
+          <Title>
+            TEAM {teamIndex + 1}
+            {showScore && <Score leftAlign={teamIndex % 2 == 1}>{team?.score}</Score>}
+          </Title>
+          <Members ref={setNodeRef}>
+            {team?.members &&
+              Object.entries(team?.members).map(([timestamp, member], index) => (
+                <Player
+                  index={index}
+                  key={member.id}
+                  timestamp={timestamp}
+                  user={member}
+                  isHinter={currentlyPlaying && member.id === team?.members?.[team.currentUserTimestamp]?.id}
+                />
+              ))}
+          </Members>
+        </SubContainer>
+      </Container>
+    </SortableContext>
   );
 };
 
-const Container = styled.div``;
+const Container = styled.div`
+  background-color: red;
+  width: 90vw;
+`;
 
 const SubContainer = styled.div<{ currentlyPlaying: boolean }>`
   background-color: rgba(38, 28, 92, 0.5);
@@ -100,7 +105,7 @@ const Score = styled.span<{ leftAlign: boolean }>`
         `}
 `;
 
-const Members = styled.div`
+const Members = styled.ul`
   margin-top: 15px;
   display: flex;
   flex-direction: column;

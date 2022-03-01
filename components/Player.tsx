@@ -1,8 +1,9 @@
-import React, { FunctionComponent } from "react";
+import React, { FunctionComponent, memo } from "react";
 import styled, { css } from "styled-components";
 import { User } from "../types/types";
 import Image from "next/image";
-import { Draggable } from "react-beautiful-dnd";
+import { useSortable } from "@dnd-kit/sortable";
+import { CSS } from "@dnd-kit/utilities";
 
 interface Props {
   user: User;
@@ -12,22 +13,20 @@ interface Props {
 }
 
 const Player: FunctionComponent<Props> = ({ user, isHinter, timestamp, index }) => {
+  const { attributes, listeners, setNodeRef, transform, transition } = useSortable({ id: user.id });
+
+  const style = {
+    transform: CSS.Transform.toString(transform),
+    transition,
+  };
+
   return (
-    <Draggable draggableId={timestamp} index={index}>
-      {(provided, snapshot) => (
-        <Container
-          isHinter={isHinter}
-          ref={provided.innerRef}
-          {...provided.draggableProps}
-          {...provided.dragHandleProps}
-        >
-          <AvatarContainer>
-            <Image alt="avatar image" src={"/images/avatar_placeholder.png"} width={49} height={56} />
-          </AvatarContainer>
-          <Name>{user.name}</Name>
-        </Container>
-      )}
-    </Draggable>
+    <Container isHinter={isHinter} style={style} ref={setNodeRef} {...attributes} {...listeners}>
+      <AvatarContainer>
+        <Image alt="avatar image" src={"/images/avatar_placeholder.png"} width={49} height={56} />
+      </AvatarContainer>
+      <Name>{user.name}</Name>
+    </Container>
   );
 };
 

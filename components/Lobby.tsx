@@ -1,26 +1,47 @@
 import { useAtomValue } from "jotai/utils";
-import { FunctionComponent } from "react";
+import { FunctionComponent, useState } from "react";
 import styled from "styled-components";
 import { roomAtom } from "../atoms/room";
-import Player from "./Player";
 import { DragDropContext, DropResult, Droppable, Direction } from "react-beautiful-dnd";
 import Image from "next/image";
 import Team from "./Team";
 import useLobbyActions from "../hooks/useLobbyActions";
+import { SortableContext } from "@dnd-kit/sortable";
+import {
+  DndContext,
+  DragEndEvent,
+  MouseSensor,
+  useSensor,
+  useSensors,
+  DragStartEvent,
+  DragOverlay,
+} from "@dnd-kit/core";
+import { useSortable } from "@dnd-kit/sortable";
+import Player from "./Player";
 
 interface Props {}
 
 const Lobby: FunctionComponent<Props> = ({}) => {
   const { onPlayerChooseTeam, onAddTeam, onRemoveTeam, onStartGame } = useLobbyActions();
   const room = useAtomValue(roomAtom);
+  const [activeId, setActiveId] = useState<string | null>(null);
 
-  function onDragEnd(result: DropResult) {
-    onPlayerChooseTeam(Number(result.source.droppableId), Number(result.destination?.droppableId), result.draggableId);
+  function onDragStart(result: DragStartEvent) {
+    setActiveId(result.active.id);
+  }
+
+  function onDragEnd(result: DragEndEvent) {
+    // onPlayerChooseTeam(Number(result.source.droppableId), Number(result.destination?.droppableId), result.draggableId);
+    console.log(result);
+    setActiveId(null);
+  }
+  function onDragOver(result: DragEndEvent) {
+    console.log(result);
   }
 
   return (
-    <DragDropContext onDragEnd={onDragEnd}>
-      <CenterContainer>
+    <DndContext onDragStart={onDragStart} onDragOver={onDragOver} onDragEnd={onDragEnd}>
+      {/* <CenterContainer>
         <CenterSubContainer>
           <ButtonContainer>
             <Button onClick={onAddTeam}>
@@ -37,32 +58,43 @@ const Lobby: FunctionComponent<Props> = ({}) => {
             <Strong>START GAME</Strong>
           </Button>
         </CenterSubContainer>
-      </CenterContainer>
-      <SpectatorsContainer>
+      </CenterContainer> */}
+      {/* <SpectatorsContainer>
         <SpectatorsSubContainer>
           <Title>SPECTATORS</Title>
-          <Droppable droppableId="-1" direction="horizontal">
-            {(provided, snapshot) => (
-              <Spectators ref={provided.innerRef} {...provided.droppableProps}>
-                {room.spectators &&
-                  Object.entries(room.spectators).map(([timestamp, member], index) => (
-                    <Player key={member.id} user={member} isHinter={false} timestamp={timestamp} index={index} />
-                  ))}
-                {/* {provided.placeholder} */}
-              </Spectators>
-            )}
-          </Droppable>
+          <div>
+            <Spectators>
+              {room.spectators &&
+                Object.entries(room.spectators).map(([timestamp, member], index) => (
+                  <Player key={member.id} user={member} isHinter={false} timestamp={timestamp} index={index} />
+                ))}
+            </Spectators>
+          </div>
         </SpectatorsSubContainer>
-      </SpectatorsContainer>
+      </SpectatorsContainer> */}
       <ContentContainer>
         <TeamsContainer>
           {room.teams && room.teams.map((_team, i) => i % 2 === 0 && <Team key={i} teamIndex={i} showScore={false} />)}
         </TeamsContainer>
-        <TeamsContainer>
+        {/* <TeamsContainer>
           {room.teams && room.teams.map((_team, i) => i % 2 === 1 && <Team key={i} teamIndex={i} showScore={false} />)}
-        </TeamsContainer>
+        </TeamsContainer> */}
+        <DragOverlay>
+          {activeId ? (
+            <Player
+              index={0}
+              timestamp={"2"}
+              user={{
+                id: "321",
+                name: "some name 2",
+                avatarUrl: "",
+              }}
+              isHinter={false}
+            />
+          ) : null}
+        </DragOverlay>
       </ContentContainer>
-    </DragDropContext>
+    </DndContext>
   );
 };
 
