@@ -1,6 +1,6 @@
 import { DatabaseReference, getDatabase, onDisconnect, push, ref, set } from "firebase/database";
 import { useRouter } from "next/router";
-import { DefaultRoom } from "../constants/room";
+import { DefaultRoom, TestRoom } from "../constants/room";
 
 export default function useNewRoomActions() {
   const router = useRouter();
@@ -15,7 +15,7 @@ export default function useNewRoomActions() {
     const roomsRef = ref(database, `rooms`);
     const newRoomRef = await push(roomsRef);
     const id = newRoomRef.key;
-    await set(newRoomRef, { ...DefaultRoom, id });
+    await set(newRoomRef, { ...TestRoom, id });
     // need to remove room when everyone leaves the game/when they click end button
     // removeRoom(newRoomRef);
     return id;

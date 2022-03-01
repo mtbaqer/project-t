@@ -21,15 +21,15 @@ const Team: FunctionComponent<Props> = ({ teamIndex = 0, showScore = true }) => 
   const currentlyPlaying = currentTeamIndex === teamIndex;
 
   return (
-    <div>
-      <Droppable droppableId={teamIndex.toString()}>
-        {(provided, snapshot) => (
-          <Container currentlyPlaying={currentlyPlaying} ref={provided.innerRef} {...provided.droppableProps}>
-            <Title>
-              TEAM {teamIndex + 1}
-              {showScore && <Score leftAlign={teamIndex % 2 == 1}>{team?.score}</Score>}
-            </Title>
-            <Members>
+    <Container>
+      <SubContainer currentlyPlaying={currentlyPlaying}>
+        <Title>
+          TEAM {teamIndex + 1}
+          {showScore && <Score leftAlign={teamIndex % 2 == 1}>{team?.score}</Score>}
+        </Title>
+        <Droppable droppableId={teamIndex.toString()}>
+          {(provided, snapshot) => (
+            <Members ref={provided.innerRef} {...provided.droppableProps}>
               {team?.members &&
                 Object.entries(team?.members).map(([timestamp, member], index) => (
                   <Player
@@ -42,21 +42,23 @@ const Team: FunctionComponent<Props> = ({ teamIndex = 0, showScore = true }) => 
                 ))}
               {provided.placeholder}
             </Members>
-          </Container>
-        )}
-      </Droppable>
-    </div>
+          )}
+        </Droppable>
+      </SubContainer>
+    </Container>
   );
 };
 
-const Container = styled.div<{ currentlyPlaying: boolean }>`
+const Container = styled.div``;
+
+const SubContainer = styled.div<{ currentlyPlaying: boolean }>`
   background-color: rgba(38, 28, 92, 0.5);
   display: flex;
   flex-direction: column;
   align-items: center;
   border-radius: 10px;
   width: 356px;
-  margin: 5px 18px;
+  margin: 10px 18px;
   padding: 13px 0;
   position: relative;
 
@@ -65,7 +67,7 @@ const Container = styled.div<{ currentlyPlaying: boolean }>`
       ? css`
           border: 4px solid rgb(67 216 162);
         `
-      : ""}
+      : ""};
 `;
 
 const Title = styled.h3`

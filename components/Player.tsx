@@ -36,7 +36,7 @@ const Container = styled.div<{ isHinter: boolean }>`
   background-color: rgba(255, 255, 255, 0.7);
   display: flex;
   align-items: center;
-  max-width: 100%;
+  width: 336px;
   border-bottom-left-radius: 100px;
   border-top-left-radius: 100px;
   border-bottom-right-radius: 25px;

@@ -3,7 +3,7 @@ import { FunctionComponent } from "react";
 import styled from "styled-components";
 import { roomAtom } from "../atoms/room";
 import Player from "./Player";
-import { DragDropContext, DropResult, Droppable } from "react-beautiful-dnd";
+import { DragDropContext, DropResult, Droppable, Direction } from "react-beautiful-dnd";
 import Image from "next/image";
 import Team from "./Team";
 import useLobbyActions from "../hooks/useLobbyActions";
@@ -20,71 +20,48 @@ const Lobby: FunctionComponent<Props> = ({}) => {
 
   return (
     <DragDropContext onDragEnd={onDragEnd}>
-      {/* need to have draggable (player) inside of droppable, need to also implement hard coded logic*/}
-      <ButtonContainer>
-        <Button onClick={onAddTeam}>
-          <Image src="/images/correct.svg" alt="play button" width={23} height={29} />
-          <Strong>ADD TEAM</Strong>
-        </Button>
-        <Button onClick={onRemoveTeam}>
-          <Image src="/images/correct.svg" alt="play button" width={23} height={29} />
-          <Strong>REMOVE TEAM</Strong>
-        </Button>
-      </ButtonContainer>
-      <ContentContainer>
-        <Droppable droppableId="-1">
-          {(provided, snapshot) => (
-            <SpectatorsContainer ref={provided.innerRef} {...provided.droppableProps}>
-              <Title>SPECTATORS</Title>
-              <Spectator>
+      <CenterContainer>
+        <CenterSubContainer>
+          <ButtonContainer>
+            <Button onClick={onAddTeam}>
+              <Image src="/images/correct.svg" alt="play button" width={23} height={29} />
+              <Strong>ADD TEAM</Strong>
+            </Button>
+            <Button onClick={onRemoveTeam}>
+              <Image src="/images/correct.svg" alt="play button" width={23} height={29} />
+              <Strong>REMOVE TEAM</Strong>
+            </Button>
+          </ButtonContainer>
+          <Button onClick={onStartGame}>
+            <Image src="/images/play.svg" alt="play button" width={23} height={29} />
+            <Strong>START GAME</Strong>
+          </Button>
+        </CenterSubContainer>
+      </CenterContainer>
+      <SpectatorsContainer>
+        <SpectatorsSubContainer>
+          <Title>SPECTATORS</Title>
+          <Droppable droppableId="-1" direction="horizontal">
+            {(provided, snapshot) => (
+              <Spectators ref={provided.innerRef} {...provided.droppableProps}>
                 {room.spectators &&
-                  Object.entries(room.spectators).map(([timestamp, member]) => (
-                    <Player key={member.id} user={member} isHinter={false} timestamp={timestamp} index={0} />
+                  Object.entries(room.spectators).map(([timestamp, member], index) => (
+                    <Player key={member.id} user={member} isHinter={false} timestamp={timestamp} index={index} />
                   ))}
-              </Spectator>
-            </SpectatorsContainer>
-          )}
-        </Droppable>
-
-        <TeamsContainer>
-          {room.teams &&
-            room.teams.map(
-              (_team, i) =>
-                i % 2 === 0 && (
-                  <Droppable droppableId={i.toString()}>
-                    {(provided, snapshot) => (
-                      <div ref={provided.innerRef} {...provided.droppableProps}>
-                        <Team key={i} teamIndex={i} showScore={false} />
-                      </div>
-                    )}
-                  </Droppable>
-                )
+                {/* {provided.placeholder} */}
+              </Spectators>
             )}
+          </Droppable>
+        </SpectatorsSubContainer>
+      </SpectatorsContainer>
+      <ContentContainer>
+        <TeamsContainer>
+          {room.teams && room.teams.map((_team, i) => i % 2 === 0 && <Team key={i} teamIndex={i} showScore={false} />)}
         </TeamsContainer>
-
         <TeamsContainer>
-          {room.teams &&
-            room.teams.map(
-              (_team, i) =>
-                i % 2 === 1 && (
-                  <Droppable droppableId={i.toString()}>
-                    {(provided, snapshot) => (
-                      <div ref={provided.innerRef} {...provided.droppableProps}>
-                        <Team key={i} teamIndex={i} showScore={false} />
-                      </div>
-                    )}
-                  </Droppable>
-                )
-            )}
+          {room.teams && room.teams.map((_team, i) => i % 2 === 1 && <Team key={i} teamIndex={i} showScore={false} />)}
         </TeamsContainer>
       </ContentContainer>
-
-      <ButtonContainer>
-        <Button onClick={onStartGame}>
-          <Image src="/images/play.svg" alt="play button" width={23} height={29} />
-          <Strong>START GAME</Strong>
-        </Button>
-      </ButtonContainer>
     </DragDropContext>
   );
 };
@@ -92,7 +69,21 @@ const Lobby: FunctionComponent<Props> = ({}) => {
 const ButtonContainer = styled.div`
   display: flex;
   justify-content: center;
-  position: relative;
+`;
+
+const CenterContainer = styled.div`
+  position: absolute;
+  height: 100%;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`;
+
+const CenterSubContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 `;
 
 const Button = styled.button`
@@ -131,6 +122,11 @@ const ContentContainer = styled.div`
 `;
 
 const SpectatorsContainer = styled.div`
+  display: flex;
+  justify-content: center;
+`;
+
+const SpectatorsSubContainer = styled.div`
   background-color: rgba(38, 28, 92, 0.5);
   display: flex;
   flex-direction: column;
@@ -138,10 +134,9 @@ const SpectatorsContainer = styled.div`
   border-radius: 10px;
   margin: 5px 18px;
   position: relative;
-  padding: 1px 0;
-  flex-grow: 1;
+  padding: 5% 0;
   padding: 8px 0;
-  width: 325px;
+  width: 80%;
 `;
 
 // is there an easy way to reuse these component or just have to extract to their own component class?
@@ -163,20 +158,18 @@ const Title = styled.h3`
     rgb(23, 5, 87) 2.88051px -0.838247px 0px;
 `;
 
-const Spectator = styled.div`
+const Spectators = styled.div`
   margin-top: 15px;
   display: flex;
-  flex-direction: column;
-  width: 100%;
+  flex-direction: row;
   justify-content: center;
+  flex-wrap: wrap;
 `;
 
 const TeamsContainer = styled.div`
   padding: 5% 0;
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
-  flex-grow: 8;
 `;
 
 export default Lobby;
