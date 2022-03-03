@@ -6,6 +6,7 @@ import Player from "./Player";
 import { Droppable } from "react-beautiful-dnd";
 import { SortableContext, verticalListSortingStrategy } from "@dnd-kit/sortable";
 import { useDroppable } from "@dnd-kit/core";
+import Sortable from "./utils/Sortable";
 
 const teamsAtom = selectAtom(roomAtom, (room) => room.teams);
 const currentTeamIndexAtom = selectAtom(roomAtom, (room) => room.currentTeamIndex);
@@ -21,28 +22,33 @@ const Team: FunctionComponent<Props> = ({ teamIndex = 0, showScore = true }) => 
 
   const team = teams[teamIndex];
   const currentlyPlaying = currentTeamIndex === teamIndex;
-  const teamIdsArray = useMemo(() => Object.values(team.members).map((member) => member.id), [team.members]);
+  const teamIdsArray = useMemo(
+    () => (team.members ? Object.values(team.members).map((member) => member.id) : []),
+    [team.members]
+  );
 
   const { setNodeRef } = useDroppable({ id: teamIndex.toString() });
 
   return (
     <SortableContext items={teamIdsArray} id={teamIndex.toString()} strategy={verticalListSortingStrategy}>
       <Container>
-        <SubContainer currentlyPlaying={currentlyPlaying}>
+        <SubContainer currentlyPlaying={currentlyPlaying} ref={setNodeRef}>
           <Title>
             TEAM {teamIndex + 1}
             {showScore && <Score leftAlign={teamIndex % 2 == 1}>{team?.score}</Score>}
           </Title>
-          <Members ref={setNodeRef}>
+          <Members>
             {team?.members &&
               Object.entries(team?.members).map(([timestamp, member], index) => (
-                <Player
-                  index={index}
-                  key={member.id}
-                  timestamp={timestamp}
-                  user={member}
-                  isHinter={currentlyPlaying && member.id === team?.members?.[team.currentUserTimestamp]?.id}
-                />
+                <Sortable key={member.id} id={member.id} data={{ user: member }}>
+                  <Player
+                    index={index}
+                    key={member.id}
+                    timestamp={timestamp}
+                    user={member}
+                    isHinter={currentlyPlaying && member.id === team?.members?.[team.currentUserTimestamp]?.id}
+                  />
+                </Sortable>
               ))}
           </Members>
         </SubContainer>
@@ -51,10 +57,7 @@ const Team: FunctionComponent<Props> = ({ teamIndex = 0, showScore = true }) => 
   );
 };
 
-const Container = styled.div`
-  background-color: red;
-  width: 90vw;
-`;
+const Container = styled.div``;
 
 const SubContainer = styled.div<{ currentlyPlaying: boolean }>`
   background-color: rgba(38, 28, 92, 0.5);

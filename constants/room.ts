@@ -26,27 +26,38 @@ export const DefaultRoom: Room = {
 export const TestRoom: Room = {
   id: "test",
   teams: [
-    { members: {"123": {
-      id: "123",
-      name: "some name",
-      avatarUrl: "",
+    {
+      members: {
+        "123": {
+          id: "123",
+          name: "some name",
+          avatarUrl: "",
+        },
+        "111": {
+          id: "111",
+          name: "some name 3",
+          avatarUrl: "",
+        },
+        "222": {
+          id: "222",
+          name: "some name 4",
+          avatarUrl: "",
+        },
+      },
+      score: 0,
+      currentUserTimestamp: 0,
     },
-    "321": {
-      id: "321",
-      name: "some name 2",
-      avatarUrl: "",
+    {
+      members: {
+        "321": {
+          id: "321",
+          name: "some name 2",
+          avatarUrl: "",
+        },
+      },
+      score: 0,
+      currentUserTimestamp: 0,
     },
-    "111": {
-      id: "111",
-      name: "some name 3",
-      avatarUrl: "",
-    },
-    "222": {
-      id: "222",
-      name: "some name 4",
-      avatarUrl: "",
-    },}, score: 0, currentUserTimestamp: 0 },
-    { members: {}, score: 0, currentUserTimestamp: 0 },
   ],
   spectators: {
     "123": {

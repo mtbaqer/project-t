@@ -3,7 +3,6 @@ import styled, { css } from "styled-components";
 import { User } from "../types/types";
 import Image from "next/image";
 import { useSortable } from "@dnd-kit/sortable";
-import { CSS } from "@dnd-kit/utilities";
 
 interface Props {
   user: User;
@@ -13,15 +12,8 @@ interface Props {
 }
 
 const Player: FunctionComponent<Props> = ({ user, isHinter, timestamp, index }) => {
-  const { attributes, listeners, setNodeRef, transform, transition } = useSortable({ id: user.id });
-
-  const style = {
-    transform: CSS.Transform.toString(transform),
-    transition,
-  };
-
   return (
-    <Container isHinter={isHinter} style={style} ref={setNodeRef} {...attributes} {...listeners}>
+    <Container isHinter={isHinter}>
       <AvatarContainer>
         <Image alt="avatar image" src={"/images/avatar_placeholder.png"} width={49} height={56} />
       </AvatarContainer>
