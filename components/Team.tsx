@@ -7,6 +7,7 @@ import { Droppable } from "react-beautiful-dnd";
 import { SortableContext, verticalListSortingStrategy } from "@dnd-kit/sortable";
 import { useDroppable } from "@dnd-kit/core";
 import Sortable from "./utils/Sortable";
+import { update } from "firebase/database";
 
 const teamsAtom = selectAtom(roomAtom, (room) => room.teams);
 const currentTeamIndexAtom = selectAtom(roomAtom, (room) => room.currentTeamIndex);
@@ -117,3 +118,98 @@ const Members = styled.ul`
 `;
 
 export default Team;
+
+// Team:
+// displayOrder: [timestamp0,timestamp1,timestamp2]
+// currentTimestamp:
+// currentIndex:
+
+// room:
+// players:{100:user0, 220:user2}
+
+// Team:
+// displayOrder: [timestamp0,timestamp2]
+
+// [timestamp0,timestamp1,timestamp2]
+
+// DragDrop:
+// displayOrder: [timestamp2, timestamp0]
+
+// [timestamp0,timestamp3]
+
+// [timestamp3,timestamp0]
+
+// runTransaction((team)=>{
+//   [,timestamp0,,timestamp3]
+//   return team;
+// })
+
+// user 1 leaves
+// ondisconnect -> remove room.players
+// user 1 is stale
+// room.players = [0,2,3]
+// teams.members=[0,1,2,3]
+// teams.index++
+
+// while(!room.players.contains(teams[index])) index++ % length
+
+// [0,1,2,3,4]: 1,2,3 stale, new array [0,4] idx=0,1
+
+// [0,1,2]: idx=1, 1 disconnects, new array [0,2] idx = 1 (atom has to change index)
+
+// [0,1,2,3,4] idx = 2, 2 disconnects, new array [0,1,3,4], idx = 2
+
+// staleIndex < index: index - 1
+// staleIndex >= index: do nothing
+
+// while(!room.players.contains(teams[index])) index++ % length
+
+// [a,b,c,d] before last player 3
+
+// [d,a,b,c]
+
+// [0,1,2,3,4]
+// index:
+// [tm,tm,tm]
+
+// teams.memebrs
+// pastPlayer:timestamp
+// // currentPlayer:timestamp
+
+// [0,1,2,3,4] index:2
+// skip:2
+// [0,1,4] index: 4-1=3
+
+// players=[1,3]
+// team 1
+// [1,2,3]       1,2,3->1,3            [1,3]
+//               decrement idx--
+//             indicesToSkip: 1,2
+
+// firebase -> atom (filtering) -> client state
+
+// [0,1,2,3]
+// index: 3+1
+
+// [0,2,3,4,5]
+// index: 3+1
+
+// [timestamp0,timestamp1,timestamp2,timestmap4,timestamp3]
+
+// "conversion"/stale things to account for: displayOrder for all teams & players in room
+// spectators as team 0
+
+// ondisconnect: good
+// player joining lobby: good
+// player dragging from Spectators to team1:good
+// player joining midgame:good
+// player dragging from team 1 to team2:good
+// player dragging to a different position in the same team:good
+// turn order:
+// player leaves in the middle of turn:
+// player leaves before current turn:
+// player leaves without joining again:
+// player leaves then join:
+
+// 2 players dragging to the same team:
+// 1 player dragging out of team and another player dragging into team:
