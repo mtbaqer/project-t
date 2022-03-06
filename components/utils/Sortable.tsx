@@ -7,17 +7,16 @@ import { activeDraggableAtom } from "../../atoms/activeDraggable";
 
 interface Props {
   id: string;
-  data: Data;
 }
 
-const Sortable: FunctionComponent<Props> = ({ children, id, data }) => {
+const Sortable: FunctionComponent<Props> = ({ children, id }) => {
   const activeDraggable = useAtomValue(activeDraggableAtom);
-  const { attributes, listeners, setNodeRef, transform, transition } = useSortable({ id, data });
+  const { attributes, listeners, setNodeRef, transform, transition } = useSortable({ id });
 
   const style: CSSProperties = {
     transform: CSS.Transform.toString(transform),
     transition,
-    opacity: activeDraggable?.id === id ? 0 : 1,
+    opacity: activeDraggable === id ? 0 : 1,
   };
 
   return (

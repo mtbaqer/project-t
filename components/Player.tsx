@@ -3,15 +3,20 @@ import styled, { css } from "styled-components";
 import { User } from "../types/types";
 import Image from "next/image";
 import { useSortable } from "@dnd-kit/sortable";
+import { selectAtom, useAtomValue } from "jotai/utils";
+import { roomAtom } from "../atoms/room";
+
+const playersAtom = selectAtom(roomAtom, (room) => room.players);
 
 interface Props {
-  user: User;
-  isHinter: boolean;
+  isHinter?: boolean;
   timestamp: string;
-  index: number;
 }
 
-const Player: FunctionComponent<Props> = ({ user, isHinter, timestamp, index }) => {
+const Player: FunctionComponent<Props> = ({ isHinter = false, timestamp }) => {
+  const players = useAtomValue(playersAtom);
+  const user = players[timestamp];
+
   return (
     <Container isHinter={isHinter}>
       <AvatarContainer>

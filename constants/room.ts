@@ -2,9 +2,10 @@ import { Room } from "../types/types";
 
 export const DefaultRoom: Room = {
   id: "default",
+  players: {},
   teams: [
-    { members: {}, score: 0, currentUserTimestamp: 0 },
-    { members: {}, score: 0, currentUserTimestamp: 0 },
+    { members: [], score: 0, currentMemberIndex: 0 },
+    { members: [], score: 0, currentMemberIndex: 0 },
   ],
   deck: [],
   currentCardIndex: 0,
@@ -18,121 +19,88 @@ export const DefaultRoom: Room = {
   },
   status: "loading",
   seenWords: [],
-  hostQueue: {},
 };
 
 //Only for testing
 export const TestRoom: Room = {
   id: "test",
+  players: {
+    "123": {
+      id: "123",
+      name: "some name",
+      avatarUrl: "",
+    },
+    "321": {
+      id: "321",
+      name: "some name 2",
+      avatarUrl: "",
+    },
+    "111": {
+      id: "111",
+      name: "some name 3",
+      avatarUrl: "",
+    },
+    "222": {
+      id: "222",
+      name: "some name 4",
+      avatarUrl: "",
+    },
+    "333": {
+      id: "333",
+      name: "some name 5",
+      avatarUrl: "",
+    },
+    "444": {
+      id: "444",
+      name: "some name 6",
+      avatarUrl: "",
+    },
+    "555": {
+      id: "555",
+      name: "some name 7",
+      avatarUrl: "",
+    },
+    "666": {
+      id: "666",
+      name: "some name 8",
+      avatarUrl: "",
+    },
+    "777": {
+      id: "777",
+      name: "some name 9",
+      avatarUrl: "",
+    },
+    "888": {
+      id: "888",
+      name: "some name 10",
+      avatarUrl: "",
+    },
+    "999": {
+      id: "999",
+      name: "some name 99",
+      avatarUrl: "",
+    },
+  },
   teams: [
     {
-      members: {
-        "123": {
-          id: "123",
-          name: "some name",
-          avatarUrl: "",
-        },
-        "321": {
-          id: "321",
-          name: "some name 2",
-          avatarUrl: "",
-        },
-        "111": {
-          id: "111",
-          name: "some name 3",
-          avatarUrl: "",
-        },
-        "222": {
-          id: "222",
-          name: "some name 4",
-          avatarUrl: "",
-        },
-        "333": {
-          id: "333",
-          name: "some name 5",
-          avatarUrl: "",
-        },
-        "444": {
-          id: "444",
-          name: "some name 6",
-          avatarUrl: "",
-        },
-        "555": {
-          id: "555",
-          name: "some name 7",
-          avatarUrl: "",
-        },
-        "666": {
-          id: "666",
-          name: "some name 8",
-          avatarUrl: "",
-        },
-        "777": {
-          id: "777",
-          name: "some name 9",
-          avatarUrl: "",
-        },
-        "888": {
-          id: "888",
-          name: "some name 10",
-          avatarUrl: "",
-        },
-      },
+      members: ["123", "321", "111", "222", "333", "444", "555", "666", "777", "888"],
       score: 0,
-      currentUserTimestamp: 0,
+      currentMemberIndex: 0,
     },
     {
-      members: {
-        "123": {
-          id: "123",
-          name: "some name",
-          avatarUrl: "",
-        },
-        "111": {
-          id: "111",
-          name: "some name 3",
-          avatarUrl: "",
-        },
-        "222": {
-          id: "222",
-          name: "some name 4",
-          avatarUrl: "",
-        },
-      },
+      members: ["123", "111", "222"],
       score: 0,
-      currentUserTimestamp: 0,
+      currentMemberIndex: 0,
     },
     {
-      members: {
-        "777": {
-          id: "777",
-          name: "some name 2",
-          avatarUrl: "",
-        },
-        "778": {
-          id: "778",
-          name: "some name 2",
-          avatarUrl: "",
-        },
-      },
+      members: ["777", "888"],
       score: 0,
-      currentUserTimestamp: 0,
+      currentMemberIndex: 0,
     },
     {
-      members: {
-        "999": {
-          id: "999",
-          name: "some name",
-          avatarUrl: "",
-        },
-        "888": {
-          id: "888",
-          name: "some name 3",
-          avatarUrl: "",
-        },
-      },
+      members: ["999"],
       score: 0,
-      currentUserTimestamp: 0,
+      currentMemberIndex: 0,
     },
   ],
   deck: [],
@@ -147,5 +115,4 @@ export const TestRoom: Room = {
   },
   status: "loading",
   seenWords: [],
-  hostQueue: {},
 };

@@ -12,7 +12,7 @@ interface Props {}
 const Teams: FunctionComponent<Props> = ({}) => {
   const room = useAtomValue(roomAtom);
 
-  const { onDragStart, onDragOver, onDragEnd, draggedUser } = useDnDActions();
+  const { onDragStart, onDragOver, onDragEnd, draggedTimestamp } = useDnDActions();
 
   return (
     <DndContext onDragStart={onDragStart} onDragOver={onDragOver} onDragEnd={onDragEnd}>
@@ -21,10 +21,7 @@ const Teams: FunctionComponent<Props> = ({}) => {
           <Title>SPECTATORS</Title>
           <div>
             <Spectators>
-              {room.teams &&
-                Object.entries(room.teams[0].members).map(([timestamp, member], index) => (
-                  <Player key={member.id} user={member} isHinter={false} timestamp={timestamp} index={index} />
-                ))}
+              {room.teams && room.teams[0].members.map((timestamp) => <Player key={timestamp} timestamp={timestamp} />)}
             </Spectators>
           </div>
         </SpectatorsSubContainer>
@@ -33,14 +30,12 @@ const Teams: FunctionComponent<Props> = ({}) => {
         {room.teams &&
           room.teams.map((_team, i) =>
             i == 0 ? null : (
-              <TeamContainer leftAlign={i % 2 == 1}>
-                <Team key={i} teamIndex={i} showScore={true} />
+              <TeamContainer leftAlign={i % 2 === 1} key={i}>
+                <Team teamIndex={i} showScore={true} />
               </TeamContainer>
             )
           )}
-        <DragOverlay>
-          {draggedUser ? <Player index={0} timestamp={"3"} user={draggedUser} isHinter={false} /> : null}
-        </DragOverlay>
+        <DragOverlay>{draggedTimestamp ? <Player timestamp={draggedTimestamp} /> : null}</DragOverlay>
       </TeamsContainer>
     </DndContext>
   );

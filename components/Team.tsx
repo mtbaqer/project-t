@@ -23,15 +23,11 @@ const Team: FunctionComponent<Props> = ({ teamIndex = 0, showScore = true }) => 
 
   const team = teams[teamIndex];
   const currentlyPlaying = currentTeamIndex === teamIndex;
-  const teamIdsArray = useMemo(
-    () => (team.members ? Object.values(team.members).map((member) => member.id) : []),
-    [team.members]
-  );
 
   const { setNodeRef } = useDroppable({ id: teamIndex.toString() });
 
   return (
-    <SortableContext items={teamIdsArray} id={teamIndex.toString()} strategy={verticalListSortingStrategy}>
+    <SortableContext items={team.members} id={teamIndex.toString()} strategy={verticalListSortingStrategy}>
       <Container>
         <SubContainer currentlyPlaying={currentlyPlaying} ref={setNodeRef}>
           <Title>
@@ -40,14 +36,12 @@ const Team: FunctionComponent<Props> = ({ teamIndex = 0, showScore = true }) => 
           </Title>
           <Members>
             {team?.members &&
-              Object.entries(team?.members).map(([timestamp, member], index) => (
-                <Sortable key={member.id} id={member.id} data={{ user: member }}>
+              team.members.map((timestamp, index) => (
+                <Sortable key={timestamp} id={timestamp}>
                   <Player
-                    index={index}
-                    key={member.id}
+                    key={timestamp}
                     timestamp={timestamp}
-                    user={member}
-                    isHinter={currentlyPlaying && member.id === team?.members?.[team.currentUserTimestamp]?.id}
+                    isHinter={currentlyPlaying && index === team.currentMemberIndex}
                   />
                 </Sortable>
               ))}

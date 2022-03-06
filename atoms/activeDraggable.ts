@@ -1,4 +1,4 @@
 import { atom } from "jotai";
 import { User } from "../types/types";
 
-export const activeDraggableAtom = atom<User | undefined>(undefined);
+export const activeDraggableAtom = atom<string | undefined>(undefined);

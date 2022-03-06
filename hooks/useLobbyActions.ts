@@ -22,41 +22,39 @@ export default function useLobbyActions() {
   }
 
   function onPlayerChooseTeam(sourceTeamIndex: number, destinationTeamIndex: number, memberTimestamp: string) {
-    if (sourceTeamIndex === destinationTeamIndex) return;
-    runTransaction(roomRef, (room: Room) => {
-      let member = null;
-      console.log(destinationTeamIndex);
-      if (sourceTeamIndex === -1) {
-        member = room.spectators[memberTimestamp];
-        delete room.spectators[memberTimestamp];
-      } else {
-        const sourceTeam = room.teams[sourceTeamIndex];
-        member = sourceTeam.members[memberTimestamp];
-        delete sourceTeam.members[memberTimestamp];
-      }
-
-      if (destinationTeamIndex === -1) {
-        room.spectators = room.spectators ?? {};
-        room.spectators[Date.now()] = member;
-      } else {
-        const destinationTeam = room.teams[destinationTeamIndex];
-
-        destinationTeam.members = destinationTeam.members ?? {};
-        destinationTeam.members[Date.now()] = member;
-      }
-      const newRoom: Room = {
-        ...room,
-        spectators: room.spectators ?? {},
-        teams: room.teams,
-      };
-      return newRoom;
-    });
+    // if (sourceTeamIndex === destinationTeamIndex) return;
+    // runTransaction(roomRef, (room: Room) => {
+    //   let member = null;
+    //   console.log(destinationTeamIndex);
+    //   if (sourceTeamIndex === -1) {
+    //     member = room.spectators[memberTimestamp];
+    //     delete room.spectators[memberTimestamp];
+    //   } else {
+    //     const sourceTeam = room.teams[sourceTeamIndex];
+    //     member = sourceTeam.members[memberTimestamp];
+    //     delete sourceTeam.members[memberTimestamp];
+    //   }
+    //   if (destinationTeamIndex === -1) {
+    //     room.spectators = room.spectators ?? {};
+    //     room.spectators[Date.now()] = member;
+    //   } else {
+    //     const destinationTeam = room.teams[destinationTeamIndex];
+    //     destinationTeam.members = destinationTeam.members ?? {};
+    //     destinationTeam.members[Date.now()] = member;
+    //   }
+    //   const newRoom: Room = {
+    //     ...room,
+    //     spectators: room.spectators ?? {},
+    //     teams: room.teams,
+    //   };
+    //   return newRoom;
+    // });
   }
 
   function onAddTeam() {
     runTransaction(teamsRef, (teams: Team[]) => {
       teams = teams ?? [];
-      teams.push({ members: {}, score: 0, currentUserTimestamp: 0 });
+      teams.push({ members: [], score: 0, currentMemberIndex: 0 });
       return teams;
     });
   }

@@ -23,7 +23,7 @@ export default function useRoomActions() {
     runTransaction(roomRef, (room: Room) => {
       const currentTeamIndex = (room.currentTeamIndex + 1) % room.teams.length;
       const currentUserTimestamp = getNextPlayingUserTimestamp(room.teams[currentTeamIndex]);
-      room.teams[currentTeamIndex].currentUserTimestamp = currentUserTimestamp;
+      room.teams[currentTeamIndex].currentMemberIndex = currentUserTimestamp;
       const newRoom: Room = {
         ...room,
         round: currentTeamIndex === 0 ? room.round + 1 : room.round,
@@ -39,7 +39,7 @@ export default function useRoomActions() {
   }
 
   function getNextPlayingUserTimestamp(team: Team) {
-    const { currentUserTimestamp } = team;
+    const { currentMemberIndex } = team;
     const sortedTimestamps = Object.keys(team.members || {})
       .sort()
       .map(Number);
@@ -47,7 +47,7 @@ export default function useRoomActions() {
     let nextUserIndex = 0;
     for (let i = 0; i < sortedTimestamps.length; i++) {
       const timestamp = sortedTimestamps[i];
-      if (timestamp > currentUserTimestamp) {
+      if (timestamp > currentMemberIndex) {
         nextUserIndex = i;
         break;
       }
@@ -128,19 +128,16 @@ export default function useRoomActions() {
   }
 
   function onPlayerTeamChange(sourceTeamIndex: number, destinationTeamIndex: number, memberTimestamp: string) {
-    if(sourceTeamIndex === destinationTeamIndex) return;
-    runTransaction(teamsRef, (teams: Team[]) => {
-      const sourceTeam = teams[sourceTeamIndex];
-      const destinationTeam = teams[destinationTeamIndex];
-
-      const member = sourceTeam.members[memberTimestamp];
-      delete sourceTeam.members[memberTimestamp];
-
-      destinationTeam.members = destinationTeam.members ?? {};
-      destinationTeam.members[Date.now()] = member;
-
-      return teams;
-    });
+    // if (sourceTeamIndex === destinationTeamIndex) return;
+    // runTransaction(teamsRef, (teams: Team[]) => {
+    //   const sourceTeam = teams[sourceTeamIndex];
+    //   const destinationTeam = teams[destinationTeamIndex];
+    //   const member = sourceTeam.members[memberTimestamp];
+    //   delete sourceTeam.members[memberTimestamp];
+    //   destinationTeam.members = destinationTeam.members ?? {};
+    //   destinationTeam.members[Date.now()] = member;
+    //   return teams;
+    // });
   }
 
   return {
