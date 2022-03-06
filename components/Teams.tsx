@@ -21,33 +21,30 @@ const Teams: FunctionComponent<Props> = ({}) => {
           <Title>SPECTATORS</Title>
           <div>
             <Spectators>
-              {room.spectators &&
-                Object.entries(room.spectators).map(([timestamp, member], index) => (
+              {room.teams &&
+                Object.entries(room.teams[0].members).map(([timestamp, member], index) => (
                   <Player key={member.id} user={member} isHinter={false} timestamp={timestamp} index={index} />
                 ))}
             </Spectators>
           </div>
         </SpectatorsSubContainer>
       </SpectatorsContainer>
-      <ContentContainer>
-        <TeamsContainer>
-          {room.teams && room.teams.map((_team, i) => i % 2 === 0 && <Team key={i} teamIndex={i} showScore={false} />)}
-        </TeamsContainer>
-        <TeamsContainer>
-          {room.teams && room.teams.map((_team, i) => i % 2 === 1 && <Team key={i} teamIndex={i} showScore={false} />)}
-        </TeamsContainer>
+      <TeamsContainer>
+        {room.teams &&
+          room.teams.map((_team, i) =>
+            i == 0 ? null : (
+              <TeamContainer leftAlign={i % 2 == 1}>
+                <Team key={i} teamIndex={i} showScore={true} />
+              </TeamContainer>
+            )
+          )}
         <DragOverlay>
           {draggedUser ? <Player index={0} timestamp={"3"} user={draggedUser} isHinter={false} /> : null}
         </DragOverlay>
-      </ContentContainer>
+      </TeamsContainer>
     </DndContext>
   );
 };
-
-const ContentContainer = styled.div`
-  display: flex;
-  justify-content: space-between;
-`;
 
 const SpectatorsContainer = styled.div`
   display: flex;
@@ -95,9 +92,16 @@ const Spectators = styled.div`
 `;
 
 const TeamsContainer = styled.div`
-  padding: 5% 0;
   display: flex;
-  flex-direction: column;
+  justify-content: space-between;
+  flex-wrap: wrap;
+`;
+
+const TeamContainer = styled.div<{ leftAlign: boolean }>`
+  display: flex;
+  flex: 1 0 50%;
+
+  justify-content: ${({ leftAlign }) => (leftAlign ? "flex-start" : "flex-end")};
 `;
 
 export default Teams;

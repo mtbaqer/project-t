@@ -33,7 +33,6 @@ export interface Word {
 export interface Room {
   id: string;
   teams: Team[];
-  spectators: { [key: string]: User };
   deck: Card[];
   round: number;
   currentCardIndex: number;
@@ -44,6 +43,7 @@ export interface Room {
   seenWords: Card[];
   status: RoomStatus;
   hostQueue: { [key: number]: string };
+  // players: { [key: number]: User };
 }
 
 export type RoomStatus = "loading" | "waiting" | "playing" | "paused" | "ended";

@@ -35,8 +35,8 @@ const Team: FunctionComponent<Props> = ({ teamIndex = 0, showScore = true }) => 
       <Container>
         <SubContainer currentlyPlaying={currentlyPlaying} ref={setNodeRef}>
           <Title>
-            TEAM {teamIndex + 1}
-            {showScore && <Score leftAlign={teamIndex % 2 == 1}>{team?.score}</Score>}
+            TEAM {teamIndex}
+            {showScore && <Score leftAlign={teamIndex % 2 == 0}>{team?.score}</Score>}
           </Title>
           <Members>
             {team?.members &&
