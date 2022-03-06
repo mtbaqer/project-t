@@ -15,28 +15,33 @@ export default function useDnDActions() {
   const { onPlayerChooseTeam } = useLobbyActions();
   const [teams, setTeams] = useAtom(teamsAtom);
 
-  const [draggedUser, setDraggedUser] = useAtom(activeDraggableAtom);
+  const [draggedTimestamp, setDraggedTimestamp] = useAtom(activeDraggableAtom);
 
   function onDragStart(result: DragStartEvent) {
-    setDraggedUser(result.active.data.current?.["user"] as User);
+    setDraggedTimestamp(result.active.id);
   }
 
   function onDragOver({ active, over }: DragEndEvent) {
-    // console.log(active);
     const currentTeamIndex = getContainerId(active);
     const overTeamIndex = getContainerId(over);
 
-    if (currentTeamIndex !== undefined || overTeamIndex !== undefined || currentTeamIndex === overTeamIndex) return;
+    if (currentTeamIndex === undefined || overTeamIndex === undefined || currentTeamIndex === overTeamIndex) return;
 
-    const activeUserId = active.id;
+    const activeUserTimestamp = active.id;
     const overPlayerIndex = getIndex(over);
 
-    teams[currentTeamIndex].members;
+    teams[currentTeamIndex].members = teams[currentTeamIndex].members.filter(
+      (timestamp) => timestamp !== activeUserTimestamp
+    );
+
+    teams[overTeamIndex].members.splice(overPlayerIndex, 0, activeUserTimestamp);
+
+    setTeams(teams);
   }
 
   function onDragEnd(result: DragEndEvent) {
     // onPlayerChooseTeam(Number(result.source.droppableId), Number(result.destination?.droppableId), result.draggableId);
-    setDraggedUser(undefined);
+    setDraggedTimestamp(undefined);
     // onPlayerChooseTeam(result.active.data?.current?.sortable.containerId, );
     // console.log(result);
     // console.log(result.active.data?.current?.sortable.containerId);
@@ -50,5 +55,5 @@ export default function useDnDActions() {
     return over?.data.current?.sortable.index ?? 0;
   }
 
-  return { onDragStart, onDragOver, onDragEnd, draggedUser };
+  return { onDragStart, onDragOver, onDragEnd, draggedTimestamp };
 }
