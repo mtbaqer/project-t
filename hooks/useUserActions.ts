@@ -35,7 +35,7 @@ export default function useUserActions() {
   }
 
   async function addToSpectators(timestamp: string) {
-    runTransaction(spectatorsMembersRef, (spectatorsMembers: User[]) => [...spectatorsMembers, timestamp]);
+    runTransaction(spectatorsMembersRef, (spectatorsMembers?: User[]) => [...(spectatorsMembers ?? []), timestamp]);
   }
 
   return { addUser };

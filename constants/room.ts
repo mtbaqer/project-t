@@ -83,7 +83,7 @@ export const TestRoom: Room = {
   },
   teams: [
     {
-      members: ["123", "321", "111", "222", "333", "444", "555", "666", "777", "888"],
+      members: [],
       score: 0,
       currentMemberIndex: 0,
     },

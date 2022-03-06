@@ -3,6 +3,7 @@ import { useAtomValue } from "jotai/utils";
 import { useRouter } from "next/router";
 import { roomAtom } from "../atoms/room";
 import { Room, RoomStatus, Team } from "../types/types";
+import cleanupDisconnectedPlayers from "../utils/cleanupDisconnectedPlayers";
 
 const database = getDatabase();
 
@@ -21,34 +22,17 @@ export default function useLobbyActions() {
     update(roomRef, { currentCardIndex: increment(1) });
   }
 
-  function onPlayerChooseTeam(sourceTeamIndex: number, destinationTeamIndex: number, memberTimestamp: string) {
-    // if (sourceTeamIndex === destinationTeamIndex) return;
-    // runTransaction(roomRef, (room: Room) => {
-    //   let member = null;
-    //   console.log(destinationTeamIndex);
-    //   if (sourceTeamIndex === -1) {
-    //     member = room.spectators[memberTimestamp];
-    //     delete room.spectators[memberTimestamp];
-    //   } else {
-    //     const sourceTeam = room.teams[sourceTeamIndex];
-    //     member = sourceTeam.members[memberTimestamp];
-    //     delete sourceTeam.members[memberTimestamp];
-    //   }
-    //   if (destinationTeamIndex === -1) {
-    //     room.spectators = room.spectators ?? {};
-    //     room.spectators[Date.now()] = member;
-    //   } else {
-    //     const destinationTeam = room.teams[destinationTeamIndex];
-    //     destinationTeam.members = destinationTeam.members ?? {};
-    //     destinationTeam.members[Date.now()] = member;
-    //   }
-    //   const newRoom: Room = {
-    //     ...room,
-    //     spectators: room.spectators ?? {},
-    //     teams: room.teams,
-    //   };
-    //   return newRoom;
-    // });
+  function onPlayerChooseTeam(memberTimestamp: string, destinationTeamIndex: number, destinationPlayerIndex: number) {
+    runTransaction(roomRef, (room: Room) => {
+      const sourceTeam = room.teams.find((team) => team.members?.includes(memberTimestamp))!;
+      sourceTeam.members = sourceTeam.members.filter((timestamp) => timestamp !== memberTimestamp);
+
+      const destinationTeam = room.teams[destinationTeamIndex];
+      cleanupDisconnectedPlayers(destinationTeam, Object.keys(room.players));
+      destinationTeam.members.splice(destinationPlayerIndex, 0, memberTimestamp);
+
+      return room;
+    });
   }
 
   function onAddTeam() {

@@ -24,7 +24,6 @@ export default function useDnDActions() {
   function onDragOver({ active, over }: DragEndEvent) {
     const currentTeamIndex = getContainerId(active);
     const overTeamIndex = getContainerId(over);
-
     if (currentTeamIndex === undefined || overTeamIndex === undefined || currentTeamIndex === overTeamIndex) return;
 
     const activeUserTimestamp = active.id;
@@ -39,12 +38,16 @@ export default function useDnDActions() {
     setTeams(teams);
   }
 
-  function onDragEnd(result: DragEndEvent) {
-    // onPlayerChooseTeam(Number(result.source.droppableId), Number(result.destination?.droppableId), result.draggableId);
+  function onDragEnd({ active, over }: DragEndEvent) {
     setDraggedTimestamp(undefined);
-    // onPlayerChooseTeam(result.active.data?.current?.sortable.containerId, );
-    // console.log(result);
-    // console.log(result.active.data?.current?.sortable.containerId);
+
+    const currentTeamIndex = getContainerId(active);
+    const overTeamIndex = getContainerId(over);
+    if (currentTeamIndex === undefined || overTeamIndex === undefined) return;
+
+    const activeUserTimestamp = active.id;
+    const overPlayerIndex = getIndex(over);
+    onPlayerChooseTeam(activeUserTimestamp, overTeamIndex, overPlayerIndex);
   }
 
   function getContainerId(draggable: Active | Over | null) {
@@ -52,7 +55,7 @@ export default function useDnDActions() {
   }
 
   function getIndex(over: Over | null) {
-    return over?.data.current?.sortable.index ?? 0;
+    return over?.data.current?.sortable.index || 0;
   }
 
   return { onDragStart, onDragOver, onDragEnd, draggedTimestamp };
