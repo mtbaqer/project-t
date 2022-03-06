@@ -21,22 +21,23 @@ const Teams: FunctionComponent<Props> = ({}) => {
           <Title>SPECTATORS</Title>
           <div>
             <Spectators>
-              {room.teams && room.teams[0].members.map((timestamp) => <Player key={timestamp} timestamp={timestamp} />)}
+              {room.teams[0].members?.map((timestamp) => (
+                <Player key={timestamp} timestamp={timestamp} />
+              ))}
             </Spectators>
           </div>
         </SpectatorsSubContainer>
       </SpectatorsContainer>
       <TeamsContainer>
-        {room.teams &&
-          room.teams.map((_team, i) =>
-            i == 0 ? null : (
-              <TeamContainer leftAlign={i % 2 === 1} key={i}>
-                <Team teamIndex={i} showScore={true} />
-              </TeamContainer>
-            )
-          )}
-        <DragOverlay>{draggedTimestamp ? <Player timestamp={draggedTimestamp} /> : null}</DragOverlay>
+        {room.teams.map((_team, i) =>
+          i == 0 ? null : (
+            <TeamContainer leftAlign={i % 2 === 1} key={i}>
+              <Team teamIndex={i} showScore={true} />
+            </TeamContainer>
+          )
+        )}
       </TeamsContainer>
+      <DragOverlay>{draggedTimestamp ? <Player timestamp={draggedTimestamp} /> : null}</DragOverlay>
     </DndContext>
   );
 };

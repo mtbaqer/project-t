@@ -53,15 +53,14 @@ export default function useLobbyActions() {
 
   function onAddTeam() {
     runTransaction(teamsRef, (teams: Team[]) => {
-      teams = teams ?? [];
-      teams.push({ members: [], score: 0, currentMemberIndex: 0 });
+      if (teams.length < 7) teams.push({ members: [], score: 0, currentMemberIndex: 0 });
       return teams;
     });
   }
 
   function onRemoveTeam() {
-    runTransaction(teamsRef, (teams?: Team[]) => {
-      teams?.pop();
+    runTransaction(teamsRef, (teams: Team[]) => {
+      if (teams.length > 3) teams.pop();
       return teams;
     });
   }

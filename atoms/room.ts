@@ -13,7 +13,7 @@ export const roomAtom = atom<Room, Room>(
     function filterDisconnectedPlayers(team: Team) {
       return {
         ...team,
-        members: team.members.filter((timestamp) => timestamp in room.players),
+        members: team.members?.filter((timestamp) => timestamp in room.players),
       };
     }
     const teams = room.teams.map(filterDisconnectedPlayers);

@@ -27,7 +27,7 @@ const Team: FunctionComponent<Props> = ({ teamIndex = 0, showScore = true }) => 
   const { setNodeRef } = useDroppable({ id: teamIndex.toString() });
 
   return (
-    <SortableContext items={team.members} id={teamIndex.toString()} strategy={verticalListSortingStrategy}>
+    <SortableContext items={team.members ?? []} id={teamIndex.toString()} strategy={verticalListSortingStrategy}>
       <Container>
         <SubContainer currentlyPlaying={currentlyPlaying} ref={setNodeRef}>
           <Title>
