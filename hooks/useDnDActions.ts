@@ -1,9 +1,8 @@
 import { DragStartEvent, DragEndEvent, Active, Over } from "@dnd-kit/core";
 import { atom, useAtom } from "jotai";
-import { selectAtom } from "jotai/utils";
-import { activeDraggableAtom } from "../atoms/activeDraggable";
+import { useState } from "react";
 import { roomAtom } from "../atoms/room";
-import { Room, Team, User } from "../types/types";
+import { Team } from "../types/types";
 import useLobbyActions from "./useLobbyActions";
 
 const teamsAtom = atom<Team[], Team[]>(
@@ -15,7 +14,7 @@ export default function useDnDActions() {
   const { onPlayerChooseTeam } = useLobbyActions();
   const [teams, setTeams] = useAtom(teamsAtom);
 
-  const [draggedTimestamp, setDraggedTimestamp] = useAtom(activeDraggableAtom);
+  const [draggedTimestamp, setDraggedTimestamp] = useState<string>();
 
   function onDragStart(result: DragStartEvent) {
     setDraggedTimestamp(result.active.id);

@@ -37,7 +37,9 @@ const Teams: FunctionComponent<Props> = ({}) => {
           )
         )}
       </TeamsContainer>
-      <DragOverlay>{draggedTimestamp ? <Player timestamp={draggedTimestamp} /> : null}</DragOverlay>
+      <DragOverlay style={{ cursor: "grabbing" }}>
+        {draggedTimestamp ? <Player timestamp={draggedTimestamp} /> : null}
+      </DragOverlay>
     </DndContext>
   );
 };
