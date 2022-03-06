@@ -33,6 +33,7 @@ export default function useDnDActions() {
       (timestamp) => timestamp !== activeUserTimestamp
     );
 
+    teams[overTeamIndex].members = teams[overTeamIndex].members ?? [];
     teams[overTeamIndex].members.splice(overPlayerIndex, 0, activeUserTimestamp);
 
     setTeams(teams);
@@ -51,7 +52,7 @@ export default function useDnDActions() {
   }
 
   function getContainerId(draggable: Active | Over | null) {
-    return draggable?.data.current?.sortable.containerId;
+    return draggable?.data.current?.sortable.containerId ?? draggable?.id;
   }
 
   function getIndex(over: Over | null) {

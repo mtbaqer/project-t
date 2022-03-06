@@ -28,6 +28,7 @@ export default function useLobbyActions() {
       sourceTeam.members = sourceTeam.members.filter((timestamp) => timestamp !== memberTimestamp);
 
       const destinationTeam = room.teams[destinationTeamIndex];
+      destinationTeam.members = destinationTeam.members ?? [];
       cleanupDisconnectedPlayers(destinationTeam, Object.keys(room.players));
       destinationTeam.members.splice(destinationPlayerIndex, 0, memberTimestamp);
 
