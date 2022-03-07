@@ -9,18 +9,16 @@ import cleanupDisconnectedPlayers from "../utils/cleanupDisconnectedPlayers";
 const database = getDatabase();
 
 export default function useLobbyActions() {
-  const room = useAtomValue(roomAtom);
-
   const router = useRouter();
   const { roomId } = router.query;
 
   const roomRef = ref(database, `rooms/${roomId}`);
   const teamsRef = child(roomRef, "teams");
 
-  function onPlayerChooseTeam(sourceTeamIndex: number, memberTimestamp: string, destinationTeamIndex: number, destinationPlayerIndex: number) {
+  function onPlayerChooseTeam(memberTimestamp: string, destinationTeamIndex: number, destinationPlayerIndex: number) {
     runTransaction(roomRef, (room: Room) => {
-      const sourceTeam = room.teams[sourceTeamIndex];
-      sourceTeam.members = sourceTeam.members.filter((timestamp) => timestamp !== memberTimestamp);
+      const sourceTeam = room.teams.find((team) => team.members?.includes(memberTimestamp));
+      if(sourceTeam) sourceTeam.members = sourceTeam.members.filter((timestamp) => timestamp !== memberTimestamp);
 
       const destinationTeam = room.teams[destinationTeamIndex];
       destinationTeam.members = destinationTeam.members ?? [];

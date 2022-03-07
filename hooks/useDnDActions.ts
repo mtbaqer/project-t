@@ -15,11 +15,9 @@ export default function useDnDActions() {
   const [teams, setTeams] = useAtom(teamsAtom);
 
   const [draggedTimestamp, setDraggedTimestamp] = useState<string>();
-  const [sourceTeamIndex, setSourceTeamIndex] = useState<number>();
 
   function onDragStart({active}: DragStartEvent) {
     setDraggedTimestamp(active.id);
-    setSourceTeamIndex(active.data.current?.sortable.containerId);
   }
 
   function onDragOver({ active, over }: DragEndEvent) {
@@ -45,13 +43,11 @@ export default function useDnDActions() {
 
     const currentTeamIndex = getContainerId(active);
     const overTeamIndex = getContainerId(over);
-    if (currentTeamIndex === undefined || overTeamIndex === undefined || sourceTeamIndex === undefined) return;
+    if (currentTeamIndex === undefined || overTeamIndex === undefined) return;
 
     const activeUserTimestamp = active.id;
     const overPlayerIndex = getIndex(over);
-    onPlayerChooseTeam(sourceTeamIndex, activeUserTimestamp, overTeamIndex, overPlayerIndex);
-
-    setSourceTeamIndex(undefined);
+    onPlayerChooseTeam(activeUserTimestamp, overTeamIndex, overPlayerIndex);
   }
 
   function getContainerId(draggable: Active | Over | null) {

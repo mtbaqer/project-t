@@ -17,22 +17,13 @@ const Teams: FunctionComponent<Props> = ({}) => {
   return (
     <DndContext onDragStart={onDragStart} onDragOver={onDragOver} onDragEnd={onDragEnd}>
       <SpectatorsContainer>
-        <SpectatorsSubContainer>
-          <Title>SPECTATORS</Title>
-          <div>
-            <Spectators>
-              {room.teams[0].members?.map((timestamp) => (
-                <Player key={timestamp} timestamp={timestamp} />
-              ))}
-            </Spectators>
-          </div>
-        </SpectatorsSubContainer>
+        <Team title={`Spectators`} teamIndex={0} showScore={false} grid />
       </SpectatorsContainer>
       <TeamsContainer>
         {room.teams.map((_team, i) =>
           i == 0 ? null : (
             <TeamContainer leftAlign={i % 2 === 1} key={i}>
-              <Team teamIndex={i} showScore={true} />
+              <Team title={`Team ${i}`} teamIndex={i} showScore={false} />
             </TeamContainer>
           )
         )}
@@ -62,7 +53,6 @@ const SpectatorsSubContainer = styled.div`
   width: 80%;
 `;
 
-// is there an easy way to reuse these component or just have to extract to their own component class?
 const Title = styled.h3`
   color: rgb(92, 255, 182);
   font-size: 22px;

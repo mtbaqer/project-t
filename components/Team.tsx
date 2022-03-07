@@ -3,11 +3,9 @@ import React, { FunctionComponent, useEffect, useMemo, useState } from "react";
 import styled, { css } from "styled-components";
 import { roomAtom } from "../atoms/room";
 import Player from "./Player";
-import { Droppable } from "react-beautiful-dnd";
-import { SortableContext, verticalListSortingStrategy } from "@dnd-kit/sortable";
+import { SortableContext } from "@dnd-kit/sortable";
 import { useDroppable } from "@dnd-kit/core";
 import Sortable from "./utils/Sortable";
-import { update } from "firebase/database";
 
 const teamsAtom = selectAtom(roomAtom, (room) => room.teams);
 const currentTeamIndexAtom = selectAtom(roomAtom, (room) => room.currentTeamIndex);
@@ -15,9 +13,11 @@ const currentTeamIndexAtom = selectAtom(roomAtom, (room) => room.currentTeamInde
 interface Props {
   teamIndex?: number;
   showScore?: boolean;
+  title?: string;
+  grid?: boolean;
 }
 
-const Team: FunctionComponent<Props> = ({ teamIndex = 0, showScore = true }) => {
+const Team: FunctionComponent<Props> = ({ teamIndex = 0, showScore = false, title, grid = false }) => {
   const teams = useAtomValue(teamsAtom);
   const currentTeamIndex = useAtomValue(currentTeamIndexAtom);
 
@@ -27,14 +27,14 @@ const Team: FunctionComponent<Props> = ({ teamIndex = 0, showScore = true }) => 
   const { setNodeRef } = useDroppable({ id: teamIndex.toString() });
 
   return (
-    <SortableContext items={team.members ?? []} id={teamIndex.toString()} strategy={verticalListSortingStrategy}>
-      <Container>
-        <SubContainer currentlyPlaying={currentlyPlaying} ref={setNodeRef}>
+    <SortableContext items={team.members ?? []} id={teamIndex.toString()}>
+      <Container grid={grid}>
+        <SubContainer currentlyPlaying={currentlyPlaying} ref={setNodeRef} grid={grid}>
           <Title>
-            TEAM {teamIndex}
+            {title}
             {showScore && <Score leftAlign={teamIndex % 2 == 0}>{team?.score}</Score>}
           </Title>
-          <Members>
+          <Members grid={grid}>
             {team?.members &&
               team.members.map((timestamp, index) => (
                 <Sortable key={timestamp} id={timestamp}>
@@ -52,15 +52,21 @@ const Team: FunctionComponent<Props> = ({ teamIndex = 0, showScore = true }) => 
   );
 };
 
-const Container = styled.div``;
+const Container = styled.div<{ grid: boolean }>`
+  ${({ grid }) =>
+    grid
+      ? css`
+          width: 80%;
+        `
+      : css``};
+`;
 
-const SubContainer = styled.div<{ currentlyPlaying: boolean }>`
+const SubContainer = styled.div<{ currentlyPlaying: boolean; grid: boolean }>`
   background-color: rgba(38, 28, 92, 0.5);
   display: flex;
   flex-direction: column;
   align-items: center;
   border-radius: 10px;
-  width: 356px;
   margin: 10px 18px;
   padding: 13px 0;
   position: relative;
@@ -71,6 +77,13 @@ const SubContainer = styled.div<{ currentlyPlaying: boolean }>`
           border: 4px solid rgb(67 216 162);
         `
       : ""};
+
+  ${({ grid }) =>
+    grid
+      ? css``
+      : css`
+          width: 356px;
+        `};
 `;
 
 const Title = styled.h3`
@@ -79,6 +92,7 @@ const Title = styled.h3`
   font-family: "Nunito";
   font-weight: 900;
   outline-color: black;
+  text-transform: uppercase;
   text-shadow: rgb(23, 5, 87) 3px 0px 0px, rgb(23, 5, 87) 2.83487px 0.981584px 0px,
     rgb(23, 5, 87) 2.35766px 1.85511px 0px, rgb(23, 5, 87) 1.62091px 2.52441px 0px,
     rgb(23, 5, 87) 0.705713px 2.91581px 0px, rgb(23, 5, 87) -0.287171px 2.98622px 0px,
@@ -103,12 +117,22 @@ const Score = styled.span<{ leftAlign: boolean }>`
         `}
 `;
 
-const Members = styled.ul`
+const Members = styled.ul<{ grid: boolean }>`
   margin-top: 15px;
   display: flex;
-  flex-direction: column;
   width: 100%;
-  justify-content: center;
+
+  ${({ grid }) =>
+    grid
+      ? css`
+          flex-direction: row;
+          justify-content: center;
+          flex-wrap: wrap;
+        `
+      : css`
+          flex-direction: column;
+          justify-content: center;
+        `}
 `;
 
 export default Team;
