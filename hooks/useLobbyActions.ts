@@ -2,6 +2,7 @@ import { child, getDatabase, increment, ref, runTransaction, update } from "fire
 import { useAtomValue } from "jotai/utils";
 import { useRouter } from "next/router";
 import { roomAtom } from "../atoms/room";
+import { DefaultTeam } from "../constants/room";
 import { Room, RoomStatus, Team } from "../types/types";
 import cleanupDisconnectedPlayers from "../utils/cleanupDisconnectedPlayers";
 
@@ -16,20 +17,14 @@ export default function useLobbyActions() {
   const roomRef = ref(database, `rooms/${roomId}`);
   const teamsRef = child(roomRef, "teams");
 
-  function onNextCard(scoreIncrement: number) {
-    const teamRef = child(teamsRef, room!.currentTeamIndex.toString());
-    update(teamRef, { score: increment(scoreIncrement) });
-    update(roomRef, { currentCardIndex: increment(1) });
-  }
-
-  function onPlayerChooseTeam(memberTimestamp: string, destinationTeamIndex: number, destinationPlayerIndex: number) {
+  function onPlayerChooseTeam(sourceTeamIndex: number, memberTimestamp: string, destinationTeamIndex: number, destinationPlayerIndex: number) {
     runTransaction(roomRef, (room: Room) => {
-      const sourceTeam = room.teams.find((team) => team.members?.includes(memberTimestamp))!;
+      const sourceTeam = room.teams[sourceTeamIndex];
       sourceTeam.members = sourceTeam.members.filter((timestamp) => timestamp !== memberTimestamp);
 
       const destinationTeam = room.teams[destinationTeamIndex];
       destinationTeam.members = destinationTeam.members ?? [];
-      cleanupDisconnectedPlayers(destinationTeam, Object.keys(room.players));
+      cleanupDisconnectedPlayers(destinationTeam, room.players);
       destinationTeam.members.splice(destinationPlayerIndex, 0, memberTimestamp);
 
       return room;
@@ -38,7 +33,7 @@ export default function useLobbyActions() {
 
   function onAddTeam() {
     runTransaction(teamsRef, (teams: Team[]) => {
-      if (teams.length < 7) teams.push({ members: [], score: 0, currentMemberIndex: 0 });
+      if (teams.length < 7) teams.push(DefaultTeam);
       return teams;
     });
   }
@@ -56,7 +51,6 @@ export default function useLobbyActions() {
   }
 
   return {
-    onNextCard,
     onPlayerChooseTeam,
     onAddTeam,
     onRemoveTeam,

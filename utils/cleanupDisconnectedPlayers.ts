@@ -1,5 +1,10 @@
 import { Team, User } from "../types/types";
 
-export default function cleanupDisconnectedPlayers(team: Team, connectedPlayersTimestamps: string[]) {
-  //TODO: Implement this to remove disconnected players and update currentMemberIndex accordingly.
+export default function cleanupDisconnectedPlayers(team: Team, connectedPlayersTimestamps: Record<string, User>) {
+  team.members = team.members ?? [];
+  team.members = team.members.filter((timestamp, index) => {
+    const isConnected = timestamp in connectedPlayersTimestamps;
+    if(!isConnected && index <= team.currentMemberIndex) team.currentMemberIndex--;
+    return isConnected;
+  });
 }

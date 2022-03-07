@@ -1,12 +1,11 @@
-import { Room } from "../types/types";
+import { Room, Team } from "../types/types";
+
+export const DefaultTeam: Team = { members: [], score: 0, currentMemberIndex: -1 };
 
 export const DefaultRoom: Room = {
   id: "default",
   players: {},
-  teams: [
-    { members: [], score: 0, currentMemberIndex: 0 },
-    { members: [], score: 0, currentMemberIndex: 0 },
-  ],
+  teams: [DefaultTeam, DefaultTeam],
   deck: [],
   currentCardIndex: 0,
   round: 0,
@@ -85,22 +84,22 @@ export const TestRoom: Room = {
     {
       members: [],
       score: 0,
-      currentMemberIndex: 0,
+      currentMemberIndex: -1,
     },
     {
       members: ["123", "111", "222"],
       score: 0,
-      currentMemberIndex: 0,
+      currentMemberIndex: -1,
     },
     {
       members: ["777", "888"],
       score: 0,
-      currentMemberIndex: 0,
+      currentMemberIndex: -1,
     },
     {
       members: ["999"],
       score: 0,
-      currentMemberIndex: 0,
+      currentMemberIndex: -1,
     },
   ],
   deck: [],

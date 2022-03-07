@@ -17,14 +17,14 @@ const Player: FunctionComponent<Props> = ({ isHinter = false, timestamp }) => {
   const players = useAtomValue(playersAtom);
   const user = players[timestamp];
 
-  return (
+  return user ? (
     <Container isHinter={isHinter}>
       <AvatarContainer>
         <Image alt="avatar image" src={"/images/avatar_placeholder.png"} width={49} height={56} />
       </AvatarContainer>
       <Name>{user.name}</Name>
     </Container>
-  );
+  ) : null;
 };
 
 const Container = styled.div<{ isHinter: boolean }>`
