@@ -24,11 +24,15 @@ const Board: FunctionComponent<Props> = ({}) => {
         <Timer onPause={onPause} onResume={onResume} />
       </HUD>
       <ContentContainer>
-        <TeamsContainer>{room.teams.map((_team, i) => i % 2 === 0 && <Team key={i} teamIndex={i} />)}</TeamsContainer>
+        <TeamsContainer>
+          {room.teams.map((_team, i) => i != 0 && i % 2 === 1 && <Team key={i} teamIndex={i} />)}
+        </TeamsContainer>
         <MainContainer>
           <CardArea onCorrect={onCorrect} onTaboo={onTaboo} onStartTurn={onStartTurn} onEndTurn={onEndTurn} />
         </MainContainer>
-        <TeamsContainer>{room.teams.map((_team, i) => i % 2 !== 0 && <Team key={i} teamIndex={i} />)}</TeamsContainer>
+        <TeamsContainer>
+          {room.teams.map((_team, i) => i != 0 && i % 2 !== 1 && <Team key={i} teamIndex={i} />)}
+        </TeamsContainer>
       </ContentContainer>
     </DragDropContext>
   );

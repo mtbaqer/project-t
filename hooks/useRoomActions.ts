@@ -4,6 +4,7 @@ import { useAtomValue } from "jotai/utils";
 import { useRouter } from "next/router";
 import { roomAtom } from "../atoms/room";
 import { Card, Room, Team, User, Word } from "../types/types";
+import cleanupDisconnectedPlayers from "../utils/cleanupDisconnectedPlayers";
 import fetchCards from "../utils/fetchCards";
 
 const database = getDatabase();
@@ -21,9 +22,16 @@ export default function useRoomActions() {
   async function onStartTurn() {
     const deck = await fetchCards();
     runTransaction(roomRef, (room: Room) => {
-      const currentTeamIndex = (room.currentTeamIndex + 1) % room.teams.length;
-      const currentUserTimestamp = getNextPlayingUserTimestamp(room.teams[currentTeamIndex]);
-      room.teams[currentTeamIndex].currentMemberIndex = currentUserTimestamp;
+      let currentTeamIndex = (room.currentTeamIndex + 1) % room.teams.length;
+      
+      while(currentTeamIndex === 0 || !room.teams[currentTeamIndex].members?.length) {
+        currentTeamIndex = (currentTeamIndex + 1) % room.teams.length;
+      }
+      
+      const team = room.teams[currentTeamIndex];
+      cleanupDisconnectedPlayers(team, room.players);
+      team.currentMemberIndex = (team.currentMemberIndex + 1) % team.members.length;
+
       const newRoom: Room = {
         ...room,
         round: currentTeamIndex === 0 ? room.round + 1 : room.round,
@@ -36,25 +44,6 @@ export default function useRoomActions() {
 
       return newRoom;
     });
-  }
-
-  function getNextPlayingUserTimestamp(team: Team) {
-    const { currentMemberIndex } = team;
-    const sortedTimestamps = Object.keys(team.members || {})
-      .sort()
-      .map(Number);
-
-    let nextUserIndex = 0;
-    for (let i = 0; i < sortedTimestamps.length; i++) {
-      const timestamp = sortedTimestamps[i];
-      if (timestamp > currentMemberIndex) {
-        nextUserIndex = i;
-        break;
-      }
-    }
-
-    const nextUserTimestamp = sortedTimestamps[nextUserIndex];
-    return nextUserTimestamp ?? null;
   }
 
   function onCorrect() {
