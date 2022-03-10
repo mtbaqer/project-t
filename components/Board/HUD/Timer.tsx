@@ -1,9 +1,9 @@
 import { useAtomValue } from "jotai/utils";
 import React, { FunctionComponent } from "react";
 import styled from "styled-components";
-import { timeLeftAtom } from "../atoms/timeLeft";
-import { roomAtom } from "../atoms/room";
-import useRoomActions from "../hooks/useRoomActions";
+import { timeLeftAtom } from "../../../atoms/timeLeft";
+import { roomAtom } from "../../../atoms/room";
+import useRoomActions from "../../../hooks/useRoomActions";
 
 interface Props {}
 

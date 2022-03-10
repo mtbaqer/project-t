@@ -6,11 +6,11 @@ import styled from "styled-components";
 import { roomAtom } from "../../atoms/room";
 import useRoom from "../../hooks/useRoom";
 import { userAtom } from "../../atoms/user";
-import Board from "../../components/Board";
+import Board from "../../components/Board/Board";
 import UserPrompt from "../../components/UserPrompt";
 import { useHotkeys } from "react-hotkeys-hook";
 import useSound from "../../hooks/useSound";
-import Lobby from "../../components/Lobby";
+import Lobby from "../../components/Lobby/Lobby";
 
 const SqueakpeaPath = "/sounds/Squeakpea.mp3";
 

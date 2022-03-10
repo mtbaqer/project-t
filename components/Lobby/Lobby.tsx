@@ -1,6 +1,6 @@
 import { FunctionComponent } from "react";
 import SettingsArea from "./SettingsArea";
-import Teams from "./Teams";
+import Teams from "../Teams/Teams";
 
 interface Props {}
 

@@ -1,10 +1,10 @@
 import { useAtomValue } from "jotai/utils";
 import React, { FunctionComponent, useMemo } from "react";
 import styled, { css } from "styled-components";
-import { roomAtom } from "../atoms/room";
+import { roomAtom } from "../../../atoms/room";
 import Word from "./Word";
 import Image from "next/image";
-import useRoomActions from "../hooks/useRoomActions";
+import useRoomActions from "../../../hooks/useRoomActions";
 
 interface Props {}
 

@@ -1,11 +1,11 @@
 import { selectAtom, useAtomValue } from "jotai/utils";
 import React, { FunctionComponent, useEffect, useMemo, useState } from "react";
 import styled, { css } from "styled-components";
-import { roomAtom } from "../atoms/room";
+import { roomAtom } from "../../atoms/room";
 import Player from "./Player";
 import { SortableContext } from "@dnd-kit/sortable";
 import { useDroppable } from "@dnd-kit/core";
-import Sortable from "./utils/Sortable";
+import Sortable from "../utils/Sortable";
 
 const teamsAtom = selectAtom(roomAtom, (room) => room.teams);
 const currentTeamIndexAtom = selectAtom(roomAtom, (room) => room.currentTeamIndex);

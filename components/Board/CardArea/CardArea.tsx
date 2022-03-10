@@ -1,11 +1,11 @@
 import { useAtomValue } from "jotai/utils";
 import React, { FunctionComponent } from "react";
 import styled from "styled-components";
-import { roomAtom } from "../atoms/room";
-import { userIdAtom } from "../atoms/user";
+import { roomAtom } from "../../../atoms/room";
+import { userIdAtom } from "../../../atoms/user";
 import Card from "./Card";
 import Image from "next/image";
-import useRoomActions from "../hooks/useRoomActions";
+import useRoomActions from "../../../hooks/useRoomActions";
 
 interface Props {}
 
@@ -35,6 +35,7 @@ const CardArea: FunctionComponent<Props> = ({}) => {
     return currentTeam?.members?.map((timestamp) => players[timestamp].id).includes(userId);
   }
 
+  //TODO: Extract the buttons to their own components
   return (
     <Container>
       {status === "waiting" ? (

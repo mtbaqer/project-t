@@ -1,6 +1,6 @@
 import React, { FunctionComponent } from "react";
 import styled, { css } from "styled-components";
-import { Word as WordType } from "../types/types";
+import { Word as WordType } from "../../../types/types";
 
 interface Props {
   word: WordType;

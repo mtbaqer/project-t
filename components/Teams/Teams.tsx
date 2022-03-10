@@ -2,8 +2,8 @@ import { DndContext, DragOverlay } from "@dnd-kit/core";
 import { useAtomValue } from "jotai/utils";
 import React, { FunctionComponent } from "react";
 import styled from "styled-components";
-import { roomAtom } from "../atoms/room";
-import useDnDActions from "../hooks/useDnDActions";
+import { roomAtom } from "../../atoms/room";
+import useDnDActions from "../../hooks/useDnDActions";
 import Player from "./Player";
 import Team from "./Team";
 

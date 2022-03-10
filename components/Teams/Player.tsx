@@ -1,10 +1,10 @@
 import React, { FunctionComponent, memo } from "react";
 import styled, { css } from "styled-components";
-import { User } from "../types/types";
+import { User } from "../../types/types";
 import Image from "next/image";
 import { useSortable } from "@dnd-kit/sortable";
 import { selectAtom, useAtomValue } from "jotai/utils";
-import { roomAtom } from "../atoms/room";
+import { roomAtom } from "../../atoms/room";
 
 const playersAtom = selectAtom(roomAtom, (room) => room.players);
 

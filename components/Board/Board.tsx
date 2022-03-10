@@ -1,7 +1,7 @@
 import React, { FunctionComponent } from "react";
-import CardArea from "./CardArea";
-import HUD from "./HUD";
-import Teams from "./Teams";
+import CardArea from "./CardArea/CardArea";
+import HUD from "./HUD/HUD";
+import Teams from "../Teams/Teams";
 
 interface Props {}
 
