@@ -116,19 +116,6 @@ export default function useRoomActions() {
     setDoc(currentWordRef, newWord);
   }
 
-  function onPlayerTeamChange(sourceTeamIndex: number, destinationTeamIndex: number, memberTimestamp: string) {
-    // if (sourceTeamIndex === destinationTeamIndex) return;
-    // runTransaction(teamsRef, (teams: Team[]) => {
-    //   const sourceTeam = teams[sourceTeamIndex];
-    //   const destinationTeam = teams[destinationTeamIndex];
-    //   const member = sourceTeam.members[memberTimestamp];
-    //   delete sourceTeam.members[memberTimestamp];
-    //   destinationTeam.members = destinationTeam.members ?? {};
-    //   destinationTeam.members[Date.now()] = member;
-    //   return teams;
-    // });
-  }
-
   return {
     onStartTurn,
     onCorrect,
@@ -139,6 +126,5 @@ export default function useRoomActions() {
     onFlipCard,
     onRotateCard,
     onFlagCard,
-    onPlayerTeamChange,
   };
 }
