@@ -36,7 +36,8 @@ const Timer: FunctionComponent<Props> = ({}) => {
 };
 
 const Button = styled.button`
-  margin-top: 18px;
+  position: absolute;
+  top: 18px;
   transition: opacity 0.15s;
   &:hover {
     opacity: 0.5;

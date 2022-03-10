@@ -11,23 +11,26 @@ const playersAtom = selectAtom(roomAtom, (room) => room.players);
 interface Props {
   isHinter?: boolean;
   timestamp: string;
+  spectator?: boolean;
 }
 
-const Player: FunctionComponent<Props> = ({ isHinter = false, timestamp }) => {
+const Player: FunctionComponent<Props> = ({ isHinter = false, timestamp, spectator = false }) => {
   const players = useAtomValue(playersAtom);
   const user = players[timestamp];
 
   return user ? (
-    <Container isHinter={isHinter}>
-      <AvatarContainer isHinter={isHinter}>
-        <Image alt="avatar image" src={"/images/avatar_placeholder.png"} width={49} height={56} />
-      </AvatarContainer>
-      <Name>{user.name}</Name>
-    </Container>
+    <div>
+      <Container isHinter={isHinter} spectator={spectator}>
+        <AvatarContainer isHinter={isHinter} spectator={spectator}>
+          <Image alt="avatar image" src={"/images/avatar_placeholder.png"} width={49} height={56} />
+        </AvatarContainer>
+        {!spectator ? <Name>{user.name}</Name> : null}
+      </Container>
+    </div>
   ) : null;
 };
 
-const Container = styled.div<{ isHinter: boolean }>`
+const Container = styled.div<{ isHinter: boolean; spectator: boolean }>`
   margin: 5px 0;
   background-color: rgba(255, 255, 255, 0.7);
   display: flex;
@@ -43,15 +46,30 @@ const Container = styled.div<{ isHinter: boolean }>`
           border: 3px solid rgb(67 216 162);
         `
       : ""}
+
+  ${({ spectator }) =>
+    spectator
+      ? css`
+          width: auto;
+          border-bottom-right-radius: 100px;
+          border-top-right-radius: 100px;
+        `
+      : ""}
 `;
 
-const AvatarContainer = styled.div<{ isHinter: boolean }>`
+const AvatarContainer = styled.div<{ isHinter: boolean; spectator: boolean }>`
   margin: 0 10px;
 
   ${({ isHinter }) =>
     isHinter
       ? css`
           margin: -3px 10px -3px 7px;
+        `
+      : ""}
+  ${({ spectator }) =>
+    spectator
+      ? css`
+          margin: 10px;
         `
       : ""}
 `;

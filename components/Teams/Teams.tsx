@@ -5,6 +5,7 @@ import styled from "styled-components";
 import { roomAtom } from "../../atoms/room";
 import useDnDActions from "../../hooks/useDnDActions";
 import Player from "./Player";
+import Spectators from "./Spectators";
 import Team from "./Team";
 
 interface Props {
@@ -18,11 +19,9 @@ const Teams: FunctionComponent<Props> = ({ lobby = false }) => {
 
   return (
     <DndContext onDragStart={onDragStart} onDragOver={onDragOver} onDragEnd={onDragEnd}>
-      {lobby ? (
-        <SpectatorsContainer>
-          <Team title={`Spectators`} teamIndex={0} showScore={false} grid />
-        </SpectatorsContainer>
-      ) : null}
+      <SpectatorsContainer>
+        <Spectators lobby={lobby} />
+      </SpectatorsContainer>
       <TeamsContainer>
         {room.teams.map((_team, i) =>
           i == 0 ? null : (
@@ -42,6 +41,7 @@ const Teams: FunctionComponent<Props> = ({ lobby = false }) => {
 const SpectatorsContainer = styled.div`
   display: flex;
   justify-content: center;
+  min-height: 122px;
 `;
 
 const TeamsContainer = styled.div`

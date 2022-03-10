@@ -6,9 +6,7 @@ import Player from "./Player";
 import { SortableContext } from "@dnd-kit/sortable";
 import { useDroppable } from "@dnd-kit/core";
 import Sortable from "../utils/Sortable";
-
-const teamsAtom = selectAtom(roomAtom, (room) => room.teams);
-const currentTeamIndexAtom = selectAtom(roomAtom, (room) => room.currentTeamIndex);
+import { currentTeamIndexAtom, teamsAtom } from "../../atoms/teams";
 
 interface Props {
   teamIndex?: number;
