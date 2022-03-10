@@ -19,7 +19,7 @@ const Player: FunctionComponent<Props> = ({ isHinter = false, timestamp }) => {
 
   return user ? (
     <Container isHinter={isHinter}>
-      <AvatarContainer>
+      <AvatarContainer isHinter={isHinter}>
         <Image alt="avatar image" src={"/images/avatar_placeholder.png"} width={49} height={56} />
       </AvatarContainer>
       <Name>{user.name}</Name>
@@ -28,7 +28,7 @@ const Player: FunctionComponent<Props> = ({ isHinter = false, timestamp }) => {
 };
 
 const Container = styled.div<{ isHinter: boolean }>`
-  margin: 5px 10px;
+  margin: 5px 0;
   background-color: rgba(255, 255, 255, 0.7);
   display: flex;
   align-items: center;
@@ -45,8 +45,15 @@ const Container = styled.div<{ isHinter: boolean }>`
       : ""}
 `;
 
-const AvatarContainer = styled.div`
+const AvatarContainer = styled.div<{ isHinter: boolean }>`
   margin: 0 10px;
+
+  ${({ isHinter }) =>
+    isHinter
+      ? css`
+          margin: -3px 10px -3px 7px;
+        `
+      : ""}
 `;
 
 const Name = styled.p`

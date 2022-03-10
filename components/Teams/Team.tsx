@@ -68,13 +68,14 @@ const SubContainer = styled.div<{ currentlyPlaying: boolean; grid: boolean }>`
   align-items: center;
   border-radius: 10px;
   margin: 10px 18px;
-  padding: 13px 0;
+  padding: 13px 10px;
   position: relative;
 
   ${({ currentlyPlaying }) =>
     currentlyPlaying
       ? css`
           border: 4px solid rgb(67 216 162);
+          padding: 9px 6px;
         `
       : ""};
 
