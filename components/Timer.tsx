@@ -3,13 +3,12 @@ import React, { FunctionComponent } from "react";
 import styled from "styled-components";
 import { timeLeftAtom } from "../atoms/timeLeft";
 import { roomAtom } from "../atoms/room";
+import useRoomActions from "../hooks/useRoomActions";
 
-interface Props {
-  onPause: () => void;
-  onResume: () => void;
-}
+interface Props {}
 
-const Timer: FunctionComponent<Props> = ({ onPause, onResume }) => {
+const Timer: FunctionComponent<Props> = ({}) => {
+  const { onPause, onResume } = useRoomActions();
   const room = useAtomValue(roomAtom);
   const timeLeft = useAtomValue(timeLeftAtom);
   let radius = 15;
@@ -37,8 +36,7 @@ const Timer: FunctionComponent<Props> = ({ onPause, onResume }) => {
 };
 
 const Button = styled.button`
-  position: absolute;
-  top: 18px;
+  margin-top: 18px;
   transition: opacity 0.15s;
   &:hover {
     opacity: 0.5;

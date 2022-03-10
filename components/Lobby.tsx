@@ -8,7 +8,7 @@ const Lobby: FunctionComponent<Props> = ({}) => {
   return (
     <>
       <SettingsArea />
-      <Teams />
+      <Teams lobby />
     </>
   );
 };

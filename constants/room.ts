@@ -11,7 +11,7 @@ export const DefaultRoom: Room = {
   round: 0,
   turnEndTime: 0,
   turnTimeLeft: 60 * 1000,
-  currentTeamIndex: -1,
+  currentTeamIndex: 0,
   settings: {
     maxRounds: 5,
     timePerRound: 60,
@@ -82,7 +82,7 @@ export const TestRoom: Room = {
   },
   teams: [
     {
-      members: ["123", "321", "111","222","333","777","888","999","444","555"],
+      members: ["123", "321", "111", "222", "333", "777", "888", "999", "444", "555"],
       score: 0,
       currentMemberIndex: -1,
     },
@@ -107,7 +107,7 @@ export const TestRoom: Room = {
   round: 0,
   turnEndTime: 0,
   turnTimeLeft: 60 * 1000,
-  currentTeamIndex: -1,
+  currentTeamIndex: 0,
   settings: {
     maxRounds: 5,
     timePerRound: 60,

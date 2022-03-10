@@ -29,11 +29,6 @@ const SettingsArea: FunctionComponent<Props> = ({}) => {
   );
 };
 
-const ButtonContainer = styled.div`
-  display: flex;
-  justify-content: center;
-`;
-
 const CenterContainer = styled.div`
   position: absolute;
   height: 100%;
@@ -47,6 +42,11 @@ const CenterSubContainer = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
+`;
+
+const ButtonContainer = styled.div`
+  display: flex;
+  justify-content: center;
 `;
 
 const Button = styled.button`
