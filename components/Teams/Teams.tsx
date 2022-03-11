@@ -42,6 +42,7 @@ const SpectatorsContainer = styled.div`
   display: flex;
   justify-content: center;
   min-height: 122px;
+  width: 100%;
 `;
 
 const TeamsContainer = styled.div`

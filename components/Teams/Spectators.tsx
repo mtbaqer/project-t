@@ -38,10 +38,14 @@ const Spectators: FunctionComponent<Props> = ({ lobby }) => {
 
 const Container = styled.div<{ left: boolean }>`
   display: flex;
+  flex: 1 0 30%;
+  align-items: center;
+
+  justify-content: ${({ left }) => (left ? "flex-end" : "flex-start")};
 `;
 
 const Padding = styled.div`
-  min-width: 100px;
+  width: 200px;
 `;
 
 export default Spectators;

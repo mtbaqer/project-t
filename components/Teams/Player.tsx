@@ -8,6 +8,9 @@ import { roomAtom } from "../../atoms/room";
 
 const playersAtom = selectAtom(roomAtom, (room) => room.players);
 
+const AvatarDefaultWidth = 49;
+const AvatarDefaultHeight = 56;
+
 interface Props {
   isHinter?: boolean;
   timestamp: string;
@@ -19,14 +22,19 @@ const Player: FunctionComponent<Props> = ({ isHinter = false, timestamp, spectat
   const user = players[timestamp];
 
   return user ? (
-    <div>
-      <Container isHinter={isHinter} spectator={spectator}>
-        <AvatarContainer isHinter={isHinter} spectator={spectator}>
-          <Image alt="avatar image" src={"/images/avatar_placeholder.png"} width={49} height={56} />
-        </AvatarContainer>
-        {!spectator ? <Name>{user.name}</Name> : null}
-      </Container>
-    </div>
+    <Container isHinter={isHinter} spectator={spectator}>
+      <AvatarContainer isHinter={isHinter} spectator={spectator}>
+        <OverFlowContainer>
+          <StyledImage
+            alt="avatar image"
+            src={"/images/avatar_placeholder.png"}
+            width={AvatarDefaultWidth}
+            height={AvatarDefaultHeight}
+          />
+        </OverFlowContainer>
+      </AvatarContainer>
+      {!spectator ? <Name>{user.name}</Name> : null}
+    </Container>
   ) : null;
 };
 
@@ -50,15 +58,23 @@ const Container = styled.div<{ isHinter: boolean; spectator: boolean }>`
   ${({ spectator }) =>
     spectator
       ? css`
-          width: auto;
-          border-bottom-right-radius: 100px;
-          border-top-right-radius: 100px;
+          width: 65px;
+          height: 65px;
+          justify-content: center;
+          background-color: transparent;
         `
       : ""}
 `;
 
 const AvatarContainer = styled.div<{ isHinter: boolean; spectator: boolean }>`
+  display: flex;
+  flex-direction: column;
   margin: 0 10px;
+  border-radius: 100%;
+  border: 2px solid rgb(1, 36, 66);
+  width: ${AvatarDefaultWidth}px;
+  height: ${AvatarDefaultWidth}px;
+  overflow: visible;
 
   ${({ isHinter }) =>
     isHinter
@@ -66,12 +82,19 @@ const AvatarContainer = styled.div<{ isHinter: boolean; spectator: boolean }>`
           margin: -3px 10px -3px 7px;
         `
       : ""}
+
   ${({ spectator }) =>
     spectator
       ? css`
           margin: 10px;
         `
       : ""}
+`;
+
+const OverFlowContainer = styled.div``;
+
+const StyledImage = styled(Image)`
+  object-fit: cover;
 `;
 
 const Name = styled.p`
