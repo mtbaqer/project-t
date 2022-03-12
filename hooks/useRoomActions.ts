@@ -3,6 +3,7 @@ import { doc, getFirestore, setDoc } from "firebase/firestore";
 import { useAtomValue } from "jotai/utils";
 import { useRouter } from "next/router";
 import { roomAtom } from "../atoms/room";
+import { DefaultRoom, DefaultTeam } from "../constants/room";
 import { Card, Room, Team, User, Word } from "../types/types";
 import cleanupDisconnectedPlayers from "../utils/cleanupDisconnectedPlayers";
 import fetchCards from "../utils/fetchCards";
@@ -23,11 +24,11 @@ export default function useRoomActions() {
     const deck = await fetchCards();
     runTransaction(roomRef, (room: Room) => {
       let currentTeamIndex = (room.currentTeamIndex + 1) % room.teams.length;
-      
-      while(currentTeamIndex === 0 || !room.teams[currentTeamIndex].members?.length) {
+
+      while (currentTeamIndex === 0 || !room.teams[currentTeamIndex].members?.length) {
         currentTeamIndex = (currentTeamIndex + 1) % room.teams.length;
       }
-      
+
       const team = room.teams[currentTeamIndex];
       cleanupDisconnectedPlayers(team, room.players);
       team.currentMemberIndex = (team.currentMemberIndex + 1) % team.members.length;
@@ -116,6 +117,21 @@ export default function useRoomActions() {
     setDoc(currentWordRef, newWord);
   }
 
+  function onBackButton() {
+    runTransaction(roomRef, (room: Room) => {
+      const teams = room.teams.map(({ members }) => ({ ...DefaultTeam, members }));
+      const newRoom: Room = {
+        ...DefaultRoom,
+        teams,
+        id: room.id,
+        settings: room.settings,
+        players: room.players,
+        status: "loading",
+      };
+      return newRoom;
+    });
+  }
+
   return {
     onStartTurn,
     onCorrect,
@@ -126,5 +142,6 @@ export default function useRoomActions() {
     onFlipCard,
     onRotateCard,
     onFlagCard,
+    onBackButton,
   };
 }

@@ -36,8 +36,7 @@ const Timer: FunctionComponent<Props> = ({}) => {
 };
 
 const Button = styled.button`
-  position: absolute;
-  top: 18px;
+  margin-top: 18px;
   transition: opacity 0.15s;
   &:hover {
     opacity: 0.5;
@@ -47,6 +46,7 @@ const Button = styled.button`
 const TimerContainer = styled.div`
   display: flex;
   border-radius: 100px;
+  flex: 1;
   border: 6px solid white;
 `;
 
