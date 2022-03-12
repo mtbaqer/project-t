@@ -69,7 +69,7 @@ const Container = styled.div<{ isHinter: boolean; spectator: boolean }>`
 const AvatarContainer = styled.div<{ isHinter: boolean; spectator: boolean }>`
   display: flex;
   flex-direction: column;
-  margin: 0 10px;
+  margin: 7px;
   border-radius: 100%;
   border: 2px solid rgb(1, 36, 66);
   width: ${AvatarDefaultWidth}px;
@@ -79,7 +79,7 @@ const AvatarContainer = styled.div<{ isHinter: boolean; spectator: boolean }>`
   ${({ isHinter }) =>
     isHinter
       ? css`
-          margin: -3px 10px -3px 7px;
+          margin: 4px 7px 4px 4px;
         `
       : ""}
 
@@ -91,13 +91,17 @@ const AvatarContainer = styled.div<{ isHinter: boolean; spectator: boolean }>`
       : ""}
 `;
 
-const OverFlowContainer = styled.div``;
+const OverFlowContainer = styled.div`
+  margin-top: ${AvatarDefaultWidth - AvatarDefaultHeight}px;
+`;
 
 const StyledImage = styled(Image)`
+  margin-top: -50px;
   object-fit: cover;
 `;
 
 const Name = styled.p`
+  margin: 0 5px;
   font-size: 16px;
   font-family: "Nunito";
   font-weight: 900;
