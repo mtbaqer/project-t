@@ -3,7 +3,9 @@ import { doc, getFirestore, setDoc } from "firebase/firestore";
 import { useAtomValue } from "jotai/utils";
 import { useRouter } from "next/router";
 import { roomAtom } from "../atoms/room";
-import { Card, Room, Team, Word } from "../types/types";
+import { DefaultRoom, DefaultTeam } from "../constants/room";
+import { Card, Room, Team, User, Word } from "../types/types";
+import cleanupDisconnectedPlayers from "../utils/cleanupDisconnectedPlayers";
 import fetchCards from "../utils/fetchCards";
 
 const database = getDatabase();
@@ -21,12 +23,19 @@ export default function useRoomActions() {
   async function onStartTurn() {
     const deck = await fetchCards();
     runTransaction(roomRef, (room: Room) => {
-      const currentTeamIndex = (room.currentTeamIndex + 1) % room.teams.length;
-      const currentUserTimestamp = getNextPlayingUserTimestamp(room.teams[currentTeamIndex]);
-      room.teams[currentTeamIndex].currentUserTimestamp = currentUserTimestamp;
+      let currentTeamIndex = (room.currentTeamIndex + 1) % room.teams.length;
+
+      while (currentTeamIndex === 0 || !room.teams[currentTeamIndex].members?.length) {
+        currentTeamIndex = (currentTeamIndex + 1) % room.teams.length;
+      }
+
+      const team = room.teams[currentTeamIndex];
+      cleanupDisconnectedPlayers(team, room.players);
+      team.currentMemberIndex = (team.currentMemberIndex + 1) % team.members.length;
+
       const newRoom: Room = {
         ...room,
-        round: currentTeamIndex === 0 ? room.round + 1 : room.round,
+        round: currentTeamIndex === 1 ? room.round + 1 : room.round,
         currentCardIndex: 0,
         status: "playing",
         turnEndTime: Date.now() + 60 * 1000,
@@ -36,25 +45,6 @@ export default function useRoomActions() {
 
       return newRoom;
     });
-  }
-
-  function getNextPlayingUserTimestamp(team: Team) {
-    const { currentUserTimestamp } = team;
-    const sortedTimestamps = Object.keys(team.members || {})
-      .sort()
-      .map(Number);
-
-    let nextUserIndex = 0;
-    for (let i = 0; i < sortedTimestamps.length; i++) {
-      const timestamp = sortedTimestamps[i];
-      if (timestamp > currentUserTimestamp) {
-        nextUserIndex = i;
-        break;
-      }
-    }
-
-    const nextUserTimestamp = sortedTimestamps[nextUserIndex];
-    return nextUserTimestamp ?? null;
   }
 
   function onCorrect() {
@@ -127,5 +117,31 @@ export default function useRoomActions() {
     setDoc(currentWordRef, newWord);
   }
 
-  return { onStartTurn, onCorrect, onTaboo, onPause, onResume, onEndTurn, onFlipCard, onRotateCard, onFlagCard };
+  function onBackButton() {
+    runTransaction(roomRef, (room: Room) => {
+      const teams = room.teams.map(({ members }) => ({ ...DefaultTeam, members }));
+      const newRoom: Room = {
+        ...DefaultRoom,
+        teams,
+        id: room.id,
+        settings: room.settings,
+        players: room.players,
+        status: "loading",
+      };
+      return newRoom;
+    });
+  }
+
+  return {
+    onStartTurn,
+    onCorrect,
+    onTaboo,
+    onPause,
+    onResume,
+    onEndTurn,
+    onFlipCard,
+    onRotateCard,
+    onFlagCard,
+    onBackButton,
+  };
 }

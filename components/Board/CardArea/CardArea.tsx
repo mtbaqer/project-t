@@ -1,25 +1,22 @@
 import { useAtomValue } from "jotai/utils";
 import React, { FunctionComponent } from "react";
 import styled from "styled-components";
-import { roomAtom } from "../atoms/room";
-import { userIdAtom } from "../atoms/user";
+import { roomAtom } from "../../../atoms/room";
+import { userIdAtom } from "../../../atoms/user";
 import Card from "./Card";
 import Image from "next/image";
+import useRoomActions from "../../../hooks/useRoomActions";
 
-interface Props {
-  onCorrect: () => void;
-  onTaboo: () => void;
-  onStartTurn: () => void;
-  onEndTurn: () => void;
-}
+interface Props {}
 
-const CardArea: FunctionComponent<Props> = ({ onCorrect, onTaboo, onStartTurn, onEndTurn }) => {
-  const userId = useAtomValue(userIdAtom);
+const CardArea: FunctionComponent<Props> = ({}) => {
+  const { onStartTurn, onCorrect, onTaboo, onEndTurn } = useRoomActions();
+  const userId = useAtomValue(userIdAtom)!;
   const room = useAtomValue(roomAtom);
 
   const status = room.status;
+  const players = room.players;
   const currentTeam = room.teams[room.currentTeamIndex];
-  const currentUserTimestamp = room.teams[room.currentTeamIndex]?.currentUserTimestamp;
 
   const canSeeCard = getCanSeeCard();
 
@@ -28,14 +25,17 @@ const CardArea: FunctionComponent<Props> = ({ onCorrect, onTaboo, onStartTurn, o
   }
 
   function isHinter() {
-    const hinterId = currentTeam?.members?.[currentUserTimestamp]?.id;
+    const hinterIndex = currentTeam.currentMemberIndex;
+    const hinterTimestamp = currentTeam.members[hinterIndex];
+    const hinterId = room.players[hinterTimestamp]?.id;
     return hinterId === userId;
   }
 
   function isInCurrentTeam(): boolean {
-    return Object.values(currentTeam?.members || {}).findIndex((member) => member.id === userId) !== -1;
+    return currentTeam?.members?.map((timestamp) => players[timestamp].id).includes(userId);
   }
 
+  //TODO: Extract the buttons to their own components
   return (
     <Container>
       {status === "waiting" ? (
@@ -72,9 +72,13 @@ const CardArea: FunctionComponent<Props> = ({ onCorrect, onTaboo, onStartTurn, o
 };
 
 const Container = styled.div`
+  position: absolute;
+  height: 100%;
+  width: 100%;
   display: flex;
-  flex-direction: column;
   justify-content: center;
+  align-items: center;
+  flex-direction: column;
 `;
 
 const Button = styled.button`

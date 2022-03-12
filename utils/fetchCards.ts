@@ -2,7 +2,7 @@ import { collection, getDocs, getFirestore, limit, query, snapshotEqual, where }
 import { Card, Orientation, Word } from "../types/types";
 
 const WordsPerCard = 4;
-const CardsToFetch = 10;
+const CardsToFetch = 20;
 const WordsCollectionLength = 1261;
 
 const database = getFirestore();

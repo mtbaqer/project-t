@@ -1,7 +1,7 @@
 export interface Team {
-  members: { [key: string]: User };
+  members: string[];
   score: number;
-  currentUserTimestamp: number;
+  currentMemberIndex: number;
 }
 
 export interface User {
@@ -33,7 +33,6 @@ export interface Word {
 export interface Room {
   id: string;
   teams: Team[];
-  spectators: User[];
   deck: Card[];
   round: number;
   currentCardIndex: number;
@@ -43,7 +42,7 @@ export interface Room {
   settings: Settings;
   seenWords: Card[];
   status: RoomStatus;
-  hostQueue: { [key: number]: string };
+  players: Record<string, User>;
 }
 
 export type RoomStatus = "loading" | "waiting" | "playing" | "paused" | "ended";
