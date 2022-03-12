@@ -23,7 +23,7 @@ const Player: FunctionComponent<Props> = ({ isHinter = false, timestamp, spectat
 
   return user ? (
     <Container isHinter={isHinter} spectator={spectator}>
-      <AvatarContainer isHinter={isHinter} spectator={spectator}>
+      <AvatarContainer isHinter={isHinter}>
         <OverFlowContainer>
           <StyledImage
             alt="avatar image"
@@ -66,7 +66,7 @@ const Container = styled.div<{ isHinter: boolean; spectator: boolean }>`
       : ""}
 `;
 
-const AvatarContainer = styled.div<{ isHinter: boolean; spectator: boolean }>`
+const AvatarContainer = styled.div<{ isHinter: boolean }>`
   display: flex;
   flex-direction: column;
   margin: 7px;
@@ -80,13 +80,6 @@ const AvatarContainer = styled.div<{ isHinter: boolean; spectator: boolean }>`
     isHinter
       ? css`
           margin: 4px 7px 4px 4px;
-        `
-      : ""}
-
-  ${({ spectator }) =>
-    spectator
-      ? css`
-          margin: 10px;
         `
       : ""}
 `;
