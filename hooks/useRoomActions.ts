@@ -35,7 +35,7 @@ export default function useRoomActions() {
 
       const newRoom: Room = {
         ...room,
-        round: currentTeamIndex === 0 ? room.round + 1 : room.round,
+        round: currentTeamIndex === 1 ? room.round + 1 : room.round,
         currentCardIndex: 0,
         status: "playing",
         turnEndTime: Date.now() + 60 * 1000,
