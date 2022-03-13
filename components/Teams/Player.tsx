@@ -27,7 +27,7 @@ const Player: FunctionComponent<Props> = ({ isHinter = false, timestamp, spectat
         <OverFlowContainer>
           <StyledImage
             alt="avatar image"
-            src={"/images/avatar_placeholder.png"}
+            src={user.avatarUrl ? `/images/avatars/${user.avatarUrl}.svg` : "/images/avatar_placeholder.png"}
             width={AvatarDefaultWidth}
             height={AvatarDefaultHeight}
           />

@@ -13,7 +13,7 @@ export const DefaultRoom: Room = {
   turnTimeLeft: 60 * 1000,
   currentTeamIndex: 0,
   settings: {
-    maxRounds: 5,
+    maxRounds: 10,
     timePerRound: 60,
   },
   status: "loading",

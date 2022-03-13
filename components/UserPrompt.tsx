@@ -10,7 +10,8 @@ const UserPrompt: FunctionComponent<Props> = ({}) => {
   const { addUser } = useUserActions();
 
   function onStart() {
-    if (username.length) addUser(username, "");
+    const randomAvatarIndex = 1 + Math.floor(Math.random() * 39);
+    if (username.length) addUser(username, randomAvatarIndex.toString());
     else alert("Please input your username");
   }
 
