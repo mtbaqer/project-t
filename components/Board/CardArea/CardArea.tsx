@@ -19,12 +19,9 @@ const CardArea: FunctionComponent<Props> = ({}) => {
   const currentTeam = room.teams[room.currentTeamIndex];
 
   const isHinter = checkIsHinter();
+  const isInCurrentTeam = checkIsInCurrentTeam();
 
-  const canSeeCard = getCanSeeCard();
-
-  function getCanSeeCard() {
-    return !isInCurrentTeam() || isHinter;
-  }
+  const canSeeCard = !isInCurrentTeam || isHinter;
 
   function checkIsHinter() {
     const hinterIndex = currentTeam.currentMemberIndex;
@@ -33,7 +30,7 @@ const CardArea: FunctionComponent<Props> = ({}) => {
     return hinterId === userId;
   }
 
-  function isInCurrentTeam(): boolean {
+  function checkIsInCurrentTeam(): boolean {
     return currentTeam?.members?.map((timestamp) => players[timestamp].id).includes(userId);
   }
 
@@ -50,9 +47,11 @@ const CardArea: FunctionComponent<Props> = ({}) => {
           <Div>
             <Strong>PAUSED</Strong>
           </Div>
-          <Button onClick={onEndTurn}>
-            <Strong>END TURN</Strong>
-          </Button>
+          {isInCurrentTeam && (
+            <Button onClick={onEndTurn}>
+              <Strong>END TURN</Strong>
+            </Button>
+          )}
         </PauseContainer>
       ) : canSeeCard ? (
         <SubContainer>
