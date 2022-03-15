@@ -6,9 +6,11 @@ import Word from "./Word";
 import Image from "next/image";
 import useRoomActions from "../../../hooks/useRoomActions";
 
-interface Props {}
+interface Props {
+  isHinter: boolean;
+}
 
-const Card: FunctionComponent<Props> = ({}) => {
+const Card: FunctionComponent<Props> = ({ isHinter }) => {
   const room = useAtomValue(roomAtom);
   const { onFlipCard, onRotateCard, onFlagCard } = useRoomActions();
 
@@ -39,12 +41,16 @@ const Card: FunctionComponent<Props> = ({}) => {
         </MiniButton>
       </ButtonsContainer>
       <ButtonsContainer bottom>
-        <MiniButton onClick={onFlipCard}>
-          <Image src="/images/flip.svg" alt="flip" width={39.6} height={44.4} />
-        </MiniButton>
-        <MiniButton onClick={onRotateCard}>
-          <Image src="/images/rotate.svg" alt="rotate" width={39.6} height={44.4} />
-        </MiniButton>
+        {isHinter && (
+          <>
+            <MiniButton onClick={onFlipCard}>
+              <Image src="/images/flip.svg" alt="flip" width={39.6} height={44.4} />
+            </MiniButton>
+            <MiniButton onClick={onRotateCard}>
+              <Image src="/images/rotate.svg" alt="rotate" width={39.6} height={44.4} />
+            </MiniButton>
+          </>
+        )}
       </ButtonsContainer>
     </Container>
   ) : null;

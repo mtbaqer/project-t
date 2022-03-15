@@ -18,13 +18,15 @@ const CardArea: FunctionComponent<Props> = ({}) => {
   const players = room.players;
   const currentTeam = room.teams[room.currentTeamIndex];
 
+  const isHinter = checkIsHinter();
+
   const canSeeCard = getCanSeeCard();
 
   function getCanSeeCard() {
-    return !isInCurrentTeam() || isHinter();
+    return !isInCurrentTeam() || isHinter;
   }
 
-  function isHinter() {
+  function checkIsHinter() {
     const hinterIndex = currentTeam.currentMemberIndex;
     const hinterTimestamp = currentTeam.members[hinterIndex];
     const hinterId = room.players[hinterTimestamp]?.id;
@@ -54,7 +56,7 @@ const CardArea: FunctionComponent<Props> = ({}) => {
         </PauseContainer>
       ) : canSeeCard ? (
         <SubContainer>
-          <Card />
+          <Card isHinter={isHinter} />
           <ButtonsContainer>
             <Button onClick={onTaboo}>
               <Image src="/images/wrong.svg" alt="play button" width={23} height={29} />
