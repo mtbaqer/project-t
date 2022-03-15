@@ -7,8 +7,8 @@ const WordsCollectionLength = 1261;
 
 const database = getFirestore();
 
-export default async function fetchCards() {
-  const words = await fetchWords();
+export default async function fetchCards(seenWordsIndices: number[]) {
+  const { words, wordsIndices } = await fetchWords(seenWordsIndices);
 
   const cards: Card[] = [];
   words.forEach((word, index) => {
@@ -17,23 +17,45 @@ export default async function fetchCards() {
     card.words.push(word);
   });
 
-  return cards;
+  return { cards, wordsIndices };
 }
 
-async function fetchWords() {
-  const randomIndices = generateRandomIndices();
-  const wordsFetches = randomIndices.map((index) => {
-    const q = query(collection(database, "words"), where("index", "==", index));
-    return getDocs(q).then((snapshot) => snapshot.docs[0].data() as Word);
-  });
-  return Promise.all(wordsFetches);
+async function fetchWords(seenWordsIndices: number[]) {
+  const randomIndices = generateRandomIndices(seenWordsIndices);
+  const indicesSubArrays = splitIntoSubArrays(randomIndices);
+
+  const queries = [];
+
+  for (let subArray of indicesSubArrays) {
+    const q = query(collection(database, "words"), where("index", "in", subArray));
+    queries.push(getDocs(q));
+  }
+
+  const words = [];
+  const snapshots = await Promise.all(queries);
+  for (let snapshot of snapshots) {
+    for (let doc of snapshot.docs) {
+      words.push(doc.data() as Word);
+    }
+  }
+  return { words, wordsIndices: randomIndices };
 }
 
-function generateRandomIndices() {
+function splitIntoSubArrays(indices: number[]) {
+  const times = Math.floor(indices.length / 10);
+  const output = [];
+  for (let i = 0; i < times; i++) {
+    output.push(indices.slice(10 * i, 10 * (i + 1)));
+  }
+  return output;
+}
+
+function generateRandomIndices(seenWordsIndices: number[]) {
   const set = new Set<number>();
+  const seenSet = new Set(seenWordsIndices);
   while (set.size < WordsPerCard * CardsToFetch) {
     const random = randomInt();
-    if (!set.has(random)) set.add(random);
+    if (!seenSet.has(random)) set.add(random);
   }
   return Array.from(set);
 }

@@ -40,7 +40,7 @@ export interface Room {
   turnTimeLeft: number;
   turnEndTime: number;
   settings: Settings;
-  seenWords: Card[];
+  seenWordsIndices: number[];
   status: RoomStatus;
   players: Record<string, User>;
 }

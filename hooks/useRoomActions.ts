@@ -21,14 +21,16 @@ export default function useRoomActions() {
   const teamsRef = child(roomRef, "teams");
 
   async function onStartTurn() {
-    const deck = await fetchCards();
+    const { cards: deck, wordsIndices } = await fetchCards(room.seenWordsIndices);
+    const seenWordsIndices = room.seenWordsIndices ?? [];
+    wordsIndices.forEach((index) => seenWordsIndices.push(index));
+
     runTransaction(roomRef, (room: Room) => {
       let currentTeamIndex = (room.currentTeamIndex + 1) % room.teams.length;
 
       while (currentTeamIndex === 0 || !room.teams[currentTeamIndex].members?.length) {
         currentTeamIndex = (currentTeamIndex + 1) % room.teams.length;
       }
-
       const team = room.teams[currentTeamIndex];
       cleanupDisconnectedPlayers(team, room.players);
       team.currentMemberIndex = (team.currentMemberIndex + 1) % team.members.length;
@@ -41,6 +43,7 @@ export default function useRoomActions() {
         turnEndTime: Date.now() + 60 * 1000,
         currentTeamIndex,
         deck,
+        seenWordsIndices: seenWordsIndices,
       };
 
       return newRoom;
@@ -119,7 +122,7 @@ export default function useRoomActions() {
 
   function onBackButton() {
     runTransaction(roomRef, (room: Room) => {
-      const teams = room.teams.map(({ members }) => ({ ...DefaultTeam, members }));
+      const teams = room.teams.map(({ members }) => ({ ...DefaultTeam, members: members ?? [] }));
       const newRoom: Room = {
         ...DefaultRoom,
         teams,
@@ -127,6 +130,7 @@ export default function useRoomActions() {
         settings: room.settings,
         players: room.players,
         status: "loading",
+        seenWordsIndices: room.seenWordsIndices,
       };
       return newRoom;
     });

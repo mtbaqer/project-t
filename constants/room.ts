@@ -17,7 +17,7 @@ export const DefaultRoom: Room = {
     timePerRound: 60,
   },
   status: "loading",
-  seenWords: [],
+  seenWordsIndices: [],
 };
 
 //Only for testing
@@ -113,5 +113,5 @@ export const TestRoom: Room = {
     timePerRound: 60,
   },
   status: "loading",
-  seenWords: [],
+  seenWordsIndices: [],
 };
