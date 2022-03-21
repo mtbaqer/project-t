@@ -5,7 +5,7 @@ export const DefaultTeam: Team = { members: [], score: 0, currentMemberIndex: -1
 export const DefaultRoom: Room = {
   id: "default",
   players: {},
-  teams: [DefaultTeam, DefaultTeam],
+  teams: [DefaultTeam, DefaultTeam, DefaultTeam],
   deck: [],
   currentCardIndex: 0,
   round: 0,
@@ -18,6 +18,7 @@ export const DefaultRoom: Room = {
   },
   status: "loading",
   seenWordsIndices: [],
+  timeSinceLastCard: 0,
 };
 
 //Only for testing
@@ -114,4 +115,5 @@ export const TestRoom: Room = {
   },
   status: "loading",
   seenWordsIndices: [],
+  timeSinceLastCard: 0,
 };

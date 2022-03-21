@@ -3,6 +3,7 @@ import { useAtomValue, useUpdateAtom } from "jotai/utils";
 import { useRouter } from "next/router";
 import { userAtom, userIdAtom } from "../atoms/user";
 import { User } from "../types/types";
+import getTimestamp from "../utils/getTimestamp";
 
 const database = getDatabase();
 
@@ -20,7 +21,7 @@ export default function useUserActions() {
   async function addUser(name: string, avatarUrl: string) {
     if (userId) {
       const user = { id: userId, name, avatarUrl };
-      const timestamp = Date.now().toString();
+      const timestamp = (await getTimestamp()).toString();
       await addToPlayers(timestamp, user);
       await addToSpectators(timestamp);
 

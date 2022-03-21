@@ -43,6 +43,7 @@ export interface Room {
   seenWordsIndices: number[];
   status: RoomStatus;
   players: Record<string, User>;
+  timeSinceLastCard:number;
 }
 
 export type RoomStatus = "loading" | "waiting" | "playing" | "paused" | "ended";

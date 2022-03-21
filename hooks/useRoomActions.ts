@@ -7,6 +7,7 @@ import { DefaultRoom, DefaultTeam } from "../constants/room";
 import { Card, Room, Team, User, Word } from "../types/types";
 import cleanupDisconnectedPlayers from "../utils/cleanupDisconnectedPlayers";
 import fetchCards from "../utils/fetchCards";
+import getTimestamp from "../utils/getTimestamp";
 
 const database = getDatabase();
 const firestore = getFirestore();
@@ -58,10 +59,16 @@ export default function useRoomActions() {
     onNextCard(-1);
   }
 
-  function onNextCard(scoreIncrement: number) {
-    const teamRef = child(teamsRef, room!.currentTeamIndex.toString());
-    update(teamRef, { score: increment(scoreIncrement) });
-    update(roomRef, { currentCardIndex: increment(1) });
+  async function onNextCard(scoreIncrement: number) {
+    const currentTime = await getTimestamp();
+    runTransaction(roomRef, (room: Room) => {
+      if(currentTime - room.timeSinceLastCard > 2 * 1000){
+        room.teams[room.currentTeamIndex].score += scoreIncrement;
+        room.currentCardIndex++;
+        room.timeSinceLastCard = currentTime;
+      }
+      return room;
+    });
   }
 
   function onPause() {
