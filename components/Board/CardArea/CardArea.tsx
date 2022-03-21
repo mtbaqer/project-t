@@ -57,14 +57,17 @@ const CardArea: FunctionComponent<Props> = ({}) => {
         <SubContainer>
           <Card isHinter={isHinter} />
           <ButtonsContainer>
-            <Button onClick={onTaboo}>
-              <Image src="/images/wrong.svg" alt="play button" width={23} height={29} />
-              <Strong>TABOO</Strong>
-            </Button>
-            <Button onClick={onCorrect}>
-              <Image src="/images/correct.svg" alt="play button" width={23} height={29} />
-              <Strong>CORRECT</Strong>
-            </Button>
+            {isHinter ? (
+              <Button onClick={onCorrect}>
+                <Image src="/images/correct.svg" alt="play button" width={23} height={29} />
+                <Strong>CORRECT</Strong>
+              </Button>
+            ) : (
+              <Button onClick={onTaboo}>
+                <Image src="/images/wrong.svg" alt="play button" width={23} height={29} />
+                <Strong>TABOO</Strong>
+              </Button>
+            )}
           </ButtonsContainer>
         </SubContainer>
       ) : null}
