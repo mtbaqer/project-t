@@ -21,7 +21,7 @@ export default function useUserActions() {
   async function addUser(name: string, avatarUrl: string) {
     if (userId) {
       const user = { id: userId, name, avatarUrl };
-      const timestamp = (await getTimestamp()).toString();
+      const timestamp = getTimestamp().toString();
       await addToPlayers(timestamp, user);
       await addToSpectators(timestamp);
 

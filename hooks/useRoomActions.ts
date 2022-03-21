@@ -41,7 +41,7 @@ export default function useRoomActions() {
         round: currentTeamIndex === 1 ? room.round + 1 : room.round,
         currentCardIndex: 0,
         status: "playing",
-        turnEndTime: Date.now() + 60 * 1000,
+        turnEndTime: getTimestamp() + 60 * 1000,
         currentTeamIndex,
         deck,
         seenWordsIndices: seenWordsIndices,
@@ -59,9 +59,9 @@ export default function useRoomActions() {
     onNextCard(-1);
   }
 
-  async function onNextCard(scoreIncrement: number) {
-    const currentTime = await getTimestamp();
+  function onNextCard(scoreIncrement: number) {
     runTransaction(roomRef, (room: Room) => {
+      const currentTime = getTimestamp();
       if(currentTime - room.timeSinceLastCard > 2 * 1000){
         room.teams[room.currentTeamIndex].score += scoreIncrement;
         room.currentCardIndex++;
@@ -76,7 +76,7 @@ export default function useRoomActions() {
       const newRoom: Room = {
         ...room,
         status: "paused",
-        turnTimeLeft: room!.turnEndTime - Date.now(),
+        turnTimeLeft: room!.turnEndTime - getTimestamp(),
       };
       return newRoom;
     });
@@ -87,7 +87,7 @@ export default function useRoomActions() {
       const newRoom: Room = {
         ...room,
         status: "playing",
-        turnEndTime: Date.now() + room.turnTimeLeft,
+        turnEndTime: getTimestamp() + room.turnTimeLeft,
       };
       return newRoom;
     });
