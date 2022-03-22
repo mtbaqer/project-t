@@ -1,11 +1,12 @@
 import { useAtomValue } from "jotai/utils";
 import React, { FunctionComponent } from "react";
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 import { roomAtom } from "../../../atoms/room";
 import { userIdAtom } from "../../../atoms/user";
 import Card from "./Card";
 import Image from "next/image";
 import useRoomActions from "../../../hooks/useRoomActions";
+import { Team } from "../../../types/types";
 
 interface Props {}
 
@@ -20,28 +21,47 @@ const CardArea: FunctionComponent<Props> = ({}) => {
 
   const isHinter = checkIsHinter();
   const isInCurrentTeam = checkIsInCurrentTeam();
+  const isNextHinter = checkIsNextHinter();
 
   const canSeeCard = !isInCurrentTeam || isHinter;
 
   function checkIsHinter() {
     const hinterIndex = currentTeam.currentMemberIndex;
-    const hinterTimestamp = currentTeam.members[hinterIndex];
-    const hinterId = room.players[hinterTimestamp]?.id;
-    return hinterId === userId;
+    return checkIsPlayerAtIndex(currentTeam, hinterIndex);
   }
 
   function checkIsInCurrentTeam(): boolean {
     return currentTeam?.members?.map((timestamp) => players[timestamp].id).includes(userId);
   }
 
+  function checkIsNextHinter() {
+    let nextTeamIndex = (room.currentTeamIndex + 1) % room.teams.length;
+    nextTeamIndex = nextTeamIndex == 0 ? 1 : nextTeamIndex;
+    const nextTeam = room.teams[nextTeamIndex];
+    const nextHinterIndex = (nextTeam.currentMemberIndex + 1) % nextTeam.members.length;
+    return checkIsPlayerAtIndex(nextTeam, nextHinterIndex);
+  }
+
+  function checkIsPlayerAtIndex(team: Team, index: number) {
+    const playerTimestamp = team.members[index];
+    const playerId = room.players[playerTimestamp]?.id;
+    return playerId === userId;
+  }
+
   //TODO: Extract the buttons to their own components
   return (
     <Container>
       {status === "waiting" ? (
-        <Button onClick={onStartTurn}>
-          <Image src="/images/play.svg" alt="play button" width={23} height={29} />
-          <Strong>START</Strong>
-        </Button>
+        isNextHinter ? (
+          <Button onClick={onStartTurn}>
+            <Image src="/images/play.svg" alt="play button" width={23} height={29} />
+            <Strong>START</Strong>
+          </Button>
+        ) : (
+          <Div big>
+            <Strong>WAITING FOR OTHER PLAYER TO START</Strong>
+          </Div>
+        )
       ) : status === "paused" ? (
         <PauseContainer>
           <Div>
@@ -114,7 +134,7 @@ const Strong = styled.strong`
   font-weight: 800;
 `;
 
-const Div = styled.div`
+const Div = styled.div<{ big?: boolean }>`
   background-color: rgb(255, 255, 255);
   border-color: rgb(48, 26, 107);
   color: rgb(48, 26, 107);
@@ -128,6 +148,14 @@ const Div = styled.div`
   padding: 0 10px;
   transform: scale(1.2);
   margin-bottom: 25px;
+
+  ${({ big }) =>
+    big
+      ? css`
+          width: 425px;
+          height: 100px;
+        `
+      : css``}
 `;
 
 const PauseContainer = styled.div`
