@@ -2,10 +2,9 @@ import { useAtomValue } from "jotai/utils";
 import React, { FunctionComponent } from "react";
 import styled, { css } from "styled-components";
 import { roomAtom } from "../../../atoms/room";
-import Image from "next/image";
-import useRoomActions from "../../../hooks/useRoomActions";
 import GuessButton from "./GuessButton";
 import Card from "./Card";
+import CardButtons from "./CardButtons";
 
 interface Props {
   isHinter: boolean;
@@ -13,7 +12,6 @@ interface Props {
 
 const CardArea: FunctionComponent<Props> = ({ isHinter }) => {
   const room = useAtomValue(roomAtom);
-  const { onFlipCard, onRotateCard, onFlagCard } = useRoomActions();
 
   const card = room.deck?.[room.currentCardIndex];
 
@@ -25,23 +23,7 @@ const CardArea: FunctionComponent<Props> = ({ isHinter }) => {
             <Card card={card} />
           </FlippationContainer>
         </RotationContainer>
-        <ButtonsContainer>
-          <MiniButton onClick={onFlagCard}>
-            <Image src="/images/flag.svg" alt="flag" width={39.6} height={44.4} />
-          </MiniButton>
-        </ButtonsContainer>
-        <ButtonsContainer bottom>
-          {isHinter && (
-            <>
-              <MiniButton onClick={onFlipCard}>
-                <Image src="/images/flip.svg" alt="flip" width={39.6} height={44.4} />
-              </MiniButton>
-              <MiniButton onClick={onRotateCard}>
-                <Image src="/images/rotate.svg" alt="rotate" width={39.6} height={44.4} />
-              </MiniButton>
-            </>
-          )}
-        </ButtonsContainer>
+        <CardButtons isHinter={isHinter} />
       </SubContainer>
       <GuessButton isHinter={isHinter} />
     </Container>
@@ -89,29 +71,6 @@ const FlippationContainer = styled(TransformationContainer)`
           transform: perspective(400px) rotateY(180deg);
         `
       : css``};
-`;
-
-const ButtonsContainer = styled.div<{ bottom?: boolean }>`
-  position: absolute;
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-end;
-  right: -55px;
-  margin: 5px 0;
-  ${({ bottom }) =>
-    bottom
-      ? css`
-          bottom: 0;
-        `
-      : css`
-          top: 0;
-        `}
-`;
-
-const MiniButton = styled.button`
-  margin: 5px 0;
-  display: flex;
-  align-items: center;
 `;
 
 export default CardArea;
