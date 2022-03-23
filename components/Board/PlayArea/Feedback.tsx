@@ -18,30 +18,34 @@ const Feedback: FunctionComponent<Props> = ({}) => {
 
   async function animate() {
     await controls.start({
-      scale: 4,
-      transition: { type: "spring", duration: 0.3 },
+      opacity: 1,
+      transition: { duration: 0 },
     });
     await controls.start({
-      scale: 4,
-      transition: { type: "spring", duration: 0.1 },
+      scale: 2,
+      transition: { duration: 0.075 },
+    });
+    await controls.start({
+      scale: 1.7,
+      transition: { duration: 0.05 },
+    });
+    await controls.start({
+      scale: 1.7,
+      transition: { duration: 0.3 },
     });
     await controls.start({
       opacity: 0,
-      transition: { type: "spring", duration: 0.1 },
-    });
-    await controls.start({
-      opacity: 1,
-      scale: 0,
-      transition: { type: "spring", duration: 0 },
+      scale: 1,
+      transition: { duration: 0.05 },
     });
   }
 
   return (
     <FeedbackContainer animate={controls}>
       {room.lastGuess ? (
-        <Image src="/images/correct.svg" alt="correct" width={48} height={55.5} />
+        <Image src="/images/correct.svg" alt="correct" width={96} height={111} />
       ) : (
-        <Image src="/images/wrong.svg" alt="wrong" width={48} height={55.5} />
+        <Image src="/images/wrong.svg" alt="wrong" width={96} height={111} />
       )}
     </FeedbackContainer>
   );
@@ -52,9 +56,8 @@ const FeedbackContainer = styled(motion.div)`
   z-index: 10;
   display: flex;
   top: 40%;
-  left: 49%;
-  transform: translate(-50%, -50%);
-  transform: scale(0);
+  left: 48%;
+  opacity: 0;
 `;
 
 export default Feedback;
