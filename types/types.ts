@@ -44,6 +44,7 @@ export interface Room {
   status: RoomStatus;
   players: Record<string, User>;
   timeSinceLastCard:number;
+  lastGuess: boolean;
 }
 
 export type RoomStatus = "loading" | "waiting" | "playing" | "paused" | "ended";

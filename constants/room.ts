@@ -19,6 +19,7 @@ export const DefaultRoom: Room = {
   status: "loading",
   seenWordsIndices: [],
   timeSinceLastCard: 0,
+  lastGuess: true,
 };
 
 //Only for testing
@@ -83,22 +84,22 @@ export const TestRoom: Room = {
   },
   teams: [
     {
-      members: ["123", "321", "111", "222", "333", "777", "888", "999", "444", "555"],
+      members: ["222", "333", "777", "888", "999", "444", "555"],
       score: 0,
       currentMemberIndex: -1,
     },
     {
-      members: [],
+      members: ["123"],
       score: 0,
       currentMemberIndex: -1,
     },
     {
-      members: [],
+      members: ["321"],
       score: 0,
       currentMemberIndex: -1,
     },
     {
-      members: [],
+      members: ["111"],
       score: 0,
       currentMemberIndex: -1,
     },
@@ -111,9 +112,10 @@ export const TestRoom: Room = {
   currentTeamIndex: 0,
   settings: {
     maxRounds: 5,
-    timePerRound: 60,
+    timePerRound: 6000,
   },
-  status: "loading",
+  status: "waiting",
   seenWordsIndices: [],
   timeSinceLastCard: 0,
+  lastGuess: true,
 };

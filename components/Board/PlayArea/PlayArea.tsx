@@ -6,6 +6,7 @@ import { userIdAtom } from "../../../atoms/user";
 import CardArea from "./CardArea";
 import { Team } from "../../../types/types";
 import ActionArea from "./ActionArea";
+import Feedback from "./Feedback";
 
 interface Props {}
 
@@ -50,9 +51,12 @@ const PlayArea: FunctionComponent<Props> = ({}) => {
     <Container>
       {status !== "playing" ? (
         <ActionArea status={status} isNextHinter={isNextHinter} isInCurrentTeam={isInCurrentTeam} />
-      ) : canSeeCard ? (
-        <CardArea isHinter={isHinter} />
-      ) : null}
+      ) : (
+        <>
+          <Feedback />
+          {canSeeCard && <CardArea isHinter={isHinter} />}
+        </>
+      )}
     </Container>
   );
 };

@@ -66,6 +66,7 @@ export default function useRoomActions() {
         room.teams[room.currentTeamIndex].score += scoreIncrement;
         room.currentCardIndex++;
         room.timeSinceLastCard = currentTime;
+        room.lastGuess = scoreIncrement > 0 ? true : false;
       }
       return room;
     });
