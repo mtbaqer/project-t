@@ -1,5 +1,5 @@
 import React, { FunctionComponent } from "react";
-import CardArea from "./CardArea/CardArea";
+import PlayArea from "./PlayArea/PlayArea";
 import HUD from "./HUD/HUD";
 import Teams from "../Teams/Teams";
 
@@ -9,7 +9,7 @@ const Board: FunctionComponent<Props> = ({}) => {
   return (
     <>
       <HUD />
-      <CardArea />
+      <PlayArea />
       <Teams />
     </>
   );

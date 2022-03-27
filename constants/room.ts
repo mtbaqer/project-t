@@ -5,7 +5,7 @@ export const DefaultTeam: Team = { members: [], score: 0, currentMemberIndex: -1
 export const DefaultRoom: Room = {
   id: "default",
   players: {},
-  teams: [DefaultTeam, DefaultTeam],
+  teams: [DefaultTeam, DefaultTeam, DefaultTeam],
   deck: [],
   currentCardIndex: 0,
   round: 0,
@@ -17,7 +17,9 @@ export const DefaultRoom: Room = {
     timePerRound: 60,
   },
   status: "loading",
-  seenWords: [],
+  seenWordsIndices: [],
+  timeSinceLastCard: 0,
+  lastGuess: true,
 };
 
 //Only for testing
@@ -82,22 +84,22 @@ export const TestRoom: Room = {
   },
   teams: [
     {
-      members: ["123", "321", "111", "222", "333", "777", "888", "999", "444", "555"],
+      members: ["222", "333", "777", "888", "999", "444", "555"],
       score: 0,
       currentMemberIndex: -1,
     },
     {
-      members: [],
+      members: ["123"],
       score: 0,
       currentMemberIndex: -1,
     },
     {
-      members: [],
+      members: ["321"],
       score: 0,
       currentMemberIndex: -1,
     },
     {
-      members: [],
+      members: ["111"],
       score: 0,
       currentMemberIndex: -1,
     },
@@ -110,8 +112,10 @@ export const TestRoom: Room = {
   currentTeamIndex: 0,
   settings: {
     maxRounds: 5,
-    timePerRound: 60,
+    timePerRound: 6000,
   },
-  status: "loading",
-  seenWords: [],
+  status: "waiting",
+  seenWordsIndices: [],
+  timeSinceLastCard: 0,
+  lastGuess: true,
 };

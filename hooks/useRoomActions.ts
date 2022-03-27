@@ -7,6 +7,7 @@ import { DefaultRoom, DefaultTeam } from "../constants/room";
 import { Card, Room, Team, User, Word } from "../types/types";
 import cleanupDisconnectedPlayers from "../utils/cleanupDisconnectedPlayers";
 import fetchCards from "../utils/fetchCards";
+import getTimestamp from "../utils/getTimestamp";
 
 const database = getDatabase();
 const firestore = getFirestore();
@@ -21,14 +22,16 @@ export default function useRoomActions() {
   const teamsRef = child(roomRef, "teams");
 
   async function onStartTurn() {
-    const deck = await fetchCards();
+    const { cards: deck, wordsIndices } = await fetchCards(room.seenWordsIndices);
+    const seenWordsIndices = room.seenWordsIndices ?? [];
+    wordsIndices.forEach((index) => seenWordsIndices.push(index));
+
     runTransaction(roomRef, (room: Room) => {
       let currentTeamIndex = (room.currentTeamIndex + 1) % room.teams.length;
 
       while (currentTeamIndex === 0 || !room.teams[currentTeamIndex].members?.length) {
         currentTeamIndex = (currentTeamIndex + 1) % room.teams.length;
       }
-
       const team = room.teams[currentTeamIndex];
       cleanupDisconnectedPlayers(team, room.players);
       team.currentMemberIndex = (team.currentMemberIndex + 1) % team.members.length;
@@ -38,9 +41,10 @@ export default function useRoomActions() {
         round: currentTeamIndex === 1 ? room.round + 1 : room.round,
         currentCardIndex: 0,
         status: "playing",
-        turnEndTime: Date.now() + 60 * 1000,
+        turnEndTime: getTimestamp() + 60 * 1000,
         currentTeamIndex,
         deck,
+        seenWordsIndices: seenWordsIndices,
       };
 
       return newRoom;
@@ -56,9 +60,16 @@ export default function useRoomActions() {
   }
 
   function onNextCard(scoreIncrement: number) {
-    const teamRef = child(teamsRef, room!.currentTeamIndex.toString());
-    update(teamRef, { score: increment(scoreIncrement) });
-    update(roomRef, { currentCardIndex: increment(1) });
+    runTransaction(roomRef, (room: Room) => {
+      const currentTime = getTimestamp();
+      if(currentTime - room.timeSinceLastCard > 2 * 1000){
+        room.teams[room.currentTeamIndex].score += scoreIncrement;
+        room.currentCardIndex++;
+        room.timeSinceLastCard = currentTime;
+        room.lastGuess = scoreIncrement > 0 ? true : false;
+      }
+      return room;
+    });
   }
 
   function onPause() {
@@ -66,7 +77,7 @@ export default function useRoomActions() {
       const newRoom: Room = {
         ...room,
         status: "paused",
-        turnTimeLeft: room!.turnEndTime - Date.now(),
+        turnTimeLeft: room!.turnEndTime - getTimestamp(),
       };
       return newRoom;
     });
@@ -77,7 +88,7 @@ export default function useRoomActions() {
       const newRoom: Room = {
         ...room,
         status: "playing",
-        turnEndTime: Date.now() + room.turnTimeLeft,
+        turnEndTime: getTimestamp() + room.turnTimeLeft,
       };
       return newRoom;
     });
@@ -119,7 +130,7 @@ export default function useRoomActions() {
 
   function onBackButton() {
     runTransaction(roomRef, (room: Room) => {
-      const teams = room.teams.map(({ members }) => ({ ...DefaultTeam, members }));
+      const teams = room.teams.map(({ members }) => ({ ...DefaultTeam, members: members ?? [] }));
       const newRoom: Room = {
         ...DefaultRoom,
         teams,
@@ -127,6 +138,7 @@ export default function useRoomActions() {
         settings: room.settings,
         players: room.players,
         status: "loading",
+        seenWordsIndices: room.seenWordsIndices,
       };
       return newRoom;
     });
