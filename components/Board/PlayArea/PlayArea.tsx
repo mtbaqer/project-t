@@ -2,7 +2,7 @@ import { useAtomValue } from "jotai/utils";
 import React, { FunctionComponent } from "react";
 import styled, { css } from "styled-components";
 import { roomAtom } from "../../../atoms/room";
-import { userIdAtom } from "../../../atoms/user";
+import { userAtom } from "../../../atoms/user";
 import CardArea from "./CardArea";
 import { Team } from "../../../types/types";
 import ActionArea from "./ActionArea";
@@ -11,7 +11,7 @@ import Feedback from "./Feedback";
 interface Props {}
 
 const PlayArea: FunctionComponent<Props> = ({}) => {
-  const userId = useAtomValue(userIdAtom)!;
+  const { timestamp } = useAtomValue(userAtom)!;
   const room = useAtomValue(roomAtom);
 
   const status = room.status;
@@ -30,7 +30,7 @@ const PlayArea: FunctionComponent<Props> = ({}) => {
   }
 
   function checkIsInCurrentTeam(): boolean {
-    return currentTeam?.members?.map((timestamp) => players[timestamp].id).includes(userId);
+    return currentTeam?.members?.includes(timestamp);
   }
 
   function checkIsNextHinter() {
@@ -43,8 +43,7 @@ const PlayArea: FunctionComponent<Props> = ({}) => {
 
   function checkIsPlayerAtIndex(team: Team, index: number) {
     const playerTimestamp = team.members[index];
-    const playerId = room.players[playerTimestamp]?.id;
-    return playerId === userId;
+    return playerTimestamp === timestamp;
   }
 
   return (

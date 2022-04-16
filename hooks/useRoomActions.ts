@@ -34,6 +34,7 @@ export default function useRoomActions() {
       cleanupDisconnectedPlayers(team, room.players);
       team.currentMemberIndex = (team.currentMemberIndex + 1) % team.members.length;
 
+      room.seenWordsIndices = room.seenWordsIndices ?? [];
       const newRoom: Room = {
         ...room,
         round: currentTeamIndex === 1 ? room.round + 1 : room.round,

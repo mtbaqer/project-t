@@ -8,6 +8,7 @@ export interface User {
   id: string;
   name: string;
   avatarUrl: string;
+  timestamp: string;
 }
 
 export interface Card {
@@ -43,7 +44,7 @@ export interface Room {
   seenWordsIndices: number[];
   status: RoomStatus;
   players: Record<string, User>;
-  timeSinceLastCard:number;
+  timeSinceLastCard: number;
   lastGuess: boolean;
 }
 
