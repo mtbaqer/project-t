@@ -1,11 +1,10 @@
 import { selectAtom, useAtomValue, useUpdateAtom } from "jotai/utils";
 import { useEffect, useRef } from "react";
-import { roomAtom } from "../atoms/room";
+import { roomAtom, roomStatusAtom } from "../atoms/room";
 import { timeLeftAtom } from "../atoms/timeLeft";
 import getTimestamp from "../utils/getTimestamp";
 
 const turnEndTimeAtom = selectAtom(roomAtom, (room) => room.turnEndTime);
-const roomStatusAtom = selectAtom(roomAtom, (room) => room.status);
 
 export default function useTimer() {
   const setTimeLeft = useUpdateAtom(timeLeftAtom);

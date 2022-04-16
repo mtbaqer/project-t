@@ -1,7 +1,8 @@
 import { DragStartEvent, DragEndEvent, Active, Over } from "@dnd-kit/core";
 import { atom, useAtom } from "jotai";
+import { useAtomValue } from "jotai/utils";
 import { useState } from "react";
-import { roomAtom } from "../atoms/room";
+import { roomAtom, roomStatusAtom } from "../atoms/room";
 import { Team } from "../types/types";
 import useLobbyActions from "./useLobbyActions";
 
@@ -13,14 +14,16 @@ const teamsAtom = atom<Team[], Team[]>(
 export default function useDnDActions() {
   const { onPlayerChooseTeam } = useLobbyActions();
   const [teams, setTeams] = useAtom(teamsAtom);
+  const roomStatus = useAtomValue(roomStatusAtom);
 
   const [draggedTimestamp, setDraggedTimestamp] = useState<string>();
 
-  function onDragStart({active}: DragStartEvent) {
+  function onDragStart({ active }: DragStartEvent) {
     setDraggedTimestamp(active.id);
   }
 
   function onDragOver({ active, over }: DragEndEvent) {
+    if (roomStatus === "playing") return;
     const currentTeamIndex = getContainerId(active);
     const overTeamIndex = getContainerId(over);
     if (currentTeamIndex === undefined || overTeamIndex === undefined || currentTeamIndex === overTeamIndex) return;
@@ -39,6 +42,7 @@ export default function useDnDActions() {
   }
 
   function onDragEnd({ active, over }: DragEndEvent) {
+    if (roomStatus === "playing") return;
     setDraggedTimestamp(undefined);
 
     const currentTeamIndex = getContainerId(active);
