@@ -1,14 +1,11 @@
 import { collection, getDocs, getFirestore, limit, query, snapshotEqual, where } from "firebase/firestore";
+import { CardsToFetch, WordsCollectionLength, WordsPerCard } from "../constants/cards";
 import { Card, Orientation, Word } from "../types/types";
-
-const WordsPerCard = 4;
-const CardsToFetch = 20;
-const WordsCollectionLength = 1261;
 
 const database = getFirestore();
 
 export default async function fetchCards(seenWordsIndices: number[]) {
-  const { words, wordsIndices } = await fetchWords(seenWordsIndices);
+  const words = await fetchWords(seenWordsIndices);
 
   const cards: Card[] = [];
   words.forEach((word, index) => {
@@ -17,7 +14,7 @@ export default async function fetchCards(seenWordsIndices: number[]) {
     card.words.push(word);
   });
 
-  return { cards, wordsIndices };
+  return cards;
 }
 
 async function fetchWords(seenWordsIndices: number[]) {
@@ -38,7 +35,7 @@ async function fetchWords(seenWordsIndices: number[]) {
       words.push(doc.data() as Word);
     }
   }
-  return { words, wordsIndices: randomIndices };
+  return words;
 }
 
 function splitIntoSubArrays(indices: number[]) {

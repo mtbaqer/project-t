@@ -1,10 +1,11 @@
-import { child, getDatabase, increment, ref, runTransaction, update } from "firebase/database";
+import { child, getDatabase, increment, ref, runTransaction } from "firebase/database";
 import { doc, getFirestore, setDoc } from "firebase/firestore";
 import { useAtomValue } from "jotai/utils";
 import { useRouter } from "next/router";
 import { roomAtom } from "../atoms/room";
+import { WordsCollectionLength } from "../constants/cards";
 import { DefaultRoom, DefaultTeam } from "../constants/room";
-import { Card, Room, Team, User, Word } from "../types/types";
+import { Card, Room, Word } from "../types/types";
 import cleanupDisconnectedPlayers from "../utils/cleanupDisconnectedPlayers";
 import fetchCards from "../utils/fetchCards";
 import getTimestamp from "../utils/getTimestamp";
@@ -19,12 +20,9 @@ export default function useRoomActions() {
   const { roomId } = router.query;
 
   const roomRef = ref(database, `rooms/${roomId}`);
-  const teamsRef = child(roomRef, "teams");
 
   async function onStartTurn() {
-    const { cards: deck, wordsIndices } = await fetchCards(room.seenWordsIndices);
-    const seenWordsIndices = room.seenWordsIndices ?? [];
-    wordsIndices.forEach((index) => seenWordsIndices.push(index));
+    const deck = await fetchCards(room.seenWordsIndices);
 
     runTransaction(roomRef, (room: Room) => {
       let currentTeamIndex = (room.currentTeamIndex + 1) % room.teams.length;
@@ -44,11 +42,15 @@ export default function useRoomActions() {
         turnEndTime: getTimestamp() + 60 * 1000,
         currentTeamIndex,
         deck,
-        seenWordsIndices: seenWordsIndices,
+        seenWordsIndices: shouldClearSeenWords(room.seenWordsIndices) ? [] : room.seenWordsIndices,
       };
 
       return newRoom;
     });
+  }
+
+  function shouldClearSeenWords(seenWordsIndices: number[]) {
+    return seenWordsIndices.length >= 0.9 * WordsCollectionLength;
   }
 
   function onCorrect() {
@@ -62,7 +64,11 @@ export default function useRoomActions() {
   function onNextCard(scoreIncrement: number) {
     runTransaction(roomRef, (room: Room) => {
       const currentTime = getTimestamp();
-      if(currentTime - room.timeSinceLastCard > 2 * 1000){
+      if (currentTime - room.timeSinceLastCard > 2 * 1000) {
+        const currentCard = room.deck[room.currentCardIndex];
+        room.seenWordsIndices = room.seenWordsIndices ?? [];
+        room.seenWordsIndices.push(...currentCard.words.map((card) => card.index));
+
         room.teams[room.currentTeamIndex].score += scoreIncrement;
         room.currentCardIndex++;
         room.timeSinceLastCard = currentTime;
@@ -138,7 +144,7 @@ export default function useRoomActions() {
         settings: room.settings,
         players: room.players,
         status: "loading",
-        seenWordsIndices: room.seenWordsIndices,
+        seenWordsIndices: room.seenWordsIndices ?? [],
       };
       return newRoom;
     });
