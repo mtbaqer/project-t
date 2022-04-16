@@ -5,7 +5,7 @@ import useTimer from "./useTimer";
 import { useAtom } from "jotai";
 import { roomAtom } from "../atoms/room";
 import { useRouter } from "next/router";
-import useAuth from "./useUser";
+import useAuth from "./useAuth";
 
 const database = getDatabase();
 
