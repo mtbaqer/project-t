@@ -18,9 +18,20 @@ const RoomPage: NextPage = () => {
   useRoom();
   const room = useAtomValue(roomAtom);
   const user = useAtomValue(userAtom);
+  const auth = useAtomValue(authAtom);
 
   const { play } = useSound(SqueakpeaPath);
   useHotkeys("Space", play);
+
+  function renderContent() {
+    if (!auth || room.status === "loading") return null;
+    if (!user) {
+      if (room.playersHistory?.[auth.id]) return null;
+      return <UserPrompt />;
+    }
+    if (room.status === "lobby") return <Lobby />;
+    return <Board />;
+  }
 
   return (
     <Container>
@@ -30,7 +41,7 @@ const RoomPage: NextPage = () => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      {!user ? <UserPrompt /> : room.status === "lobby" ? <Lobby /> : <Board />}
+      {renderContent()}
     </Container>
   );
 };

@@ -6,6 +6,7 @@ import { useAtom } from "jotai";
 import { roomAtom } from "../atoms/room";
 import { useRouter } from "next/router";
 import useUser from "./useUser";
+import { useUpdateAtom } from "jotai/utils";
 
 const database = getDatabase();
 
@@ -13,7 +14,7 @@ export default function useRoom() {
   useTimer();
   useUser();
 
-  const [room, setRoom] = useAtom(roomAtom);
+  const setRoom = useUpdateAtom(roomAtom);
 
   const router = useRouter();
   const { roomId } = router.query;
@@ -33,6 +34,4 @@ export default function useRoom() {
       }
     });
   }
-
-  return { room };
 }
