@@ -5,13 +5,13 @@ import useTimer from "./useTimer";
 import { useAtom } from "jotai";
 import { roomAtom } from "../atoms/room";
 import { useRouter } from "next/router";
-import useAuth from "./useAuth";
+import useUser from "./useUser";
 
 const database = getDatabase();
 
 export default function useRoom() {
   useTimer();
-  useAuth();
+  useUser();
 
   const [room, setRoom] = useAtom(roomAtom);
 

@@ -44,11 +44,12 @@ export interface Room {
   seenWordsIndices: number[];
   status: RoomStatus;
   players: Record<string, User>;
+  playersHistory: Record<string, User>;
   timeSinceLastCard: number;
   lastGuess: boolean;
 }
 
-export type RoomStatus = "loading" | "waiting" | "playing" | "paused" | "ended";
+export type RoomStatus = "loading" | "lobby" | "waiting" | "playing" | "paused" | "ended";
 
 export interface Settings {
   maxRounds: number;

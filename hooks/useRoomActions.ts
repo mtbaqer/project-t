@@ -144,7 +144,7 @@ export default function useRoomActions() {
         id: room.id,
         settings: room.settings,
         players: room.players,
-        status: "loading",
+        status: "lobby",
         seenWordsIndices: room.seenWordsIndices ?? [],
       };
       return newRoom;

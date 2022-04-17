@@ -15,13 +15,13 @@ export default function useNewRoomActions() {
     const roomsRef = ref(database, `rooms`);
     const newRoomRef = await push(roomsRef);
     const id = newRoomRef.key;
-    await set(newRoomRef, { ...DefaultRoom, id });
+    await set(newRoomRef, { ...DefaultRoom, id, status: "lobby" });
     // need to remove room when everyone leaves the game/when they click end button
     // removeRoom(newRoomRef);
     return id;
   }
 
-  async function removeRoom(roomRef: DatabaseReference){
+  async function removeRoom(roomRef: DatabaseReference) {
     await onDisconnect(roomRef).remove();
   }
 

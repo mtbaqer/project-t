@@ -12,7 +12,7 @@ interface Props {
 const Sortable: FunctionComponent<Props> = ({ children, id }) => {
   const { timestamp } = useAtomValue(userAtom)!;
   const roomStatus = useAtomValue(roomStatusAtom);
-  const disabled = roomStatus !== "loading" && timestamp !== id;
+  const disabled = roomStatus !== "lobby" && timestamp !== id;
   const { attributes, listeners, setNodeRef, transform, transition, isDragging } = useSortable({ id, disabled });
 
   const style: CSSProperties = {

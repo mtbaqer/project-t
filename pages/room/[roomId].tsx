@@ -5,7 +5,7 @@ import React from "react";
 import styled from "styled-components";
 import { roomAtom } from "../../atoms/room";
 import useRoom from "../../hooks/useRoom";
-import { userAtom } from "../../atoms/user";
+import { authAtom, userAtom } from "../../atoms/user";
 import Board from "../../components/Board/Board";
 import UserPrompt from "../../components/UserPrompt";
 import { useHotkeys } from "react-hotkeys-hook";
@@ -30,7 +30,7 @@ const RoomPage: NextPage = () => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      {!user ? <UserPrompt /> : room.status === "loading" ? <Lobby /> : <Board />}
+      {!user ? <UserPrompt /> : room.status === "lobby" ? <Lobby /> : <Board />}
     </Container>
   );
 };

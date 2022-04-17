@@ -22,22 +22,32 @@ export default function useUserActions() {
     if (auth) {
       const timestamp = getTimestamp().toString();
       const user = { id: auth.id, name, avatarUrl, timestamp };
-      await addToPlayers(timestamp, user);
+      await addToPlayers(user);
+      await addToPlayersHistory(user);
       await addToSpectators(timestamp);
 
       setUser(user);
     }
   }
 
-  async function addToPlayers(timestamp: string, user: User) {
-    const playersUserRef = child(roomRef, `players/${timestamp}`);
+  async function addToPlayers(user: User) {
+    const playersUserRef = child(roomRef, `players/${user.timestamp}`);
     await set(playersUserRef, user);
     await onDisconnect(playersUserRef).remove();
   }
 
-  async function addToSpectators(timestamp: string) {
-    runTransaction(spectatorsMembersRef, (spectatorsMembers?: User[]) => [...(spectatorsMembers ?? []), timestamp]);
+  async function addToPlayersHistory(user: User) {
+    const playersHistoryUserRef = child(roomRef, `playersHistory/${user.id}`);
+    await set(playersHistoryUserRef, user);
   }
 
-  return { addUser };
+  async function addToSpectators(timestamp: string) {
+    runTransaction(spectatorsMembersRef, (spectatorsMembers?: string[]) => {
+      spectatorsMembers = spectatorsMembers ?? [];
+      if (!spectatorsMembers.includes(timestamp)) spectatorsMembers.push(timestamp);
+      return spectatorsMembers;
+    });
+  }
+
+  return { addUser, addToPlayers, addToSpectators };
 }
