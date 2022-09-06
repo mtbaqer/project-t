@@ -7,10 +7,10 @@ import { roomAtom } from "../../atoms/room";
 import useRoom from "../../hooks/useRoom";
 import { authAtom, userAtom } from "../../atoms/user";
 import Board from "../../components/Board/Board";
-import UserPrompt from "../../components/UserPrompt";
 import { useHotkeys } from "react-hotkeys-hook";
 import useSound from "../../hooks/useSound";
 import Lobby from "../../components/Lobby/Lobby";
+import AvatarPrompt from "../../components/AvatarPrompt";
 
 const SqueakpeaPath = "/sounds/Squeakpea.mp3";
 
@@ -27,7 +27,7 @@ const RoomPage: NextPage = () => {
     if (!auth || room.status === "loading") return null;
     if (!user) {
       if (room.playersHistory?.[auth.id]) return null;
-      return <UserPrompt />;
+      return <AvatarPrompt />;
     }
     if (room.status === "lobby") return <Lobby />;
     return <Board />;
