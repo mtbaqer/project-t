@@ -1,4 +1,5 @@
 import { atom } from "jotai";
+import { selectAtom } from "jotai/utils";
 import { DefaultRoom } from "../constants/room";
 import { Room, Team } from "../types/types";
 import cleanupDisconnectedPlayers from "../utils/cleanupDisconnectedPlayers";
@@ -18,3 +19,5 @@ export const roomAtom = atom<Room, Room>(
   },
   (_get, set, updatedRoom) => set(primitiveRoomAtom, updatedRoom)
 );
+
+export const roomStatusAtom = selectAtom(roomAtom, (room) => room.status);

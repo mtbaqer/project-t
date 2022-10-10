@@ -17,7 +17,7 @@ const Home: NextPage = () => {
       </Head>
       <Button onClick={navigateToNewRoom}>
         <Image src="/images/play.svg" alt="play button" width={23} height={29} />
-        <Strong>START</Strong>
+        <Strong>GENERATE ROOM</Strong>
       </Button>
     </Container>
   );
@@ -35,6 +35,7 @@ const Container = styled.div`
 `;
 
 const Button = styled.button`
+  font-family: "Nunito";
   background-color: rgb(255, 255, 255);
   border-color: rgb(48, 26, 107);
   color: rgb(48, 26, 107);
@@ -42,7 +43,7 @@ const Button = styled.button`
   align-items: center;
   border-radius: 7px;
   box-shadow: rgb(48, 26, 107) 0px 6px 0px 0px;
-  width: 220px;
+  width: 280px;
   height: 50px;
   padding: 0 10px;
   transform: scale(1.2);

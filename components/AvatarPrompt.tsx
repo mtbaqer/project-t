@@ -5,7 +5,7 @@ import useUserActions from "../hooks/useUserActions";
 
 interface Props {}
 
-const UserPrompt: FunctionComponent<Props> = ({}) => {
+const AvatarPrompt: FunctionComponent<Props> = ({}) => {
   const [username, setUsername] = useState("");
   const { addUser } = useUserActions();
 
@@ -101,4 +101,4 @@ const Strong = styled.strong`
   font-weight: 900;
 `;
 
-export default UserPrompt;
+export default AvatarPrompt;

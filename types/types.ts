@@ -8,6 +8,7 @@ export interface User {
   id: string;
   name: string;
   avatarUrl: string;
+  timestamp: string;
 }
 
 export interface Card {
@@ -43,11 +44,12 @@ export interface Room {
   seenWordsIndices: number[];
   status: RoomStatus;
   players: Record<string, User>;
-  timeSinceLastCard:number;
+  playersHistory: Record<string, User>;
+  timeSinceLastCard: number;
   lastGuess: boolean;
 }
 
-export type RoomStatus = "loading" | "waiting" | "playing" | "paused" | "ended";
+export type RoomStatus = "loading" | "lobby" | "waiting" | "playing" | "paused" | "ended";
 
 export interface Settings {
   maxRounds: number;

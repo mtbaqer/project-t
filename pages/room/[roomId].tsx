@@ -5,12 +5,12 @@ import React from "react";
 import styled from "styled-components";
 import { roomAtom } from "../../atoms/room";
 import useRoom from "../../hooks/useRoom";
-import { userAtom } from "../../atoms/user";
+import { authAtom, userAtom } from "../../atoms/user";
 import Board from "../../components/Board/Board";
-import UserPrompt from "../../components/UserPrompt";
 import { useHotkeys } from "react-hotkeys-hook";
 import useSound from "../../hooks/useSound";
 import Lobby from "../../components/Lobby/Lobby";
+import AvatarPrompt from "../../components/AvatarPrompt";
 
 const SqueakpeaPath = "/sounds/Squeakpea.mp3";
 
@@ -18,9 +18,20 @@ const RoomPage: NextPage = () => {
   useRoom();
   const room = useAtomValue(roomAtom);
   const user = useAtomValue(userAtom);
+  const auth = useAtomValue(authAtom);
 
   const { play } = useSound(SqueakpeaPath);
   useHotkeys("Space", play);
+
+  function renderContent() {
+    if (!auth || room.status === "loading") return null;
+    if (!user) {
+      if (room.playersHistory?.[auth.id]) return null;
+      return <AvatarPrompt />;
+    }
+    if (room.status === "lobby") return <Lobby />;
+    return <Board />;
+  }
 
   return (
     <Container>
@@ -30,7 +41,7 @@ const RoomPage: NextPage = () => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      {!user ? <UserPrompt /> : room.status === "loading" ? <Lobby /> : <Board />}
+      {renderContent()}
     </Container>
   );
 };
