@@ -11,7 +11,7 @@ const Home: NextPage = () => {
   return (
     <Container>
       <Head>
-        <title>{"Say Don't Say - Play with your Friends Online"}</title>
+        <title>{"Say Dont Say - Play with your Friends Online"}</title>
         <meta name="description" content="Say Don't Say - Play with your Friends Online" />
         <link rel="icon" href="/favicon.ico" />
       </Head>

@@ -32,7 +32,7 @@ export default function useUserActions() {
 
   async function addToPlayers(user: User) {
     const playersUserRef = child(roomRef, `players/${user.timestamp}`);
-    await new Promise((r) => setTimeout(r, 1000));
+    await new Promise((r) => setTimeout(r, 100));
     await set(playersUserRef, user);
     await onDisconnect(playersUserRef).remove();
   }
