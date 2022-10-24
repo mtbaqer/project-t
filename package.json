@@ -4,6 +4,8 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
+    "test": "jest --watch",
+    "test:ci": "jest --ci",
     "build": "next build",
     "start": "next start",
     "lint": "next lint"
@@ -38,7 +40,12 @@
     "react-is": "^17.0.2",
     "tailwindcss": "^2.2.17",
     "twin.macro": "^2.8.0",
-    "typescript": "4.4.4"
+    "typescript": "4.4.4",
+    "@testing-library/jest-dom": "5.16.4",
+    "@testing-library/react": "12.1.5",
+    "@testing-library/user-event": "14.2.0",
+    "jest": "28.1.0",
+    "jest-environment-jsdom": "28.1.0"
   },
   "babelMacros": {
     "twin": {
