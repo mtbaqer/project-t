@@ -33,7 +33,10 @@ const Player: FunctionComponent<Props> = ({ isHinter = false, timestamp, spectat
           />
         </OverFlowContainer>
       </AvatarContainer>
-      {!spectator ? <Name>{user.name}</Name> : null}
+      <ContentContainer>
+        {!spectator ? <Name>{user.name}</Name> : null}
+        <Image src="/images/dnd-indicator.png" alt="dnd indicator" width={29} height={29} />
+      </ContentContainer>
     </Container>
   ) : null;
 };
@@ -100,6 +103,13 @@ const Name = styled.p`
   font-weight: 900;
   color: rgb(48, 26, 107);
   text-transform: uppercase;
+`;
+
+const ContentContainer = styled.div`
+  display: flex;
+  justify-content: space-between;
+  flex-grow: 2;
+  padding-right: 5px;
 `;
 
 export default Player;
