@@ -44,6 +44,7 @@ const Team: FunctionComponent<Props> = ({ teamIndex = 0, showScore = false, titl
                 </Sortable>
               ))}
           </Members>
+          {teamIndex != 0 && <DropPlaceHolder>Drop here to join</DropPlaceHolder>}
         </SubContainer>
       </Container>
     </SortableContext>
@@ -102,6 +103,21 @@ const Title = styled.h3`
     rgb(23, 5, 87) -0.137119px -2.99686px 0px, rgb(23, 5, 87) 0.850987px -2.87677px 0px,
     rgb(23, 5, 87) 1.74541px -2.43999px 0px, rgb(23, 5, 87) 2.44769px -1.73459px 0px,
     rgb(23, 5, 87) 2.88051px -0.838247px 0px;
+`;
+const DropPlaceHolder = styled.div`
+  margin: 5px 0;
+  opacity: 0.3;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: 3px dashed black;
+  font-size: 16px;
+  font-family: "Nunito";
+  font-weight: 900;
+  text-transform: uppercase;
+  width: 336px;
+  height: 63px; //TODO: calculate this number instead of fixed value
+  border-radius: 10px; //TODO: Make this look more like the player component
 `;
 
 const Score = styled.span<{ leftAlign: boolean }>`
