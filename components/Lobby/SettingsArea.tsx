@@ -6,7 +6,7 @@ import useLobbyActions from "../../hooks/useLobbyActions";
 interface Props {}
 
 const SettingsArea: FunctionComponent<Props> = ({}) => {
-  const { onAddTeam, onRemoveTeam, onStartGame } = useLobbyActions();
+  const { onAddTeam, onRemoveTeam, onStartGame, onCopyLink} = useLobbyActions();
   return (
     <CenterContainer>
       <CenterSubContainer>
@@ -20,10 +20,16 @@ const SettingsArea: FunctionComponent<Props> = ({}) => {
             <Strong>REMOVE TEAM</Strong>
           </Button>
         </ButtonContainer>
+        <ButtonContainer>
+          <Button onClick={onCopyLink}>
+        <Image src="/images/copy_link.svg" alt="play button" width={23} height={29} />
+          <Strong>COPY LINK</Strong>
+        </Button>
         <Button onClick={onStartGame}>
           <Image src="/images/play.svg" alt="play button" width={23} height={29} />
           <Strong>START GAME</Strong>
         </Button>
+        </ButtonContainer>
       </CenterSubContainer>
     </CenterContainer>
   );

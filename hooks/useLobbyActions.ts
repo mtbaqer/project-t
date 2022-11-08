@@ -48,10 +48,17 @@ export default function useLobbyActions() {
     update(roomRef, { status });
   }
 
+  async function onCopyLink(){
+    const { roomId } = router.query;
+    const urlString = "https://saydontsay.netlify.app/room/" + roomId;
+    await navigator.clipboard.writeText(urlString);
+  }
+
   return {
     onPlayerChooseTeam,
     onAddTeam,
     onRemoveTeam,
     onStartGame,
+    onCopyLink,
   };
 }
