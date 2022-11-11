@@ -11,6 +11,7 @@ export const roomAtom = atom<Room, Room>(
     const room = get(primitiveRoomAtom);
 
     const timeLeft = get(timeLeftAtom);
+    // const status = "ended"
     const status = room.status === "playing" && timeLeft <= 0 ? "waiting" : room.status;
 
     const teams = room.teams.map((team) => cleanupDisconnectedPlayers(team, room.players));
