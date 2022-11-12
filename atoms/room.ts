@@ -11,8 +11,19 @@ export const roomAtom = atom<Room, Room>(
     const room = get(primitiveRoomAtom);
 
     const timeLeft = get(timeLeftAtom);
-    // const status = "ended"
-    const status = room.status === "playing" && timeLeft <= 0 ? "waiting" : room.status;
+    // const status = room.status === "playing" && timeLeft <= 0 ? "waiting" : room.status;
+    function getRoomStatus() {
+      if(room.status === "playing" && timeLeft <= 0){
+        if(room.round == room.settings.maxRounds && room.currentTeamIndex == (room.teams.length-1)){
+          return "ended";
+        }else{
+          return "waiting";
+        }
+      }
+      return room.status;
+    }
+
+    const status = getRoomStatus();
 
     const teams = room.teams.map((team) => cleanupDisconnectedPlayers(team, room.players));
 

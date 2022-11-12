@@ -5,7 +5,7 @@ import { useRouter } from "next/router";
 import { roomAtom } from "../atoms/room";
 import { WordsCollectionLength } from "../constants/cards";
 import { DefaultRoom, DefaultTeam } from "../constants/room";
-import { Card, Room, Word } from "../types/types";
+import { Card, Room, RoomStatus, Word } from "../types/types";
 import cleanupDisconnectedPlayers from "../utils/cleanupDisconnectedPlayers";
 import fetchCards from "../utils/fetchCards";
 import getTimestamp from "../utils/getTimestamp";
@@ -103,9 +103,16 @@ export default function useRoomActions() {
 
   function onEndTurn() {
     runTransaction(roomRef, (room: Room) => {
+      var newStatus: RoomStatus;
+      if (room.settings.maxRounds == room.round && room.currentTeamIndex == room.teams.length - 1){
+        newStatus = "ended"
+      }
+      else{
+        newStatus = "waiting"
+      }
       const newRoom: Room = {
         ...room,
-        status: "waiting",
+        status: newStatus,
       };
       return newRoom;
     });
