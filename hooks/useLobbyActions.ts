@@ -49,9 +49,7 @@ export default function useLobbyActions() {
   }
 
   async function onCopyLink(){
-    const { roomId } = router.query;
-    const urlString = "https://saydontsay.netlify.app/room/" + roomId;
-    await navigator.clipboard.writeText(urlString);
+    await navigator.clipboard.writeText(window.location.href);
   }
 
   return {
