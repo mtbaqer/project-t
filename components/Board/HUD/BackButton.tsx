@@ -13,7 +13,7 @@ const BackButton: FunctionComponent<Props> = ({}) => {
         <ImageContainer>
           <StyledImage src="/images/select.svg" alt="play button" width={14} height={12} />
         </ImageContainer>
-        <Strong>BACK</Strong>
+        <Strong>LOBBY</Strong>
       </Button>
     </Container>
   );

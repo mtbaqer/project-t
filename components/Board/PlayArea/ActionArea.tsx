@@ -14,7 +14,7 @@ interface Props {
 }
 
 const ActionArea: FunctionComponent<Props> = ({ status, isNextHinter, isInCurrentTeam }) => {
-  const { onStartTurn, onEndTurn } = useRoomActions();
+  const { onStartTurn, onEndTurn, onEndGame } = useRoomActions();
 
   if (status === "waiting") {
     return isNextHinter ? (
@@ -29,6 +29,7 @@ const ActionArea: FunctionComponent<Props> = ({ status, isNextHinter, isInCurren
       <PauseContainer>
         <Div text="PAUSED" />
         {isInCurrentTeam && <Button onClick={onEndTurn} text="END TURN" />}
+        <Button onClick={onEndGame}    text ="END GAME" />
       </PauseContainer>
     );
   }
@@ -40,6 +41,7 @@ const PauseContainer = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
+  
 `;
 
 export default ActionArea;
