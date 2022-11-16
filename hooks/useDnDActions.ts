@@ -1,15 +1,10 @@
 import { DragStartEvent, DragEndEvent, Active, Over } from "@dnd-kit/core";
-import { atom, useAtom } from "jotai";
+import { useAtom } from "jotai";
 import { useAtomValue } from "jotai/utils";
 import { useState } from "react";
-import { roomAtom, roomStatusAtom } from "../atoms/room";
-import { Team } from "../types/types";
+import { roomStatusAtom } from "../atoms/room";
+import { teamsAtom } from "../atoms/teams";
 import useLobbyActions from "./useLobbyActions";
-
-const teamsAtom = atom<Team[], Team[]>(
-  (get) => get(roomAtom).teams,
-  (get, set, updatedTeams) => set(roomAtom, { ...get(roomAtom), teams: updatedTeams })
-);
 
 export default function useDnDActions() {
   const { onPlayerChooseTeam } = useLobbyActions();
