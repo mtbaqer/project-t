@@ -9,7 +9,6 @@ interface Props {}
 const ResultSettingArea: FunctionComponent<Props> = ({}) => {
   const room = useAtomValue(roomAtom);
   const teams = room.teams;
-  const spectators = teams[0];
   let activeTeams: { teamNumber: number; score: number }[] = [];
   teams.map((item, index) => {
     if (index > 0) {

@@ -103,12 +103,11 @@ export default function useRoomActions() {
 
   function onEndTurn() {
     runTransaction(roomRef, (room: Room) => {
-      var newStatus: RoomStatus;
-      if (room.settings.maxRounds == room.round && room.currentTeamIndex == room.teams.length - 1){
-        newStatus = "ended"
-      }
-      else{
-        newStatus = "waiting"
+      let newStatus: RoomStatus;
+      if (room.settings.maxRounds == room.round && room.currentTeamIndex == room.teams.length - 1) {
+        newStatus = "ended";
+      } else {
+        newStatus = "waiting";
       }
       const newRoom: Room = {
         ...room,

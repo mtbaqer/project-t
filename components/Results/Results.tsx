@@ -1,18 +1,14 @@
-import {FunctionComponent} from "react";
+import { FunctionComponent } from "react";
 import ResultSettingArea from "./ResultSettingArea";
 
-interface Props {
-}
+interface Props {}
 
 const Results: FunctionComponent<Props> = ({}) => {
-    return (
-        <>
-            <ResultSettingArea/>
-        </>
-    );
+  return (
+    <>
+      <ResultSettingArea />
+    </>
+  );
 };
 
 export default Results;
-
-
-

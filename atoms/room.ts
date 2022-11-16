@@ -1,7 +1,7 @@
 import { atom } from "jotai";
 import { selectAtom } from "jotai/utils";
 import { DefaultRoom } from "../constants/room";
-import { Room, Team } from "../types/types";
+import { Room } from "../types/types";
 import cleanupDisconnectedPlayers from "../utils/cleanupDisconnectedPlayers";
 import { timeLeftAtom } from "./timeLeft";
 
@@ -11,12 +11,13 @@ export const roomAtom = atom<Room, Room>(
     const room = get(primitiveRoomAtom);
 
     const timeLeft = get(timeLeftAtom);
+
     // const status = room.status === "playing" && timeLeft <= 0 ? "waiting" : room.status;
     function getRoomStatus() {
-      if(room.status === "playing" && timeLeft <= 0){
-        if(room.round == room.settings.maxRounds && room.currentTeamIndex == (room.teams.length-1)){
+      if (room.status === "playing" && timeLeft <= 0) {
+        if (room.round == room.settings.maxRounds && room.currentTeamIndex == room.teams.length - 1) {
           return "ended";
-        }else{
+        } else {
           return "waiting";
         }
       }
