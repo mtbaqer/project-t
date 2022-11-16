@@ -8,6 +8,8 @@ import { Team } from "../../../types/types";
 import ActionArea from "./ActionArea";
 import Feedback from "./Feedback";
 
+import Div from "../../Div";
+
 interface Props {}
 
 const PlayArea: FunctionComponent<Props> = ({}) => {
@@ -54,6 +56,7 @@ const PlayArea: FunctionComponent<Props> = ({}) => {
         <>
           <Feedback />
           {canSeeCard && <CardArea isHinter={isHinter} />}
+          {!canSeeCard && <Div text="You Are The Guesser" big />}
         </>
       )}
     </Container>
