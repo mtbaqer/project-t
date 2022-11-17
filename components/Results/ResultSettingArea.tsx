@@ -9,13 +9,7 @@ interface Props {}
 const ResultSettingArea: FunctionComponent<Props> = ({}) => {
   const room = useAtomValue(roomAtom);
   const teams = room.teams;
-  let activeTeams: { teamNumber: number; score: number }[] = [];
-  teams.map((item, index) => {
-    if (index > 0) {
-      const team = { teamNumber: index, score: item.score };
-      activeTeams.push(team);
-    }
-  });
+  const activeTeams = teams.filter((_item, index)=> index!==0).map((item, index)=>({teamNumber: index, score: item.score}));
 
   activeTeams.sort((a, b) => b.score - a.score);
   return (
