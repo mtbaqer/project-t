@@ -9,6 +9,7 @@ import { Card, Room, RoomStatus, Word } from "../types/types";
 import cleanupDisconnectedPlayers from "../utils/cleanupDisconnectedPlayers";
 import fetchCards from "../utils/fetchCards";
 import getTimestamp from "../utils/getTimestamp";
+import checkIfGameEndedStatus from "../utils/checkIfGameEndedStatus";
 
 const database = getDatabase();
 const firestore = getFirestore();
@@ -104,11 +105,7 @@ export default function useRoomActions() {
   function onEndTurn() {
     runTransaction(roomRef, (room: Room) => {
       let newStatus: RoomStatus;
-      if (room.settings.maxRounds == room.round && room.currentTeamIndex == room.teams.length - 1) {
-        newStatus = "ended";
-      } else {
-        newStatus = "waiting";
-      }
+      newStatus = checkIfGameEndedStatus(room);
       const newRoom: Room = {
         ...room,
         status: newStatus,

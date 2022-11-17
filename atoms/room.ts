@@ -4,6 +4,7 @@ import { DefaultRoom } from "../constants/room";
 import { Room } from "../types/types";
 import cleanupDisconnectedPlayers from "../utils/cleanupDisconnectedPlayers";
 import { timeLeftAtom } from "./timeLeft";
+import checkIfGameEndedStatus from "../utils/checkIfGameEndedStatus";
 
 const primitiveRoomAtom = atom<Room>(DefaultRoom);
 export const roomAtom = atom<Room, Room>(
@@ -14,11 +15,7 @@ export const roomAtom = atom<Room, Room>(
 
     function getRoomStatus() {
       if (room.status === "playing" && timeLeft <= 0) {
-        if (room.round == room.settings.maxRounds && room.currentTeamIndex == room.teams.length - 1) {
-          return "ended";
-        } else {
-          return "waiting";
-        }
+        return checkIfGameEndedStatus(room);
       }
       return room.status;
     }
