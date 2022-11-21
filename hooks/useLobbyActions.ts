@@ -48,8 +48,10 @@ export default function useLobbyActions() {
     update(roomRef, { status });
   }
 
-  async function onCopyLink(){
+  async function onCopyLink(setIsCopied: (isCopied: boolean) => void){
     await navigator.clipboard.writeText(window.location.href);
+    setIsCopied(true); 
+    setTimeout(() => {setIsCopied(false)}, 2000); 
   }
 
   return {

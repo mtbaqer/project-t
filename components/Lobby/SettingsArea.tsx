@@ -2,11 +2,13 @@ import React, { FunctionComponent } from "react";
 import styled from "styled-components";
 import Image from "next/image";
 import useLobbyActions from "../../hooks/useLobbyActions";
+import { useState } from "react";
 
 interface Props {}
 
 const SettingsArea: FunctionComponent<Props> = ({}) => {
   const { onAddTeam, onRemoveTeam, onStartGame, onCopyLink } = useLobbyActions();
+  const [isCopied, setIsCopied] = useState(false);
   return (
     <CenterContainer>
       <CenterSubContainer>
@@ -21,9 +23,13 @@ const SettingsArea: FunctionComponent<Props> = ({}) => {
           </Button>
         </ButtonContainer>
         <ButtonContainer>
-          <Button onClick={onCopyLink}>
+          <Button
+            onClick={() => {
+              onCopyLink(setIsCopied);
+            }}
+          >
             <Image src="/images/copy_link.svg" alt="play button" width={29} height={30} />
-            <Strong>COPY LINK</Strong>
+            {isCopied ? <Strong>LINK COPIED</Strong> : <Strong>COPY LINK</Strong>}
           </Button>
           <Button onClick={onStartGame}>
             <Image src="/images/play.svg" alt="play button" width={23} height={29} />
