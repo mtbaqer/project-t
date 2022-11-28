@@ -7,6 +7,7 @@ import { SortableContext } from "@dnd-kit/sortable";
 import { useDroppable } from "@dnd-kit/core";
 import Sortable from "../utils/Sortable";
 import { currentTeamIndexAtom, teamsAtom } from "../../atoms/teams";
+import useSound from "../../hooks/useSound";
 
 interface Props {
   teamIndex?: number;
@@ -15,12 +16,20 @@ interface Props {
   grid?: boolean;
 }
 
+const SqueakpeaPath = "/sounds/Squeakpea.mp3";
+
 const Team: FunctionComponent<Props> = ({ teamIndex = 0, showScore = false, title, grid = false }) => {
+  const { play } = useSound(SqueakpeaPath);
   const teams = useAtomValue(teamsAtom);
   const currentTeamIndex = useAtomValue(currentTeamIndexAtom);
 
   const team = teams[teamIndex];
   const currentlyPlaying = currentTeamIndex === teamIndex;
+  const [currentTeamScore, changeCurrentTeamScore] = useState(team.score);
+  if (team.score < currentTeamScore) {
+    play();
+    changeCurrentTeamScore(currentTeamScore - 1);
+  }
 
   const { setNodeRef } = useDroppable({ id: teamIndex.toString() });
 
