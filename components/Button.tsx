@@ -1,6 +1,7 @@
 import React, { FunctionComponent } from "react";
 import styled, { css } from "styled-components";
 import Image from "next/image";
+import { ScreenSizes } from "../Theme/ScreenSizes";
 
 export interface Props {
   onClick?: () => void;
@@ -45,7 +46,6 @@ const Container = styled.div<{ big?: boolean; onClick?: () => void }>`
     onClick
       ? css`
           width: 220px;
-          margin: 0 50px;
 
           &:hover {
             background-color: rgb(203, 181, 233);
@@ -56,12 +56,21 @@ const Container = styled.div<{ big?: boolean; onClick?: () => void }>`
           }
         `
       : css``}
+
+  ${ScreenSizes.medium} {
+    width: 140px;
+    height: 40px;
+  }
 `;
 
 const Strong = styled.strong`
   font-size: 19px;
   flex: 1;
   font-weight: 800;
+
+  ${ScreenSizes.medium} {
+    font-size: 12px;
+  }
 `;
 
 export default Button;

@@ -4,6 +4,7 @@ import React, { FunctionComponent } from "react";
 import styled from "styled-components";
 import { roomAtom } from "../../atoms/room";
 import useDnDActions from "../../hooks/useDnDActions";
+import { ScreenSizes } from "../../Theme/ScreenSizes";
 import Player from "./Player";
 import Spectators from "./Spectators";
 import Team from "./Team";
@@ -43,19 +44,31 @@ const SpectatorsContainer = styled.div`
   justify-content: center;
   min-height: 122px;
   width: 100%;
+  margin: 18px 0;
 `;
 
 const TeamsContainer = styled.div`
   display: flex;
   justify-content: space-between;
   flex-wrap: wrap;
+  gap: 32px 18px;
+  padding: 0 18px;
+
+  ${ScreenSizes.medium} {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+  }
+
+  height: 50%;
 `;
 
 const TeamContainer = styled.div<{ leftAlign: boolean }>`
   display: flex;
-  flex: 1 0 50%;
+  flex: 1 0 40%;
 
   justify-content: ${({ leftAlign }) => (leftAlign ? "flex-start" : "flex-end")};
+
+  align-self: start;
 `;
 
 export default Teams;

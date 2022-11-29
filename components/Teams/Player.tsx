@@ -1,10 +1,10 @@
-import React, { FunctionComponent, memo } from "react";
+import React, { FunctionComponent } from "react";
 import styled, { css } from "styled-components";
-import { User } from "../../types/types";
 import Image from "next/image";
-import { useSortable } from "@dnd-kit/sortable";
 import { selectAtom, useAtomValue } from "jotai/utils";
 import { roomAtom } from "../../atoms/room";
+import { useResponsive } from "react-hooks-responsive";
+import { Breakpoints, ScreenSizes } from "../../Theme/ScreenSizes";
 
 const playersAtom = selectAtom(roomAtom, (room) => room.players);
 
@@ -14,15 +14,16 @@ const AvatarDefaultHeight = 56;
 interface Props {
   isHinter?: boolean;
   timestamp: string;
-  spectator?: boolean;
+  mini?: boolean;
 }
 
-const Player: FunctionComponent<Props> = ({ isHinter = false, timestamp, spectator = false }) => {
+const Player: FunctionComponent<Props> = ({ isHinter = false, timestamp, mini = false }) => {
+  const { screenIsAtMost } = useResponsive(Breakpoints);
   const players = useAtomValue(playersAtom);
   const user = players[timestamp];
 
   return user ? (
-    <Container isHinter={isHinter} spectator={spectator}>
+    <Container isHinter={isHinter} mini={mini}>
       <AvatarContainer isHinter={isHinter}>
         <OverFlowContainer>
           <StyledImage
@@ -33,12 +34,12 @@ const Player: FunctionComponent<Props> = ({ isHinter = false, timestamp, spectat
           />
         </OverFlowContainer>
       </AvatarContainer>
-      {!spectator ? <Name>{user.name}</Name> : null}
+      {!mini ? <Name>{user.name}</Name> : null}
     </Container>
   ) : null;
 };
 
-const Container = styled.div<{ isHinter: boolean; spectator: boolean }>`
+const Container = styled.div<{ isHinter: boolean; mini: boolean }>`
   margin: 5px 0;
   background-color: rgba(255, 255, 255, 0.7);
   display: flex;
@@ -55,15 +56,18 @@ const Container = styled.div<{ isHinter: boolean; spectator: boolean }>`
         `
       : ""}
 
-  ${({ spectator }) =>
-    spectator
-      ? css`
-          width: 65px;
-          height: 65px;
-          justify-content: center;
-          background-color: transparent;
-        `
-      : ""}
+  ${({ mini }) =>
+    mini &&
+    css`
+      width: 65px;
+      height: 65px;
+      justify-content: center;
+      background-color: transparent;
+    `}
+
+    ${ScreenSizes.medium} {
+    width: 100%;
+  }
 `;
 
 const AvatarContainer = styled.div<{ isHinter: boolean }>`

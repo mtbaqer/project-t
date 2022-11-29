@@ -7,6 +7,8 @@ import { SortableContext } from "@dnd-kit/sortable";
 import { useDroppable } from "@dnd-kit/core";
 import Sortable from "../utils/Sortable";
 import { currentTeamIndexAtom, teamsAtom } from "../../atoms/teams";
+import { useResponsive } from "react-hooks-responsive";
+import { Breakpoints, ScreenSizes } from "../../Theme/ScreenSizes";
 
 interface Props {
   teamIndex?: number;
@@ -24,48 +26,38 @@ const Team: FunctionComponent<Props> = ({ teamIndex = 0, showScore = false, titl
 
   const { setNodeRef } = useDroppable({ id: teamIndex.toString() });
 
+  const { screenIsAtMost } = useResponsive(Breakpoints);
+
   return (
     <SortableContext items={team.members ?? []} id={teamIndex.toString()}>
-      <Container grid={grid}>
-        <SubContainer currentlyPlaying={currentlyPlaying} ref={setNodeRef} grid={grid}>
-          <Title>
-            {title}
-            {showScore && <Score leftAlign={teamIndex % 2 == 0}>{team?.score}</Score>}
-          </Title>
-          <Members grid={grid}>
-            {team?.members &&
-              team.members.map((timestamp, index) => (
-                <Sortable key={timestamp} id={timestamp}>
-                  <Player
-                    key={timestamp}
-                    timestamp={timestamp}
-                    isHinter={currentlyPlaying && index === team.currentMemberIndex}
-                  />
-                </Sortable>
-              ))}
-          </Members>
-        </SubContainer>
+      <Container currentlyPlaying={currentlyPlaying} ref={setNodeRef} grid={grid}>
+        <Title>
+          {title}
+          {showScore && <Score leftAlign={teamIndex % 2 == 0}>{team?.score}</Score>}
+        </Title>
+        <Members grid={grid}>
+          {team?.members &&
+            team.members.map((timestamp, index) => (
+              <Sortable key={timestamp} id={timestamp}>
+                <Player
+                  key={timestamp}
+                  timestamp={timestamp}
+                  isHinter={currentlyPlaying && index === team.currentMemberIndex}
+                />
+              </Sortable>
+            ))}
+        </Members>
       </Container>
     </SortableContext>
   );
 };
 
-const Container = styled.div<{ grid: boolean }>`
-  ${({ grid }) =>
-    grid
-      ? css`
-          width: 80%;
-        `
-      : css``};
-`;
-
-const SubContainer = styled.div<{ currentlyPlaying: boolean; grid: boolean }>`
+const Container = styled.div<{ currentlyPlaying: boolean; grid: boolean }>`
   background-color: rgba(38, 28, 92, 0.5);
   display: flex;
   flex-direction: column;
   align-items: center;
   border-radius: 10px;
-  margin: 10px 18px;
   padding: 13px 10px;
   position: relative;
 
@@ -78,11 +70,14 @@ const SubContainer = styled.div<{ currentlyPlaying: boolean; grid: boolean }>`
       : ""};
 
   ${({ grid }) =>
-    grid
-      ? css``
-      : css`
-          width: 356px;
-        `};
+    !grid &&
+    css`
+      width: 356px;
+    `};
+
+  ${ScreenSizes.medium} {
+    width: 100%;
+  }
 `;
 
 const Title = styled.h3`
