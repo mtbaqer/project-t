@@ -63,7 +63,6 @@ const Strong = styled.strong`
   flex: 1;
   font-weight: 800;
   color: rgba(255, 255, 255, 0.6);
-  font-family: "Nunito";
   font-weight: 900;
 `;
 

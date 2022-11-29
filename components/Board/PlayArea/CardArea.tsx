@@ -39,7 +39,6 @@ const Container = styled.div`
 const SubContainer = styled.div`
   position: relative;
   font-size: 16px;
-  font-family: "Nunito";
   font-weight: 900;
   text-transform: uppercase;
   color: rgb(48, 26, 107);

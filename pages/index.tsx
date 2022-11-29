@@ -35,7 +35,6 @@ const Container = styled.div`
 `;
 
 const Button = styled.button`
-  font-family: "Nunito";
   background-color: rgb(255, 255, 255);
   border-color: rgb(48, 26, 107);
   color: rgb(48, 26, 107);

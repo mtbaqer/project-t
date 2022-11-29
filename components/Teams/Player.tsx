@@ -65,7 +65,7 @@ const Container = styled.div<{ isHinter: boolean; mini: boolean }>`
       background-color: transparent;
     `}
 
-    ${ScreenSizes.medium} {
+  ${ScreenSizes.medium} {
     width: 100%;
   }
 `;
@@ -100,7 +100,6 @@ const StyledImage = styled(Image)`
 const Name = styled.p`
   margin: 0 5px;
   font-size: 16px;
-  font-family: "Nunito";
   font-weight: 900;
   color: rgb(48, 26, 107);
   text-transform: uppercase;
