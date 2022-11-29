@@ -25,6 +25,7 @@ const Team: FunctionComponent<Props> = ({ teamIndex = 0, showScore = false, titl
 
   const team = teams[teamIndex];
   const currentlyPlaying = currentTeamIndex === teamIndex;
+
   const [currentTeamScore, changeCurrentTeamScore] = useState(team.score);
   if (team.score < currentTeamScore) {
     play();

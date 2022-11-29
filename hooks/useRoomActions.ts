@@ -9,11 +9,15 @@ import { Card, Room, Word } from "../types/types";
 import cleanupDisconnectedPlayers from "../utils/cleanupDisconnectedPlayers";
 import fetchCards from "../utils/fetchCards";
 import getTimestamp from "../utils/getTimestamp";
+import useSound from "./useSound";
+
 
 const database = getDatabase();
 const firestore = getFirestore();
+const SqueakpeaPath = "/sounds/Squeakpea.mp3";
 
 export default function useRoomActions() {
+  const {play} = useSound(SqueakpeaPath); 
   const room = useAtomValue(roomAtom);
 
   const router = useRouter();
@@ -60,6 +64,7 @@ export default function useRoomActions() {
 
   function onTaboo() {
     onNextCard(-1);
+    play();
   }
 
   function onNextCard(scoreIncrement: number) {
