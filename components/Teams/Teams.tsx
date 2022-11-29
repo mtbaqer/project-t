@@ -59,7 +59,7 @@ const TeamsContainer = styled.div`
     grid-template-columns: 1fr 1fr;
   }
 
-  height: 50%;
+  /* height: 50%; */
 `;
 
 const TeamContainer = styled.div<{ leftAlign: boolean }>`

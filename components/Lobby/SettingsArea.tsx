@@ -1,8 +1,8 @@
 import React, { FunctionComponent } from "react";
 import styled from "styled-components";
-import Image from "next/image";
 import useLobbyActions from "../../hooks/useLobbyActions";
 import { ScreenSizes } from "../../Theme/ScreenSizes";
+import { Spaces } from "../../Theme/Spaces";
 import Button from "../Button";
 
 interface Props {}
@@ -14,9 +14,9 @@ const SettingsArea: FunctionComponent<Props> = ({}) => {
       <SubContainer>
         <ButtonContainer>
           <Button onClick={onAddTeam} text="ADD TEAM" imageSource="/images/correct.svg" />
-          <Button onClick={onAddTeam} text="REMOVE TEAM" imageSource="/images/wrong.svg" />
+          <Button onClick={onRemoveTeam} text="REMOVE TEAM" imageSource="/images/wrong.svg" />
         </ButtonContainer>
-        <Button onClick={onAddTeam} text="START GAME" imageSource="/images/play.svg" />
+        <Button onClick={onStartGame} text="START" imageSource="/images/play.svg" />
       </SubContainer>
     </Container>
   );
@@ -29,10 +29,11 @@ const Container = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
+  flex: 1 0 0;
 
   ${ScreenSizes.medium} {
     align-items: flex-end;
-    padding: 10%;
+    padding-bottom: 10%;
   }
 `;
 
@@ -40,15 +41,13 @@ const SubContainer = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
+  gap: ${Spaces.medium};
 `;
 
 const ButtonContainer = styled.div`
   display: flex;
   justify-content: center;
-
-  ${ScreenSizes.medium} {
-    /* gap: 32px; */
-  }
+  gap: ${Spaces.small};
 `;
 
 export default SettingsArea;

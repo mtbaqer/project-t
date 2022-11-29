@@ -66,7 +66,8 @@ const Container = styled.div<{ isHinter: boolean; mini: boolean }>`
     `}
 
   ${ScreenSizes.medium} {
-    width: 100%;
+    /* width: 100%; */
+    width: 36vw;
   }
 `;
 
@@ -103,6 +104,10 @@ const Name = styled.p`
   font-weight: 900;
   color: rgb(48, 26, 107);
   text-transform: uppercase;
+
+  ${ScreenSizes.medium} {
+    font-size: 14px;
+  }
 `;
 
 export default Player;
