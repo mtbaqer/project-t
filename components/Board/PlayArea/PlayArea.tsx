@@ -9,6 +9,7 @@ import ActionArea from "./ActionArea";
 import Feedback from "./Feedback";
 
 import Div from "../../Div";
+import { ScreenSizes } from "../../../Theme/ScreenSizes";
 
 interface Props {}
 
@@ -49,21 +50,21 @@ const PlayArea: FunctionComponent<Props> = ({}) => {
   }
 
   return (
-    <Container>
+    <Container center={status !== "playing"}>
       {status !== "playing" ? (
         <ActionArea status={status} isNextHinter={isNextHinter} isInCurrentTeam={isInCurrentTeam} />
       ) : (
         <>
           <Feedback />
           {canSeeCard && <CardArea isHinter={isHinter} />}
-          {!canSeeCard && <Div text="You Are The Guesser" big />}
+          {!canSeeCard && <Div>You Are The Guesser</Div>}
         </>
       )}
     </Container>
   );
 };
 
-const Container = styled.div`
+const Container = styled.div<{ center: boolean }>`
   position: absolute;
   height: 100%;
   width: 100%;
@@ -71,6 +72,16 @@ const Container = styled.div`
   justify-content: center;
   align-items: center;
   flex-direction: column;
+
+  ${ScreenSizes.medium} {
+    height: 66%;
+    ${({ center }) =>
+      !center &&
+      css`
+        justify-content: flex-end;
+        padding-bottom: 5%;
+      `}
+  }
 `;
 
 export default PlayArea;
