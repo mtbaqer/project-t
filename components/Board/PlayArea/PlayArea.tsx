@@ -75,7 +75,6 @@ const Container = styled.div<{ center: boolean }>`
 
   ${ScreenSizes.medium} {
     height: 66%;
-
     ${({ center }) =>
       !center &&
       css`
