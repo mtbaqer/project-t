@@ -155,6 +155,16 @@ export default function useRoomActions() {
     });
   }
 
+  function onEndGame() {
+    runTransaction(roomRef, (room: Room) => {
+      const newRoom: Room = {
+        ...room,
+        status: "ended",
+      };
+      return newRoom;
+    });
+  }
+
   return {
     onStartTurn,
     onCorrect,
@@ -166,5 +176,6 @@ export default function useRoomActions() {
     onRotateCard,
     onFlagCard,
     onBackButton,
+    onEndGame,
   };
 }
