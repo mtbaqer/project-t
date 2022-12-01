@@ -18,7 +18,7 @@ export default function useLobbyActions() {
   function onPlayerChooseTeam(memberTimestamp: string, destinationTeamIndex: number, destinationPlayerIndex: number) {
     runTransaction(roomRef, (room: Room) => {
       const sourceTeam = room.teams.find((team) => team.members?.includes(memberTimestamp));
-      if(sourceTeam) sourceTeam.members = sourceTeam.members.filter((timestamp) => timestamp !== memberTimestamp);
+      if (sourceTeam) sourceTeam.members = sourceTeam.members.filter((timestamp) => timestamp !== memberTimestamp);
 
       const destinationTeam = room.teams[destinationTeamIndex];
       destinationTeam.members = destinationTeam.members ?? [];
@@ -48,10 +48,15 @@ export default function useLobbyActions() {
     update(roomRef, { status });
   }
 
+  async function onCopyLink() {
+    await navigator.clipboard.writeText(window.location.href);
+  }
+
   return {
     onPlayerChooseTeam,
     onAddTeam,
     onRemoveTeam,
     onStartGame,
+    onCopyLink,
   };
 }

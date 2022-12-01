@@ -1,10 +1,9 @@
-import React, { FunctionComponent, memo } from "react";
+import React, { FunctionComponent } from "react";
 import styled, { css } from "styled-components";
-import { User } from "../../types/types";
 import Image from "next/image";
-import { useSortable } from "@dnd-kit/sortable";
 import { selectAtom, useAtomValue } from "jotai/utils";
 import { roomAtom } from "../../atoms/room";
+import { ScreenSizes } from "../../Theme/ScreenSizes";
 
 const playersAtom = selectAtom(roomAtom, (room) => room.players);
 
@@ -14,15 +13,15 @@ const AvatarDefaultHeight = 56;
 interface Props {
   isHinter?: boolean;
   timestamp: string;
-  spectator?: boolean;
+  mini?: boolean;
 }
 
-const Player: FunctionComponent<Props> = ({ isHinter = false, timestamp, spectator = false }) => {
+const Player: FunctionComponent<Props> = ({ isHinter = false, timestamp, mini = false }) => {
   const players = useAtomValue(playersAtom);
   const user = players[timestamp];
 
   return user ? (
-    <Container isHinter={isHinter} spectator={spectator}>
+    <Container isHinter={isHinter} mini={mini}>
       <AvatarContainer isHinter={isHinter}>
         <OverFlowContainer>
           <StyledImage
@@ -33,12 +32,12 @@ const Player: FunctionComponent<Props> = ({ isHinter = false, timestamp, spectat
           />
         </OverFlowContainer>
       </AvatarContainer>
-      {!spectator ? <Name>{user.name}</Name> : null}
+      {!mini ? <Name>{user.name}</Name> : null}
     </Container>
   ) : null;
 };
 
-const Container = styled.div<{ isHinter: boolean; spectator: boolean }>`
+const Container = styled.div<{ isHinter: boolean; mini: boolean }>`
   margin: 5px 0;
   background-color: rgba(255, 255, 255, 0.7);
   display: flex;
@@ -55,15 +54,18 @@ const Container = styled.div<{ isHinter: boolean; spectator: boolean }>`
         `
       : ""}
 
-  ${({ spectator }) =>
-    spectator
-      ? css`
-          width: 65px;
-          height: 65px;
-          justify-content: center;
-          background-color: transparent;
-        `
-      : ""}
+  ${({ mini }) =>
+    mini &&
+    css`
+      width: 65px;
+      height: 65px;
+      justify-content: center;
+      background-color: transparent;
+    `}
+
+  ${ScreenSizes.medium} {
+    width: 36vw;
+  }
 `;
 
 const AvatarContainer = styled.div<{ isHinter: boolean }>`
@@ -75,6 +77,7 @@ const AvatarContainer = styled.div<{ isHinter: boolean }>`
   width: ${AvatarDefaultWidth}px;
   height: ${AvatarDefaultWidth}px;
   overflow: visible;
+  flex-shrink: 0;
 
   ${({ isHinter }) =>
     isHinter
@@ -96,10 +99,16 @@ const StyledImage = styled(Image)`
 const Name = styled.p`
   margin: 0 5px;
   font-size: 16px;
-  font-family: "Nunito";
   font-weight: 900;
   color: rgb(48, 26, 107);
   text-transform: uppercase;
+
+  ${ScreenSizes.medium} {
+    font-size: 14px;
+  }
+  flex-shrink: 1;
+  overflow: hidden;
+  text-overflow: ellipsis;
 `;
 
 export default Player;

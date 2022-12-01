@@ -6,6 +6,7 @@ import styled from "styled-components";
 import { useAtomValue } from "jotai/utils";
 import { roomAtom } from "../../../atoms/room";
 import Confetti from "./Confetti";
+import { ScreenSizes } from "../../../Theme/ScreenSizes";
 
 interface Props {}
 
@@ -46,27 +47,41 @@ const Feedback: FunctionComponent<Props> = ({}) => {
   }
 
   return (
-    <FeedbackContainer animate={controls}>
-      {room.lastGuess ? (
-        <SubContainer>
-          <Image src="/images/correct.svg" alt="correct" width={96} height={111} />
-          <Confetti animate={animateConfetti} />
-        </SubContainer>
-      ) : (
-        <Image src="/images/wrong.svg" alt="wrong" width={96} height={111} />
-      )}
-    </FeedbackContainer>
+    <Container>
+      <FeedbackContainer animate={controls}>
+        {room.lastGuess ? (
+          <SubContainer>
+            <Image src="/images/correct.svg" alt="correct" width={96} height={111} />
+            <Confetti animate={animateConfetti} />
+          </SubContainer>
+        ) : (
+          <Image src="/images/wrong.svg" alt="wrong" width={96} height={111} />
+        )}
+      </FeedbackContainer>
+    </Container>
   );
 };
 
-const FeedbackContainer = styled(motion.div)`
+const Container = styled.div`
   position: absolute;
-  z-index: 10;
+  top: 0;
+  height: 100%;
+  width: 100%;
   display: flex;
-  top: 40%;
-  left: 48%;
-  opacity: 0;
+  justify-content: center;
+  align-items: center;
   pointer-events: none;
+  z-index: 10;
+  padding-bottom: 10%;
+
+  ${ScreenSizes.large} {
+    padding-bottom: 0;
+  }
+`;
+
+const FeedbackContainer = styled(motion.div)`
+  display: flex;
+  opacity: 0;
 `;
 
 const SubContainer = styled.div`

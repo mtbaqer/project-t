@@ -152,7 +152,7 @@ export default function useRoomActions() {
     });
   }
 
-  function onEndGame(){
+  function onEndGame() {
     runTransaction(roomRef, (room: Room) => {
       const newRoom: Room = {
         ...room,
