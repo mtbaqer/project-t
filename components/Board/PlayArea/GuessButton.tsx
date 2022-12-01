@@ -1,6 +1,8 @@
 import React, { FunctionComponent } from "react";
 import styled from "styled-components";
 import useRoomActions from "../../../hooks/useRoomActions";
+import { ScreenSizes } from "../../../Theme/ScreenSizes";
+import { Spaces } from "../../../Theme/Spaces";
 import Button from "../../Button";
 
 interface Props {
@@ -23,7 +25,11 @@ const GuessButton: FunctionComponent<Props> = ({ isHinter }) => {
 const Container = styled.div`
   display: flex;
   justify-content: space-between;
-  margin-top: 50px;
+  margin-top: ${Spaces.medium};
+
+  ${ScreenSizes.medium} {
+    margin-top: ${Spaces.small};
+  }
 `;
 
 export default GuessButton;

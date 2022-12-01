@@ -9,7 +9,6 @@ const Heading: FunctionComponent<HTMLProps<HTMLHeadingElement>> = ({ children })
 const H3 = styled.h3`
   color: rgb(92, 255, 182);
   font-size: 22px;
-  font-family: "Nunito";
   font-weight: 900;
   outline-color: black;
   text-transform: uppercase;

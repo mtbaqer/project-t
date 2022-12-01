@@ -20,14 +20,14 @@ const ActionArea: FunctionComponent<Props> = ({ status, isNextHinter, isInCurren
     return isNextHinter ? (
       <Button onClick={onStartTurn} imageSource="/images/play.svg" text="START" />
     ) : (
-      <Div text="WAITING FOR OTHER PLAYER TO START" big />
+      <Div>WAITING FOR OTHER PLAYER TO START</Div>
     );
   }
 
   if (status === "paused") {
     return (
       <PauseContainer>
-        <Div text="PAUSED" />
+        <Div>PAUSED</Div>
         {isInCurrentTeam && <Button onClick={onEndTurn} text="END TURN" />}
       </PauseContainer>
     );

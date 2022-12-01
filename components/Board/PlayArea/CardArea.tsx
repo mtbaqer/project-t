@@ -5,6 +5,7 @@ import { roomAtom } from "../../../atoms/room";
 import GuessButton from "./GuessButton";
 import Card from "./Card";
 import CardButtons from "./CardButtons";
+import { ScreenSizes } from "../../../Theme/ScreenSizes";
 
 interface Props {
   isHinter: boolean;
@@ -44,6 +45,12 @@ const SubContainer = styled.div`
   color: rgb(48, 26, 107);
   height: 400px;
   width: 300px;
+
+  ${ScreenSizes.medium} {
+    height: 36vh;
+    width: 50vw;
+    font-size: 14px;
+  }
 `;
 
 const TransformationContainer = styled.div<{ flipped?: boolean; rotated?: boolean }>`

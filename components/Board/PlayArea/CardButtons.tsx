@@ -2,6 +2,8 @@ import React, { FunctionComponent } from "react";
 import styled, { css } from "styled-components";
 import useRoomActions from "../../../hooks/useRoomActions";
 import Image from "next/image";
+import { useResponsive } from "react-hooks-responsive";
+import { Breakpoints } from "../../../Theme/ScreenSizes";
 
 interface Props {
   isHinter: boolean;
@@ -9,21 +11,25 @@ interface Props {
 
 const CardButtons: FunctionComponent<Props> = ({ isHinter }) => {
   const { onFlipCard, onRotateCard, onFlagCard } = useRoomActions();
+
+  const { screenIsAtMost } = useResponsive(Breakpoints);
+  const [imageWidth, imageHeight] = screenIsAtMost("medium") ? [38.4, 44.4] : [48, 55.5];
+
   return (
     <>
       <ButtonsContainer>
         <MiniButton onClick={onFlagCard}>
-          <Image src="/images/flag.svg" alt="flag" width={48} height={55.5} />
+          <Image src="/images/flag.svg" alt="flag" width={imageWidth} height={imageHeight} />
         </MiniButton>
       </ButtonsContainer>
       <ButtonsContainer bottom>
         {isHinter && (
           <>
             <MiniButton onClick={onFlipCard}>
-              <Image src="/images/flip.svg" alt="flip" width={48} height={55.5} />
+              <Image src="/images/flip.svg" alt="flip" width={imageWidth} height={imageHeight} />
             </MiniButton>
             <MiniButton onClick={onRotateCard}>
-              <Image src="/images/rotate.svg" alt="rotate" width={48} height={55.5} />
+              <Image src="/images/rotate.svg" alt="rotate" width={imageWidth} height={imageHeight} />
             </MiniButton>
           </>
         )}

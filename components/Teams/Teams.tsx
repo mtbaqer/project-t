@@ -1,10 +1,12 @@
 import { DndContext, DragOverlay } from "@dnd-kit/core";
 import { useAtomValue } from "jotai/utils";
 import React, { FunctionComponent } from "react";
-import styled from "styled-components";
+import { useResponsive } from "react-hooks-responsive";
+import styled, { css } from "styled-components";
 import { roomAtom } from "../../atoms/room";
 import useDnDActions from "../../hooks/useDnDActions";
-import { ScreenSizes } from "../../Theme/ScreenSizes";
+import { Breakpoints, ScreenSizes } from "../../Theme/ScreenSizes";
+import { Spaces } from "../../Theme/Spaces";
 import Player from "./Player";
 import Spectators from "./Spectators";
 import Team from "./Team";
@@ -18,26 +20,44 @@ const Teams: FunctionComponent<Props> = ({ lobby = false }) => {
 
   const { onDragStart, onDragOver, onDragEnd, draggedTimestamp } = useDnDActions();
 
+  const { screenIsAtMost } = useResponsive(Breakpoints);
+
   return (
     <DndContext onDragStart={onDragStart} onDragOver={onDragOver} onDragEnd={onDragEnd}>
-      <SpectatorsContainer>
-        <Spectators lobby={lobby} />
-      </SpectatorsContainer>
-      <TeamsContainer>
-        {room.teams.map((_team, i) =>
-          i == 0 ? null : (
-            <TeamContainer leftAlign={i % 2 === 1} key={i}>
-              <Team title={`Team ${i}`} teamIndex={i} showScore={!lobby} />
-            </TeamContainer>
-          )
-        )}
-      </TeamsContainer>
+      <Container moveTeamsDown={screenIsAtMost("medium") && !lobby}>
+        <SpectatorsContainer>
+          <Spectators lobby={lobby} />
+        </SpectatorsContainer>
+        <TeamsContainer moveTeamsDown={screenIsAtMost("medium") && !lobby}>
+          {room.teams.map((_team, i) =>
+            i == 0 ? null : (
+              <TeamContainer leftAlign={i % 2 === 1} key={i}>
+                <Team title={`Team ${i}`} teamIndex={i} showScore={!lobby} />
+              </TeamContainer>
+            )
+          )}
+        </TeamsContainer>
+      </Container>
       <DragOverlay style={{ cursor: "grabbing" }}>
         {draggedTimestamp ? <Player timestamp={draggedTimestamp} /> : null}
       </DragOverlay>
     </DndContext>
   );
 };
+
+const Container = styled.div<{ moveTeamsDown?: boolean }>`
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  padding-bottom: ${Spaces.medium};
+
+  ${({ moveTeamsDown }) =>
+    moveTeamsDown &&
+    css`
+      justify-content: space-between;
+      padding-bottom: 0;
+    `}
+`;
 
 const SpectatorsContainer = styled.div`
   display: flex;
@@ -47,7 +67,7 @@ const SpectatorsContainer = styled.div`
   margin: 18px 0;
 `;
 
-const TeamsContainer = styled.div`
+const TeamsContainer = styled.div<{ moveTeamsDown?: boolean }>`
   display: flex;
   justify-content: space-between;
   flex-wrap: wrap;
@@ -57,9 +77,15 @@ const TeamsContainer = styled.div`
   ${ScreenSizes.medium} {
     display: grid;
     grid-template-columns: 1fr 1fr;
-  }
 
-  /* height: 50%; */
+    ${({ moveTeamsDown }) =>
+      moveTeamsDown &&
+      css`
+        max-height: 33%;
+        overflow: auto;
+        padding-bottom: ${Spaces.medium};
+      `}
+  }
 `;
 
 const TeamContainer = styled.div<{ leftAlign: boolean }>`

@@ -18,7 +18,6 @@ interface Props {
 }
 
 const Player: FunctionComponent<Props> = ({ isHinter = false, timestamp, mini = false }) => {
-  const { screenIsAtMost } = useResponsive(Breakpoints);
   const players = useAtomValue(playersAtom);
   const user = players[timestamp];
 
@@ -66,7 +65,6 @@ const Container = styled.div<{ isHinter: boolean; mini: boolean }>`
     `}
 
   ${ScreenSizes.medium} {
-    /* width: 100%; */
     width: 36vw;
   }
 `;
@@ -80,6 +78,7 @@ const AvatarContainer = styled.div<{ isHinter: boolean }>`
   width: ${AvatarDefaultWidth}px;
   height: ${AvatarDefaultWidth}px;
   overflow: visible;
+  flex-shrink: 0;
 
   ${({ isHinter }) =>
     isHinter
@@ -108,6 +107,9 @@ const Name = styled.p`
   ${ScreenSizes.medium} {
     font-size: 14px;
   }
+  flex-shrink: 1;
+  overflow: hidden;
+  text-overflow: ellipsis;
 `;
 
 export default Player;
