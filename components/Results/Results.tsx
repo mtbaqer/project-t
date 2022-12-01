@@ -33,18 +33,15 @@ const Results: FunctionComponent<Props> = ({}) => {
       </Winner>
       <TeamsTable>
         <tbody>
-          {activeTeams.map((team, index) => {
-            if (index > 0) {
-              return (
+          {activeTeams.map(
+            (team, index) =>
+              index > 0 && (
                 <tr>
                   <TableDataCell>{`Team ${team.teamNumber} `}</TableDataCell>
                   <TableDataCell>{`${team.score} points`} </TableDataCell>
                 </tr>
-              );
-            } else {
-              return;
-            }
-          })}
+              )
+          )}
         </tbody>
       </TeamsTable>
     </>
