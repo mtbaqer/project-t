@@ -3,6 +3,8 @@ import BackButton from "../../components/Board/HUD/BackButton";
 import { roomAtom } from "../../atoms/room";
 import { useAtomValue } from "jotai/utils";
 import styled from "styled-components";
+import Confetti from "react-confetti";
+
 interface Props {}
 
 const Results: FunctionComponent<Props> = ({}) => {
@@ -15,6 +17,7 @@ const Results: FunctionComponent<Props> = ({}) => {
   activeTeams.sort((a, b) => b.score - a.score);
   return (
     <>
+      <Confetti />
       <ButtonContainer>
         <BackButton />
       </ButtonContainer>
