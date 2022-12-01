@@ -4,12 +4,17 @@ import { roomAtom } from "../../atoms/room";
 import { useAtomValue } from "jotai/utils";
 import styled from "styled-components";
 import Confetti from "react-confetti";
+import useWindowSize from "@rooks/use-window-size";
+import { ScreenSizes } from "../../Theme/ScreenSizes";
 
 interface Props {}
 
 const Results: FunctionComponent<Props> = ({}) => {
   const room = useAtomValue(roomAtom);
   const teams = room.teams;
+
+  const { innerWidth, innerHeight } = useWindowSize();
+
   const activeTeams = teams
     .filter((_item, index) => index !== 0)
     .map((item, index) => ({ teamNumber: index + 1, score: item.score }));
@@ -17,7 +22,7 @@ const Results: FunctionComponent<Props> = ({}) => {
   activeTeams.sort((a, b) => b.score - a.score);
   return (
     <>
-      <Confetti />
+      <Confetti width={innerWidth ?? 0} height={innerHeight ?? 0} />
       <ButtonContainer>
         <BackButton />
       </ButtonContainer>
@@ -54,9 +59,8 @@ const Title = styled.div`
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  font-family: "Nunito";
   font-weight: bold;
-  font-size: 100px;
+  font-size: 10vw;
 `;
 
 const Winner = styled.div`
@@ -68,19 +72,23 @@ const Winner = styled.div`
   font-weight: bold;
   font-size: 30px;
   margin-bottom: 20px;
+
+  ${ScreenSizes.medium} {
+    font-size: 18px;
+  }
 `;
 const TeamsTable = styled.table`
   margin-left: 100px;
   margin-right: 100px;
   justify-content: center;
-  font-family: "Nunito";
   font-weight: bold;
   font-size: 20px;
+
+  ${ScreenSizes.medium} {
+    font-size: 14px;
+  }
 `;
 const TableDataCell = styled.td`
-  font-family: "Nunito";
-  font-weight: bold;
-  font-size: 20px;
   border: 5px solid cornflowerblue;
   text-align: center;
 `;
