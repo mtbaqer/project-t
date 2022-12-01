@@ -19,9 +19,10 @@ const HUD: FunctionComponent<Props> = ({}) => {
 const Container = styled.div`
   position: absolute;
   display: flex;
-  justify-content: flex-start;
+  justify-content: space-between;
   width: 100%;
   z-index: 10;
+  padding: 0 30px;
 `;
 
 export default HUD;

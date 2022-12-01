@@ -1,5 +1,6 @@
 import React, { FunctionComponent } from "react";
 import styled, { css } from "styled-components";
+import { ScreenSizes } from "../../../Theme/ScreenSizes";
 import { Word as WordType } from "../../../types/types";
 
 interface Props {
@@ -22,6 +23,7 @@ const Container = styled.div<{ rotated: boolean }>`
   display: flex;
   flex-direction: column;
   align-items: center;
+  text-align: center;
 
   ${({ rotated }) =>
     rotated
@@ -33,6 +35,10 @@ const Container = styled.div<{ rotated: boolean }>`
 
 const TargetWord = styled.p`
   margin-bottom: 20px;
+
+  ${ScreenSizes.medium} {
+    margin-bottom: 10px;
+  }
 `;
 
 const TabooWord = styled.p``;

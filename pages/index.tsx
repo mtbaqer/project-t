@@ -4,6 +4,7 @@ import React from "react";
 import styled from "styled-components";
 import Image from "next/image";
 import useNewRoomActions from "../hooks/useNewRoomActions";
+import Button from "../components/Button";
 
 const Home: NextPage = () => {
   const { navigateToNewRoom } = useNewRoomActions();
@@ -15,10 +16,7 @@ const Home: NextPage = () => {
         <meta name="description" content="Say Don't Say - Play with your Friends Online" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <Button onClick={navigateToNewRoom}>
-        <Image src="/images/play.svg" alt="play button" width={23} height={29} />
-        <Strong>GENERATE ROOM</Strong>
-      </Button>
+      <Button onClick={navigateToNewRoom} text={"Generate Room"} imageSource="/images/play.svg" />
     </Container>
   );
 };
@@ -32,35 +30,6 @@ const Container = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-`;
-
-const Button = styled.button`
-  font-family: "Nunito";
-  background-color: rgb(255, 255, 255);
-  border-color: rgb(48, 26, 107);
-  color: rgb(48, 26, 107);
-  display: flex;
-  align-items: center;
-  border-radius: 7px;
-  box-shadow: rgb(48, 26, 107) 0px 6px 0px 0px;
-  width: 280px;
-  height: 50px;
-  padding: 0 10px;
-  transform: scale(1.2);
-
-  &:hover {
-    background-color: rgb(203, 181, 233);
-  }
-  &:active {
-    margin-bottom: -8px;
-    box-shadow: rgb(48, 26, 107) 0px 2px 0px 0px;
-  }
-`;
-
-const Strong = styled.strong`
-  font-size: 19px;
-  flex: 1;
-  font-weight: 800;
 `;
 
 export default Home;
