@@ -1,3 +1,4 @@
+import useResponsive from "hooks/useResponsive";
 import { useAtomValue } from "jotai/utils";
 import React, { FunctionComponent } from "react";
 import styled from "styled-components";
@@ -17,11 +18,13 @@ const Spectators: FunctionComponent<Props> = ({ lobby }) => {
   const leftSide = spectators.slice(0, cutoff);
   const rightSide = spectators.slice(cutoff);
 
+  const { isTabletOrMobile } = useResponsive();
+
   return lobby ? (
     <Container>
       <Team title={`Spectators`} teamIndex={0} showScore={false} grid />
     </Container>
-  ) : (
+  ) : isTabletOrMobile ? null : (
     <>
       <SubContainer left={true}>
         {leftSide.map((timestamp) => (
