@@ -7,8 +7,7 @@ import { SortableContext } from "@dnd-kit/sortable";
 import { useDroppable } from "@dnd-kit/core";
 import Sortable from "../utils/Sortable";
 import { currentTeamIndexAtom, teamsAtom } from "../../atoms/teams";
-import { useResponsive } from "react-hooks-responsive";
-import { Breakpoints, ScreenSizes } from "../../Theme/ScreenSizes";
+import { ScreenSizes } from "../../Theme/ScreenSizes";
 import Heading from "../Heading";
 
 interface Props {
@@ -26,8 +25,6 @@ const Team: FunctionComponent<Props> = ({ teamIndex = 0, showScore = false, titl
   const currentlyPlaying = currentTeamIndex === teamIndex;
 
   const { setNodeRef } = useDroppable({ id: teamIndex.toString() });
-
-  const { screenIsAtMost } = useResponsive(Breakpoints);
 
   return (
     <SortableContext items={team.members ?? []} id={teamIndex.toString()}>

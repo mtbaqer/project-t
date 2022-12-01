@@ -1,8 +1,8 @@
 import React, { FunctionComponent } from "react";
 import styled, { css } from "styled-components";
 import Image from "next/image";
-import { Breakpoints, ScreenSizes } from "../Theme/ScreenSizes";
-import { useResponsive } from "react-hooks-responsive";
+import { ScreenSizes } from "../Theme/ScreenSizes";
+import useResponsive from "../hooks/useResponsive";
 
 export interface Props {
   onClick?: () => void;
@@ -12,8 +12,8 @@ export interface Props {
 }
 
 const Button: FunctionComponent<Props> = ({ onClick, text, imageSource, transparent }) => {
-  const { screenIsAtMost } = useResponsive(Breakpoints);
-  const [imageWidth, imageHeight] = screenIsAtMost("medium") ? [20, 25] : [27.6, 34.8];
+  const { isTabletOrMobile } = useResponsive();
+  const [imageWidth, imageHeight] = isTabletOrMobile ? [20, 25] : [27.6, 34.8];
 
   return (
     <Container transparent={transparent} onClick={onClick}>

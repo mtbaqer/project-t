@@ -1,11 +1,11 @@
 import { DndContext, DragOverlay } from "@dnd-kit/core";
 import { useAtomValue } from "jotai/utils";
 import React, { FunctionComponent } from "react";
-import { useResponsive } from "react-hooks-responsive";
 import styled, { css } from "styled-components";
 import { roomAtom } from "../../atoms/room";
 import useDnDActions from "../../hooks/useDnDActions";
-import { Breakpoints, ScreenSizes } from "../../Theme/ScreenSizes";
+import useResponsive from "../../hooks/useResponsive";
+import { ScreenSizes } from "../../Theme/ScreenSizes";
 import { Spaces } from "../../Theme/Spaces";
 import Player from "./Player";
 import Spectators from "./Spectators";
@@ -20,15 +20,15 @@ const Teams: FunctionComponent<Props> = ({ lobby = false }) => {
 
   const { onDragStart, onDragOver, onDragEnd, draggedTimestamp } = useDnDActions();
 
-  const { screenIsAtMost } = useResponsive(Breakpoints);
+  const { isTabletOrMobile } = useResponsive();
 
   return (
     <DndContext onDragStart={onDragStart} onDragOver={onDragOver} onDragEnd={onDragEnd}>
-      <Container moveTeamsDown={screenIsAtMost("medium") && !lobby}>
+      <Container moveTeamsDown={isTabletOrMobile && !lobby}>
         <SpectatorsContainer>
           <Spectators lobby={lobby} />
         </SpectatorsContainer>
-        <TeamsContainer moveTeamsDown={screenIsAtMost("medium") && !lobby}>
+        <TeamsContainer moveTeamsDown={isTabletOrMobile && !lobby}>
           {room.teams.map((_team, i) =>
             i == 0 ? null : (
               <TeamContainer leftAlign={i % 2 === 1} key={i}>

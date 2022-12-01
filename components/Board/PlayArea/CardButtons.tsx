@@ -2,8 +2,7 @@ import React, { FunctionComponent } from "react";
 import styled, { css } from "styled-components";
 import useRoomActions from "../../../hooks/useRoomActions";
 import Image from "next/image";
-import { useResponsive } from "react-hooks-responsive";
-import { Breakpoints } from "../../../Theme/ScreenSizes";
+import useResponsive from "../../../hooks/useResponsive";
 
 interface Props {
   isHinter: boolean;
@@ -12,8 +11,8 @@ interface Props {
 const CardButtons: FunctionComponent<Props> = ({ isHinter }) => {
   const { onFlipCard, onRotateCard, onFlagCard } = useRoomActions();
 
-  const { screenIsAtMost } = useResponsive(Breakpoints);
-  const [imageWidth, imageHeight] = screenIsAtMost("medium") ? [38.4, 44.4] : [48, 55.5];
+  const { isTabletOrMobile } = useResponsive();
+  const [imageWidth, imageHeight] = isTabletOrMobile ? [38.4, 44.4] : [48, 55.5];
 
   return (
     <>

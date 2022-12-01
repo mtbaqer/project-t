@@ -4,8 +4,8 @@ import styled from "styled-components";
 import { timeLeftAtom } from "../../../atoms/timeLeft";
 import { roomAtom } from "../../../atoms/room";
 import useRoomActions from "../../../hooks/useRoomActions";
-import { useResponsive } from "react-hooks-responsive";
-import { Breakpoints, ScreenSizes } from "../../../Theme/ScreenSizes";
+import { ScreenSizes } from "../../../Theme/ScreenSizes";
+import useResponsive from "../../../hooks/useResponsive";
 
 interface Props {}
 
@@ -13,8 +13,8 @@ const Timer: FunctionComponent<Props> = ({}) => {
   const { onPause, onResume } = useRoomActions();
   const room = useAtomValue(roomAtom);
   const timeLeft = useAtomValue(timeLeftAtom);
-  const { screenIsAtMost } = useResponsive(Breakpoints);
-  let radius = screenIsAtMost("medium") ? 10 : 15;
+  const { isTabletOrMobile } = useResponsive();
+  let radius = isTabletOrMobile ? 10 : 15;
   let circumference = 2 * radius * Math.PI;
   let progress = (60000 - timeLeft) / 60000;
   const coordinates = (radius + 3) * 2;

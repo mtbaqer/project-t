@@ -3,8 +3,7 @@ import styled, { css } from "styled-components";
 import Image from "next/image";
 import { selectAtom, useAtomValue } from "jotai/utils";
 import { roomAtom } from "../../atoms/room";
-import { useResponsive } from "react-hooks-responsive";
-import { Breakpoints, ScreenSizes } from "../../Theme/ScreenSizes";
+import { ScreenSizes } from "../../Theme/ScreenSizes";
 
 const playersAtom = selectAtom(roomAtom, (room) => room.players);
 
