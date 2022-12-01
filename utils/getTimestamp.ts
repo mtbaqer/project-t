@@ -6,7 +6,8 @@ const Offset = await fetch(WorldTimeAPIEndpoint)
     const globaTimestamp = res.unixtime * 1000;
     const localTimestamp = Date.now();
     return globaTimestamp - localTimestamp;
-  });
+  })
+  .catch(() => 0);
 
 export default function getTimestamp() {
   const localTimestamp = Date.now();

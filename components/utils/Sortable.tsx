@@ -20,6 +20,7 @@ const Sortable: FunctionComponent<Props> = ({ children, id }) => {
     transition,
     opacity: isDragging ? 0 : 1,
     cursor: isDragging ? "grabbing" : "grab",
+    touchAction: "none",
   };
 
   return (
