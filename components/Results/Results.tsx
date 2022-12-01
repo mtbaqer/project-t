@@ -23,6 +23,7 @@ const Results: FunctionComponent<Props> = ({}) => {
   return (
     <>
       <Confetti width={innerWidth ?? 0} height={innerHeight ?? 0} />
+
       <ButtonContainer>
         <BackButton />
       </ButtonContainer>
