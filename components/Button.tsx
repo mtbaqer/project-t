@@ -56,7 +56,7 @@ const Container = styled.button<{ transparent?: boolean }>`
       border: 2px solid rgba(255, 255, 255, 0.6);
       color: rgba(255, 255, 255, 0.6);
       box-shadow: none;
-      width: 120px;
+      min-width: 0;
 
       &:hover {
         background-color: rgba(255, 255, 255, 0.15);
@@ -88,7 +88,8 @@ const Container = styled.button<{ transparent?: boolean }>`
       css`
         box-shadow: none;
         border-radius: 7px;
-        width: 100px;
+        min-width: 0;
+        max-width: 120px;
         margin: 0;
 
         &:active {
