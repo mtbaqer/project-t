@@ -18,27 +18,32 @@ const Spectators: FunctionComponent<Props> = ({ lobby }) => {
   const rightSide = spectators.slice(cutoff);
 
   return lobby ? (
-    <Team title={`Spectators`} teamIndex={0} showScore={false} grid />
+    <Container>
+      <Team title={`Spectators`} teamIndex={0} showScore={false} grid />
+    </Container>
   ) : (
     <>
-      <Container left={true}>
+      <SubContainer left={true}>
         {leftSide.map((timestamp) => (
-          <Player key={timestamp} timestamp={timestamp} spectator />
+          <Player key={timestamp} timestamp={timestamp} mini />
         ))}
-      </Container>
+      </SubContainer>
       <Padding />
-      <Container left={false}>
+      <SubContainer left={false}>
         {rightSide.map((timestamp) => (
-          <Player key={timestamp} timestamp={timestamp} spectator />
+          <Player key={timestamp} timestamp={timestamp} mini />
         ))}
-      </Container>
+      </SubContainer>
     </>
   );
 };
 
-const Container = styled.div<{ left: boolean }>`
+const Container = styled.div`
+  width: 70%;
+`;
+
+const SubContainer = styled.div<{ left: boolean }>`
   display: flex;
-  flex: 1 0 30%;
   align-items: center;
 
   justify-content: ${({ left }) => (left ? "flex-end" : "flex-start")};

@@ -1,7 +1,5 @@
-import { useAtomValue } from "jotai/utils";
 import React, { FunctionComponent } from "react";
-import styled, { css } from "styled-components";
-import { roomAtom } from "../../../atoms/room";
+import styled from "styled-components";
 import useRoomActions from "../../../hooks/useRoomActions";
 import { RoomStatus } from "../../../types/types";
 import Button from "../../Button";
@@ -14,21 +12,22 @@ interface Props {
 }
 
 const ActionArea: FunctionComponent<Props> = ({ status, isNextHinter, isInCurrentTeam }) => {
-  const { onStartTurn, onEndTurn } = useRoomActions();
+  const { onStartTurn, onEndTurn, onEndGame } = useRoomActions();
 
   if (status === "waiting") {
     return isNextHinter ? (
       <Button onClick={onStartTurn} imageSource="/images/play.svg" text="START" />
     ) : (
-      <Div text="WAITING FOR OTHER PLAYER TO START" big />
+      <Div>WAITING FOR OTHER PLAYER TO START</Div>
     );
   }
 
   if (status === "paused") {
     return (
       <PauseContainer>
-        <Div text="PAUSED" />
+        <Div>PAUSED</Div>
         {isInCurrentTeam && <Button onClick={onEndTurn} text="END TURN" />}
+        <Button onClick={onEndGame} text="END GAME" />
       </PauseContainer>
     );
   }
@@ -40,6 +39,7 @@ const PauseContainer = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
+  gap: 20px;
 `;
 
 export default ActionArea;

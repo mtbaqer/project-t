@@ -2,6 +2,7 @@ import { useAtomValue } from "jotai/utils";
 import React, { FunctionComponent } from "react";
 import styled from "styled-components";
 import { roomAtom } from "../../../atoms/room";
+import { ScreenSizes } from "../../../Theme/ScreenSizes";
 
 interface Props {}
 
@@ -29,10 +30,13 @@ const Container = styled.div`
 const Strong = styled.strong`
   font-size: 50px;
   font-weight: 800;
-  padding-right: 20px;
   color: white;
   font-family: "Nunito";
   font-weight: 900;
+
+  ${ScreenSizes.medium} {
+    font-size: 23px;
+  }
 `;
 
 export default BackButton;

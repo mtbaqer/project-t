@@ -5,10 +5,11 @@ import { useRouter } from "next/router";
 import { roomAtom } from "../atoms/room";
 import { WordsCollectionLength } from "../constants/cards";
 import { DefaultRoom, DefaultTeam } from "../constants/room";
-import { Card, Room, Word } from "../types/types";
+import { Card, Room, RoomStatus, Word } from "../types/types";
 import cleanupDisconnectedPlayers from "../utils/cleanupDisconnectedPlayers";
 import fetchCards from "../utils/fetchCards";
 import getTimestamp from "../utils/getTimestamp";
+import checkIfGameEndedStatus from "../utils/checkIfGameEndedStatus";
 
 const database = getDatabase();
 const firestore = getFirestore();
@@ -103,9 +104,11 @@ export default function useRoomActions() {
 
   function onEndTurn() {
     runTransaction(roomRef, (room: Room) => {
+      let newStatus: RoomStatus;
+      newStatus = checkIfGameEndedStatus(room);
       const newRoom: Room = {
         ...room,
-        status: "waiting",
+        status: newStatus,
       };
       return newRoom;
     });
@@ -152,6 +155,16 @@ export default function useRoomActions() {
     });
   }
 
+  function onEndGame() {
+    runTransaction(roomRef, (room: Room) => {
+      const newRoom: Room = {
+        ...room,
+        status: "ended",
+      };
+      return newRoom;
+    });
+  }
+
   return {
     onStartTurn,
     onCorrect,
@@ -163,5 +176,6 @@ export default function useRoomActions() {
     onRotateCard,
     onFlagCard,
     onBackButton,
+    onEndGame,
   };
 }

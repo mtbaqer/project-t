@@ -1,7 +1,9 @@
 import React, { FunctionComponent, useState } from "react";
 import styled from "styled-components";
-import Image from "next/image";
 import useUserActions from "../hooks/useUserActions";
+import Button from "./Button";
+import Heading from "./Heading";
+import { ScreenSizes } from "../Theme/ScreenSizes";
 
 interface Props {}
 
@@ -18,12 +20,9 @@ const AvatarPrompt: FunctionComponent<Props> = ({}) => {
   return (
     <Container>
       <SubContainer>
-        <H4>CHOOSE A NICKNAME</H4>
+        <Heading styled={false}>CHOOSE A NICKNAME</Heading>
         <Input onChange={(e) => setUsername(e.target.value)} value={username} />
-        <Button onClick={onStart}>
-          <Image src="/images/play.svg" alt="play button" width={23} height={29} />
-          <Strong>START</Strong>
-        </Button>
+        <Button onClick={onStart} text="START" imageSource="/images/play.svg" />
       </SubContainer>
     </Container>
   );
@@ -41,14 +40,7 @@ const SubContainer = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-`;
-
-const H4 = styled.h4`
-  color: rgb(255, 255, 255);
-  margin-bottom: 25px;
-  font-family: "Nunito";
-  font-weight: 900;
-  font-size: 23px;
+  gap: 25px;
 `;
 
 const Input = styled.input`
@@ -61,44 +53,19 @@ const Input = styled.input`
   padding: 0 10px;
   color: rgb(255, 255, 255);
   font-size: 28px;
-  font-family: "Nunito";
   font-weight: 700;
-  margin-bottom: 60px;
 
   &:focus {
     outline: none;
     background-color: transparent;
   }
-`;
 
-const Button = styled.button`
-  background-color: rgb(255, 255, 255);
-  border-color: rgb(48, 26, 107);
-  color: rgb(48, 26, 107);
-  display: flex;
-  align-items: center;
-  border-radius: 7px;
-  box-shadow: rgb(48, 26, 107) 0px 6px 0px 0px;
-  width: 220px;
-  height: 50px;
-  padding: 0 10px;
-  transform: scale(1.2);
-
-  &:hover {
-    background-color: rgb(203, 181, 233);
+  ${ScreenSizes.medium} {
+    width: 256px;
+    height: 35px;
+    font-size: 16px;
+    border-radius: 4px;
   }
-  &:active {
-    margin-top: 8px;
-    margin-bottom: -8px;
-    box-shadow: rgb(48, 26, 107) 0px 2px 0px 0px;
-  }
-`;
-
-const Strong = styled.strong`
-  font-size: 19px;
-  flex: 1;
-  font-family: "Nunito";
-  font-weight: 900;
 `;
 
 export default AvatarPrompt;
