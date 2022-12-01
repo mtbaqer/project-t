@@ -11,6 +11,7 @@ import { useHotkeys } from "react-hotkeys-hook";
 import useSound from "../../hooks/useSound";
 import Lobby from "../../components/Lobby/Lobby";
 import AvatarPrompt from "../../components/AvatarPrompt";
+import Results from "../../components/Results/Results";
 
 const SqueakpeaPath = "/sounds/Squeakpea.mp3";
 
@@ -30,6 +31,7 @@ const RoomPage: NextPage = () => {
       return <AvatarPrompt />;
     }
     if (room.status === "lobby") return <Lobby />;
+    if (room.status === "ended") return <Results />;
     return <Board />;
   }
 
