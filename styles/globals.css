@@ -2,6 +2,7 @@ html,
 body {
   padding: 0;
   margin: 0;
+  font-family: "Nunito";
   background-image: linear-gradient(215deg, rgb(116, 84, 249) 0%, rgb(115, 17, 176) 85%);
   background-position: center top;
   background-repeat: no-repeat;
@@ -16,4 +17,5 @@ a {
 
 * {
   box-sizing: border-box;
+  font-family: "Nunito";
 }
