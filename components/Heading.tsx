@@ -1,12 +1,16 @@
 import React, { FunctionComponent, HTMLProps } from "react";
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 import { ScreenSizes } from "../Theme/ScreenSizes";
 
-const Heading: FunctionComponent<HTMLProps<HTMLHeadingElement>> = ({ children }) => {
-  return <H3>{children}</H3>;
+interface Props {
+  styled?: boolean;
+}
+
+const Heading: FunctionComponent<Props & HTMLProps<HTMLHeadingElement>> = ({ children, styled = true }) => {
+  return <H3 styled={styled}>{children}</H3>;
 };
 
-const H3 = styled.h3`
+const H3 = styled.h3<{ styled: boolean }>`
   color: rgb(92, 255, 182);
   font-size: 22px;
   font-weight: 900;
@@ -33,6 +37,17 @@ const H3 = styled.h3`
       rgb(23 5 87) -0.421592px -1.95506px 0px, rgb(23 5 87) 0.567324px -1.91785px 0px,
       rgb(23 5 87) 1.41734px -1.41108px 0px, rgb(23 5 87) 1.92034px -0.558831px 0px;
   }
+
+  ${({ styled }) =>
+    !styled &&
+    css`
+      text-shadow: none;
+      color: rgb(255, 255, 255);
+
+      ${ScreenSizes.medium} {
+        text-shadow: none;
+      }
+    `}
 `;
 
 export default Heading;
