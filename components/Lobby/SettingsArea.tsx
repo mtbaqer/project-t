@@ -1,4 +1,4 @@
-import React, { FunctionComponent } from "react";
+import React, { FunctionComponent, useEffect, useState } from "react";
 import styled from "styled-components";
 import useLobbyActions from "../../hooks/useLobbyActions";
 import { ScreenSizes } from "../../Theme/ScreenSizes";
@@ -8,7 +8,20 @@ import Button from "../Button";
 interface Props {}
 
 const SettingsArea: FunctionComponent<Props> = ({}) => {
-  const { onAddTeam, onRemoveTeam, onStartGame } = useLobbyActions();
+  const { onAddTeam, onRemoveTeam, onStartGame, onCopyLink } = useLobbyActions();
+  const [isCopied, setIsCopied] = useState(false);
+
+  useEffect(() => {
+    if (isCopied) {
+      setTimeout(() => setIsCopied(false), 10000);
+    }
+  }, [isCopied]);
+
+  function handleCopyLink() {
+    onCopyLink();
+    setIsCopied(true);
+  }
+
   return (
     <Container>
       <SubContainer>
@@ -16,7 +29,15 @@ const SettingsArea: FunctionComponent<Props> = ({}) => {
           <Button onClick={onAddTeam} text="ADD TEAM" imageSource="/images/correct.svg" />
           <Button onClick={onRemoveTeam} text="REMOVE TEAM" imageSource="/images/wrong.svg" />
         </ButtonContainer>
-        <Button onClick={onStartGame} text="START" imageSource="/images/play.svg" />
+
+        <ButtonContainer>
+          <Button
+            onClick={handleCopyLink}
+            text={isCopied ? "LINK COPIED" : "COPY LINK"}
+            imageSource="/images/copy_link.svg"
+          />
+          <Button onClick={onStartGame} text="START" imageSource="/images/play.svg" />
+        </ButtonContainer>
       </SubContainer>
     </Container>
   );
