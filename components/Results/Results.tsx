@@ -8,7 +8,9 @@ interface Props {}
 const Results: FunctionComponent<Props> = ({}) => {
   const room = useAtomValue(roomAtom);
   const teams = room.teams;
-  const activeTeams = teams.filter((_item, index)=> index!==0).map((item, index)=>({teamNumber: index, score: item.score}));
+  const activeTeams = teams
+    .filter((_item, index) => index !== 0)
+    .map((item, index) => ({ teamNumber: index, score: item.score }));
 
   activeTeams.sort((a, b) => b.score - a.score);
   return (
@@ -36,7 +38,7 @@ const Results: FunctionComponent<Props> = ({}) => {
             }
           })}
         </tbody>
-       </TeamsTable>
+      </TeamsTable>
     </>
   );
 };

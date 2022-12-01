@@ -12,15 +12,7 @@ export const roomAtom = atom<Room, Room>(
     const room = get(primitiveRoomAtom);
 
     const timeLeft = get(timeLeftAtom);
-
-    function getRoomStatus() {
-      if (room.status === "playing" && timeLeft <= 0) {
-        return checkIfGameEndedStatus(room);
-      }
-      return room.status;
-    }
-
-    const status = getRoomStatus();
+    const status = room.status === "playing" && timeLeft <= 0 ? checkIfGameEndedStatus(room) : room.status;
 
     const teams = room.teams.map((team) => cleanupDisconnectedPlayers(team, room.players));
 
