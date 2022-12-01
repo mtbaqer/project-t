@@ -32,14 +32,17 @@ const Container = styled.button<{ transparent?: boolean }>`
   text-align: center;
   border-radius: 7px;
   box-shadow: rgb(48, 26, 107) 0px 6px 0px 0px;
-  width: 220px;
+  min-width: 220px;
   height: 50px;
   padding: 0 10px;
   transform: scale(1.2);
   margin: 20px;
+  text-transform: uppercase;
+
   &:hover {
     background-color: rgb(203, 181, 233);
   }
+
   &:active {
     margin-top: 28px;
     margin-bottom: 12px;
@@ -67,7 +70,7 @@ const Container = styled.button<{ transparent?: boolean }>`
 
   ${ScreenSizes.medium} {
     transform: scale(1);
-    width: 140px;
+    min-width: 140px;
     height: 40px;
     padding: 0 5px;
     border-radius: 4px;
@@ -100,6 +103,7 @@ const Strong = styled.strong`
   font-size: 19px;
   flex: 1;
   font-weight: 800;
+  margin: 0 20px;
 
   ${ScreenSizes.medium} {
     font-size: 12px;
