@@ -103,7 +103,7 @@ const Container = styled.button<{ transparent?: boolean }>`
 const Strong = styled.strong`
   font-size: 19px;
   flex: 1;
-  font-weight: 800;
+  font-weight: 400;
   margin: 0 20px;
 
   ${ScreenSizes.medium} {

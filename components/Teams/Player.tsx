@@ -99,7 +99,6 @@ const StyledImage = styled(Image)`
 const Name = styled.p`
   margin: 0 5px;
   font-size: 16px;
-  font-weight: 900;
   color: rgb(48, 26, 107);
   text-transform: uppercase;
 

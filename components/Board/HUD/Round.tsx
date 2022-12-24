@@ -29,10 +29,7 @@ const Container = styled.div`
 
 const Strong = styled.strong`
   font-size: 50px;
-  font-weight: 800;
   color: white;
-  font-family: "Nunito";
-  font-weight: 900;
 
   ${ScreenSizes.medium} {
     font-size: 23px;
