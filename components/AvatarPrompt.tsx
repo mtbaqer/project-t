@@ -22,7 +22,7 @@ const AvatarPrompt: FunctionComponent<Props> = ({}) => {
       <SubContainer>
         <Heading styled={false}>CHOOSE A NICKNAME</Heading>
         <Input onChange={(e) => setUsername(e.target.value)} value={username} />
-        <Button onClick={onStart} text="START" imageSource="/images/play.svg" />
+        <Button onClick={onStart} text="START" />
       </SubContainer>
     </Container>
   );

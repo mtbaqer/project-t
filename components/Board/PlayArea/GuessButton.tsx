@@ -13,11 +13,7 @@ const GuessButton: FunctionComponent<Props> = ({ isHinter }) => {
   const { onCorrect, onTaboo } = useRoomActions();
   return (
     <Container>
-      {isHinter ? (
-        <Button onClick={onCorrect} imageSource="/images/correct.svg" text="CORRECT" />
-      ) : (
-        <Button onClick={onTaboo} imageSource="/images/wrong.svg" text="TABOO" />
-      )}
+      {isHinter ? <Button onClick={onCorrect} text="CORRECT" /> : <Button onClick={onTaboo} text="TABOO" />}
     </Container>
   );
 };

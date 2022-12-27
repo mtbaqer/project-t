@@ -16,7 +16,7 @@ const Home: NextPage = () => {
         <meta name="description" content="Say Don't Say - Play with your Friends Online" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <Button onClick={navigateToNewRoom} text={"Generate Room"} imageSource="/images/play.svg" />
+      <Button onClick={navigateToNewRoom} text={"Play"} />
     </Container>
   );
 };

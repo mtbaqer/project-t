@@ -15,11 +15,7 @@ const ActionArea: FunctionComponent<Props> = ({ status, isNextHinter, isInCurren
   const { onStartTurn, onEndTurn, onEndGame } = useRoomActions();
 
   if (status === "waiting") {
-    return isNextHinter ? (
-      <Button onClick={onStartTurn} imageSource="/images/play.svg" text="START" />
-    ) : (
-      <Div>WAITING FOR OTHER PLAYER TO START</Div>
-    );
+    return isNextHinter ? <Button onClick={onStartTurn} text="START" /> : <Div>WAITING FOR OTHER PLAYER TO START</Div>;
   }
 
   if (status === "paused") {

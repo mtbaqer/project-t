@@ -56,3 +56,5 @@ export interface Settings {
   // packIds: string[];
   timePerRound: number;
 }
+
+export type Size = "s" | "m" | "l";

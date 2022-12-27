@@ -26,17 +26,13 @@ const SettingsArea: FunctionComponent<Props> = ({}) => {
     <Container>
       <SubContainer>
         <ButtonContainer>
-          <Button onClick={onAddTeam} text="ADD TEAM" imageSource="/images/correct.svg" />
-          <Button onClick={onRemoveTeam} text="REMOVE TEAM" imageSource="/images/wrong.svg" />
+          <Button onClick={onAddTeam} text="ADD TEAM" />
+          <Button onClick={onRemoveTeam} text="REMOVE TEAM" />
         </ButtonContainer>
 
         <ButtonContainer>
-          <Button
-            onClick={handleCopyLink}
-            text={isCopied ? "LINK COPIED" : "COPY LINK"}
-            imageSource="/images/copy_link.svg"
-          />
-          <Button onClick={onStartGame} text="START" imageSource="/images/play.svg" />
+          <Button onClick={handleCopyLink} text={isCopied ? "LINK COPIED" : "COPY LINK"} />
+          <Button onClick={onStartGame} text="START" />
         </ButtonContainer>
       </SubContainer>
     </Container>

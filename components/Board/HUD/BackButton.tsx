@@ -9,7 +9,7 @@ const BackButton: FunctionComponent<Props> = ({}) => {
   const { onBackButton } = useRoomActions();
   return (
     <Container>
-      <Button text="LOBBY" transparent onClick={onBackButton} imageSource="/images/chevron-left.svg" />
+      <Button text="LOBBY" transparent onClick={onBackButton} />
     </Container>
   );
 };
