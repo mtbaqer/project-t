@@ -58,3 +58,16 @@ export interface Settings {
 }
 
 export type Size = "s" | "m" | "l";
+
+export interface AvatarImageMetadata {
+  count: number;
+  path: string;
+  alt: string;
+}
+
+export interface Icon {
+  src: string;
+  alt: string;
+  width: number;
+  height: number;
+}

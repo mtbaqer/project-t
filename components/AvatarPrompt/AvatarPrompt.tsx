@@ -1,9 +1,11 @@
 import React, { FunctionComponent, useState } from "react";
 import styled from "styled-components";
-import useUserActions from "../hooks/useUserActions";
-import Button from "./Button";
-import Heading from "./Heading";
-import { ScreenSizes } from "../Theme/ScreenSizes";
+import useUserActions from "../../hooks/useUserActions";
+import Button from "../Button";
+import Heading from "../Heading";
+import { ScreenSizes } from "../../Theme/ScreenSizes";
+import AvatarCustomization from "./AvatarCustomization";
+import { Spaces } from "Theme/Spaces";
 
 interface Props {}
 
@@ -20,8 +22,8 @@ const AvatarPrompt: FunctionComponent<Props> = ({}) => {
   return (
     <Container>
       <SubContainer>
-        <Heading styled={false}>CHOOSE A NICKNAME</Heading>
-        <Input onChange={(e) => setUsername(e.target.value)} value={username} />
+        <AvatarCustomization />
+        <Input onChange={(e) => setUsername(e.target.value)} value={username} placeholder="CoolNickname" />
         <Button onClick={onStart} text="START" />
       </SubContainer>
     </Container>
@@ -40,7 +42,7 @@ const SubContainer = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 25px;
+  gap: ${Spaces.medium};
 `;
 
 const Input = styled.input`
@@ -53,6 +55,11 @@ const Input = styled.input`
   padding: 0 10px;
   color: rgb(255, 255, 255);
   font-size: 28px;
+
+  ::placeholder {
+    color: white;
+    opacity: 0.5;
+  }
 
   &:focus {
     outline: none;

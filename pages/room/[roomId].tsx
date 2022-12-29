@@ -10,7 +10,7 @@ import Board from "../../components/Board/Board";
 import { useHotkeys } from "react-hotkeys-hook";
 import useSound from "../../hooks/useSound";
 import Lobby from "../../components/Lobby/Lobby";
-import AvatarPrompt from "../../components/AvatarPrompt";
+import AvatarPrompt from "../../components/AvatarPrompt/AvatarPrompt";
 import Results from "../../components/Results/Results";
 
 const SqueakpeaPath = "/sounds/Squeakpea.mp3";
