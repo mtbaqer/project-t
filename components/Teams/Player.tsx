@@ -7,6 +7,7 @@ import Text from "../Text";
 import Avatar from "./Avatar";
 import { AvatarHeight, AvatarWidth, MiniAvatarHeight, MiniAvatarWidth } from "constants/avatars";
 import { Spaces } from "Theme/Spaces";
+import useResponsive from "hooks/useResponsive";
 
 const playersAtom = selectAtom(roomAtom, (room) => room.players);
 
@@ -19,6 +20,9 @@ interface Props {
 const Player: FunctionComponent<Props> = ({ isHinter = false, timestamp, mini = false }) => {
   const players = useAtomValue(playersAtom);
   const user = players[timestamp];
+
+  const { isTabletOrMobile } = useResponsive();
+  mini = mini || isTabletOrMobile;
 
   return user ? (
     <Container isHinter={isHinter} mini={mini}>
@@ -56,11 +60,13 @@ const Container = styled.div<{ isHinter: boolean; mini: boolean }>`
     css`
       width: 65px;
       height: 65px;
-      justify-content: center;
-      background-color: transparent;
-      border: none;
-      box-shadow: none;
-    `}
+
+      ${ScreenSizes.biggerThanMedium} {
+        background-color: transparent;
+        border: none;
+        box-shadow: none;
+      }
+    `} 
 
   ${ScreenSizes.medium} {
     width: 36vw;
@@ -79,6 +85,10 @@ const Content = styled.div<{ mini: boolean }>`
     css`
       flex-direction: column;
     `}
+
+  ${ScreenSizes.medium} {
+    align-items: flex-start;
+  }
 `;
 
 const AvatarContainer = styled.div<{ mini: boolean }>`
@@ -111,7 +121,13 @@ const NameContainer = styled.div<{ mini: boolean }>`
       margin-top: -35px;
       transform: skewX(-5deg) rotate(-2deg);
       max-width: 300%;
-    `}
+    `}/* ${ScreenSizes.medium} {
+    position: absolute;
+    bottom: -20%;
+    left: -20%;
+    transform: skewX(-5deg) rotate(-2deg);
+    max-width: 300%;
+  } */
 `;
 
 export default Player;

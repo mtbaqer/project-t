@@ -66,9 +66,10 @@ const Container = styled.div<{ currentlyPlaying: boolean; grid: boolean }>`
   ${({ grid }) =>
     !grid &&
     css`
-      min-width: 390px;
+      width: 390px;
+
       ${ScreenSizes.medium} {
-        width: 36vw;
+        width: 40vw;
         box-sizing: content-box;
       }
     `};
