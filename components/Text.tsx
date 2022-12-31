@@ -18,6 +18,10 @@ const Content = styled.p`
   flex: 1;
   font-weight: 400;
   color: white;
+  text-transform: uppercase;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  padding: 0 2px;
 
   ${ScreenSizes.medium} {
     font-size: 20px;
