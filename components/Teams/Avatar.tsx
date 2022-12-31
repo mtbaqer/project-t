@@ -21,8 +21,8 @@ const Avatar: FunctionComponent<Props> = ({ srcs }) => {
 
 const ImageContainer = styled.div`
   position: absolute;
-  bottom: ${MiniAvatarHeight / 10}px;
-  left: -${MiniAvatarWidth / 5}px;
+  bottom: 0;
+  left: 0;
   transform: rotate(15deg);
 `;
 

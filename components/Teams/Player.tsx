@@ -6,6 +6,7 @@ import { ScreenSizes } from "../../Theme/ScreenSizes";
 import Text from "../Text";
 import Avatar from "./Avatar";
 import { AvatarHeight, AvatarWidth, MiniAvatarHeight, MiniAvatarWidth } from "constants/avatars";
+import { Spaces } from "Theme/Spaces";
 
 const playersAtom = selectAtom(roomAtom, (room) => room.players);
 
@@ -22,14 +23,12 @@ const Player: FunctionComponent<Props> = ({ isHinter = false, timestamp, mini = 
   return user ? (
     <Container isHinter={isHinter} mini={mini}>
       <Content mini={mini}>
-        <AvatarContainer>
+        <AvatarContainer mini={mini}>
           <Avatar srcs={user.avatarUrls} />
         </AvatarContainer>
-        {!mini ? (
-          <NameContainer>
-            <Text>{user.name}</Text>
-          </NameContainer>
-        ) : null}
+        <NameContainer mini={mini}>
+          <Text>{user.name}</Text>
+        </NameContainer>
       </Content>
     </Container>
   ) : null;
@@ -82,15 +81,37 @@ const Content = styled.div<{ mini: boolean }>`
     `}
 `;
 
-const AvatarContainer = styled.div`
+const AvatarContainer = styled.div<{ mini: boolean }>`
   position: relative;
   width: ${MiniAvatarWidth}px;
   height: ${MiniAvatarHeight}px;
   flex-shrink: 0;
+
+  ${({ mini }) =>
+    !mini &&
+    css`
+      margin-bottom: ${MiniAvatarHeight / 6}px;
+      margin-left: -${MiniAvatarWidth / 4}px;
+      margin-right: ${Spaces.small};
+    `}
+
+  ${({ mini }) =>
+    mini &&
+    css`
+      margin-top: -${MiniAvatarHeight / 3}px;
+    `}
 `;
 
-const NameContainer = styled.div`
+const NameContainer = styled.div<{ mini: boolean }>`
   max-width: 60%;
+
+  ${({ mini }) =>
+    mini &&
+    css`
+      margin-top: -35px;
+      transform: skewX(-5deg) rotate(-2deg);
+      max-width: 300%;
+    `}
 `;
 
 export default Player;
