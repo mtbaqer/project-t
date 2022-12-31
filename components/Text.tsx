@@ -21,13 +21,13 @@ const Content = styled.p`
   text-transform: uppercase;
   text-overflow: ellipsis;
   overflow: hidden;
-  padding: 0 2px;
+  padding: 0 3px;
 
   ${ScreenSizes.medium} {
     font-size: 20px;
   }
 
-  ${textStroke(2, "black")}
+  ${textStroke(3, "black")}
 `;
 
 export default Text;

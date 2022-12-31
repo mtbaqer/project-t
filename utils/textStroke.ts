@@ -13,7 +13,7 @@ export default function textStroke(width: number, color: string) {
     const x = width * Math.cos(angle);
     const y = width * Math.sin(angle);
     if (y < 0) continue;
-    result += `${x}px ${2 * y}px 0 ${color},`;
+    result += `${x}px ${2 + y}px 0 ${color},`;
   }
   result = result.slice(0, -1);
   result += ";";

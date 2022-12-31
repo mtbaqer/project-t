@@ -40,10 +40,10 @@ const Container = styled.div<{ isHinter: boolean; mini: boolean }>`
   background-color: #b116ed;
   width: 350px;
   height: 70px;
-  transform: skewX(-15deg);
-  border: 4px solid black;
-  border-radius: 2px;
-  box-shadow: 0 2px 0 0 black;
+  transform: skewX(-5deg);
+  border: 3px solid black;
+  border-radius: 4px;
+  box-shadow: 0 3px 0 0 black, 0 5px 0 0 rgba(0, 0, 0, 0.25);
 
   ${({ isHinter }) =>
     isHinter
@@ -70,7 +70,7 @@ const Container = styled.div<{ isHinter: boolean; mini: boolean }>`
 
 const Content = styled.div<{ mini: boolean }>`
   position: relative;
-  transform: skewX(15deg);
+  transform: skewX(5deg);
   height: 100%;
   display: flex;
   align-items: center;

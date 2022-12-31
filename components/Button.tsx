@@ -28,7 +28,7 @@ const Button: FunctionComponent<Props> = ({ onClick, text, transparent }) => {
 
 const ButtonContainer = styled.button<{ transparent?: boolean }>`
   background-color: #eec408;
-  border: 2px solid black;
+  border: 3px solid black;
   -ms-transform: skewX(-5deg);
   -webkit-transform: skewX(-5deg);
   transform: skewX(-5deg);
@@ -41,7 +41,7 @@ const ButtonContainer = styled.button<{ transparent?: boolean }>`
   min-width: 210px;
   height: 70px;
   text-transform: uppercase;
-  box-shadow: black 0 1px 0 0, #423842 0 3px 0 0;
+  box-shadow: black 0 3px 0 0, 0 5px 0 0 rgba(0, 0, 0, 0.25);
   -webkit-backface-visibility: hidden;
   -webkit-backface-visibility: hidden;
   backface-visibility: hidden;

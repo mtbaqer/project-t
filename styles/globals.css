@@ -3,7 +3,7 @@ body {
   padding: 0;
   margin: 0;
   font-family: "Lilita One";
-  background-image: linear-gradient(215deg, rgb(116, 84, 249) 0%, rgb(115, 17, 176) 85%);
+  background-image: radial-gradient(circle, #0474ff, #0249be);
   background-position: center top;
   background-repeat: no-repeat;
   background-size: cover;
