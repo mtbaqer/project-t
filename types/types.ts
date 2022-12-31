@@ -7,7 +7,7 @@ export interface Team {
 export interface User {
   id: string;
   name: string;
-  avatarUrl: string;
+  avatarUrls: string[];
   timestamp: string;
 }
 
@@ -71,3 +71,5 @@ export interface Icon {
   width: number;
   height: number;
 }
+
+export type StatePair = [number, (value: number) => void];

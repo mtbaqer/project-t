@@ -23,7 +23,7 @@ const Player: FunctionComponent<Props> = ({ isHinter = false, timestamp, mini = 
     <Container isHinter={isHinter} mini={mini}>
       <Content mini={mini}>
         <AvatarContainer>
-          <Avatar />
+          <Avatar srcs={user.avatarUrls} />
         </AvatarContainer>
         {!mini ? (
           <NameContainer>

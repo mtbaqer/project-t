@@ -6,23 +6,44 @@ import Heading from "../Heading";
 import { ScreenSizes } from "../../Theme/ScreenSizes";
 import AvatarCustomization from "./AvatarCustomization";
 import { Spaces } from "Theme/Spaces";
+import { AvatarImageMetadata, StatePair } from "types/types";
+import { AvatarImagesMetadata } from "constants/avatars";
+import { toSrc } from "utils/toSrc";
+
+export type AvatarController = [StatePair, AvatarImageMetadata];
 
 interface Props {}
 
 const AvatarPrompt: FunctionComponent<Props> = ({}) => {
-  const [username, setUsername] = useState("");
   const { addUser } = useUserActions();
 
+  const colorState = React.useState(0);
+  const faceState = React.useState(0);
+  const accessoryState = React.useState(0);
+  const avatarControllers: AvatarController[] = [
+    [colorState, AvatarImagesMetadata.colors],
+    [faceState, AvatarImagesMetadata.faces],
+    [accessoryState, AvatarImagesMetadata.accessories],
+  ];
+
+  const [username, setUsername] = useState("");
+
   function onStart() {
-    const randomAvatarIndex = 1 + Math.floor(Math.random() * 39);
-    if (username.length) addUser(username, randomAvatarIndex.toString());
-    else alert("Please input your username");
+    if (username.length) {
+      const avatarUrls: string[] = [];
+      for (const [state, metadata] of avatarControllers) {
+        const [value] = state;
+        avatarUrls.push(toSrc(metadata.path, value));
+      }
+
+      addUser(username, avatarUrls);
+    } else alert("Please input your username");
   }
 
   return (
     <Container>
       <SubContainer>
-        <AvatarCustomization />
+        <AvatarCustomization controllers={avatarControllers} />
         <Input onChange={(e) => setUsername(e.target.value)} value={username} placeholder="CoolNickname" />
         <Button onClick={onStart} text="START" />
       </SubContainer>

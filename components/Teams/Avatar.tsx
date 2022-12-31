@@ -3,20 +3,16 @@ import React, { FunctionComponent } from "react";
 import styled from "styled-components";
 import Image from "next/image";
 
-interface Props {}
+interface Props {
+  srcs: string[];
+}
 
-const mockImages = [
-  `${BaseAvatarImagePath}/colors/0.svg`,
-  `${BaseAvatarImagePath}/faces/0.svg`,
-  `${BaseAvatarImagePath}/accessories/2.svg`,
-];
-
-const Avatar: FunctionComponent<Props> = ({}) => {
+const Avatar: FunctionComponent<Props> = ({ srcs }) => {
   return (
     <>
-      {mockImages.map((image) => (
-        <ImageContainer key={image}>
-          <Image src={image} width={MiniAvatarWidth} height={MiniAvatarHeight} alt="" />
+      {srcs.map((src) => (
+        <ImageContainer key={src}>
+          <Image src={src} width={MiniAvatarWidth} height={MiniAvatarHeight} alt="" />
         </ImageContainer>
       ))}
     </>
