@@ -1,3 +1,5 @@
+import { ButtonColors } from "Theme/Colors";
+
 export interface Team {
   members: string[];
   score: number;

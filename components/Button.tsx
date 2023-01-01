@@ -1,33 +1,30 @@
 import React, { FunctionComponent } from "react";
-import styled, { css } from "styled-components";
-import Image from "next/image";
-import { ScreenSizes } from "../Theme/ScreenSizes";
-import useResponsive from "../hooks/useResponsive";
+import styled from "styled-components";
 import Text from "./Text";
-
-type ButtonColor = "yellow";
+import { ButtonColor } from "Theme/Colors";
+import { applyButtonColor } from "Theme/utils/applyButtonColor";
 
 export interface Props {
   onClick?: () => void;
   text: String;
-  transparent?: boolean;
+  color?: ButtonColor;
 }
 
-const Button: FunctionComponent<Props> = ({ onClick, text, transparent }) => {
+const Button: FunctionComponent<Props> = ({ onClick, text, color = "black" }) => {
   return (
-    <ButtonContainer transparent={transparent} onClick={onClick}>
-      <TopBorder />
-      <ShinyCorner />
+    <ButtonContainer color={color} onClick={onClick}>
+      <TopBorder color={color} />
+      <ShinyCorner color={color} />
       <ContentContainer>
         <Text>{text}</Text>
       </ContentContainer>
-      <BottomBorder />
+      <BottomBorder color={color} />
     </ButtonContainer>
   );
 };
 
-const ButtonContainer = styled.button<{ transparent?: boolean }>`
-  background-color: #eec408;
+const ButtonContainer = styled.button<{ color: ButtonColor }>`
+  ${applyButtonColor("base")}
   border: 3px solid black;
   -ms-transform: skewX(-5deg);
   -webkit-transform: skewX(-5deg);
@@ -54,17 +51,17 @@ const ButtonContainer = styled.button<{ transparent?: boolean }>`
   }
 `;
 
-const TopBorder = styled.span`
+const TopBorder = styled.span<{ color: ButtonColor }>`
   height: 4px;
-  background-color: #fbeb44;
   width: 100%;
+  ${applyButtonColor("topBorder")}
 `;
 
-const ShinyCorner = styled.span`
+const ShinyCorner = styled.span<{ color: ButtonColor }>`
   position: absolute;
   top: 1px;
   right: -8px;
-  background-color: #faf99b;
+  ${applyButtonColor("corner")}
   width: 16px;
   height: 5px;
   -ms-transform: rotate(45deg);
@@ -73,7 +70,7 @@ const ShinyCorner = styled.span`
 `;
 
 const BottomBorder = styled(TopBorder)`
-  background-color: #a6532b;
+  ${applyButtonColor("bottomBorder")}
 `;
 
 const ContentContainer = styled.div`

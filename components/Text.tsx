@@ -2,7 +2,7 @@ import React, { FunctionComponent } from "react";
 import styled from "styled-components";
 import { ScreenSizes } from "Theme/ScreenSizes";
 import { Size } from "types/types";
-import textStroke from "utils/textStroke";
+import textStroke from "Theme/utils/textStroke";
 
 interface Props {
   size?: Size;
