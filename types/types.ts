@@ -72,6 +72,7 @@ export interface Icon {
   alt: string;
   width: number;
   height: number;
+  draggable?: boolean;
 }
 
 export type StatePair = [number, (value: number) => void];
