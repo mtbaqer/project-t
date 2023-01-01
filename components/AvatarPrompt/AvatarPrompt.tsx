@@ -45,7 +45,7 @@ const AvatarPrompt: FunctionComponent<Props> = ({}) => {
       <SubContainer>
         <AvatarCustomization controllers={avatarControllers} />
         <Input onChange={(e) => setUsername(e.target.value)} value={username} placeholder="CoolNickname" />
-        <Button onClick={onStart} text="START" />
+        <Button onClick={onStart} text="Go" color="yellow" />
       </SubContainer>
     </Container>
   );
