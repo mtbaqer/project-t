@@ -39,7 +39,15 @@ const Content = styled.p<{ size: Size }>`
           }
           ${textStroke(3, "black")}
         `
-      : css``}
+      : css`
+          font-size: 48px;
+          display: flex;
+          align-items: center;
+          ${ScreenSizes.medium} {
+            font-size: 24px;
+          }
+          ${textStroke(3, "black")}
+        `}
 `;
 
 export default Text;
