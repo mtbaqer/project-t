@@ -7,13 +7,14 @@ import Text from "./Text";
 
 interface Props {
   title?: string;
+  onClose?: () => void;
 }
 
-const Panel: FunctionComponent<Props> = ({ title, children }) => {
+const Panel: FunctionComponent<Props> = ({ title, onClose, children }) => {
   return (
     <Container>
       <CloseButtonContainer>
-        <Button size="s" icon={Close} color="red" />
+        <Button size="s" icon={Close} color="red" onClick={onClose} />
       </CloseButtonContainer>
       {title && (
         <TitleContainer>

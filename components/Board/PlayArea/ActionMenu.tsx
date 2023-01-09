@@ -14,7 +14,7 @@ interface Props {
 }
 
 const ActionMenu: FunctionComponent<Props> = ({ status, isNextHinter, isInCurrentTeam }) => {
-  const { onStartTurn, onEndTurn, onEndGame } = useRoomActions();
+  const { onStartTurn, onResume, onEndTurn, onEndGame } = useRoomActions();
 
   if (status === "waiting") {
     return isNextHinter ? (
@@ -26,7 +26,7 @@ const ActionMenu: FunctionComponent<Props> = ({ status, isNextHinter, isInCurren
 
   if (status === "paused") {
     return (
-      <Panel title="PAUSED">
+      <Panel title="PAUSED" onClose={onResume}>
         <Container>
           {isInCurrentTeam && <Button onClick={onEndTurn} text="END TURN" color="blue" />}
           <Button onClick={onEndGame} text="END GAME" color="red" />
