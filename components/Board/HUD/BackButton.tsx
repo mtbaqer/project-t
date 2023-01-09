@@ -1,3 +1,4 @@
+import { LeftArrow } from "constants/icons";
 import React, { FunctionComponent } from "react";
 import styled from "styled-components";
 import useRoomActions from "../../../hooks/useRoomActions";
@@ -9,7 +10,7 @@ const BackButton: FunctionComponent<Props> = ({}) => {
   const { onBackButton } = useRoomActions();
   return (
     <Container>
-      <Button text="LOBBY" transparent onClick={onBackButton} />
+      <Button text="LOBBY" size="s" color="red" onClick={onBackButton} />
     </Container>
   );
 };

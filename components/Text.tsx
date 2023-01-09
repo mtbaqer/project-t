@@ -1,5 +1,5 @@
 import React, { FunctionComponent } from "react";
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 import { ScreenSizes } from "Theme/ScreenSizes";
 import { Size } from "types/types";
 import textStroke from "Theme/utils/textStroke";
@@ -9,11 +9,10 @@ interface Props {
 }
 
 const Text: FunctionComponent<Props> = ({ children, size = "m" }) => {
-  return <Content>{children}</Content>;
+  return <Content size={size}>{children}</Content>;
 };
 
-const Content = styled.p`
-  font-size: 30px;
+const Content = styled.p<{ size: Size }>`
   letter-spacing: -0.02em;
   flex: 1;
   font-weight: 400;
@@ -23,11 +22,31 @@ const Content = styled.p`
   overflow: hidden;
   padding: 0 3px;
 
-  ${ScreenSizes.medium} {
-    font-size: 20px;
-  }
+  ${({ size }) =>
+    size === "s"
+      ? css`
+          font-size: 20px;
+          ${textStroke(2, "black")}
+        `
+      : size === "m"
+      ? css`
+          font-size: 30px;
+          ${textStroke(3, "black")}
+        `
+      : css``}
 
-  ${textStroke(3, "black")}
+  ${ScreenSizes.medium} {
+    ${({ size }) =>
+      size === "s"
+        ? css`
+            font-size: 16px;
+          `
+        : size === "m"
+        ? css`
+            font-size: 20px;
+          `
+        : css``}
+  }
 `;
 
 export default Text;

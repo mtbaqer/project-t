@@ -1,4 +1,4 @@
-export type ButtonColor = "yellow" | "black" | "blue";
+export type ButtonColor = "yellow" | "black" | "blue" | "red";
 
 export type ButtonColorSet = {
   base: string;
@@ -25,5 +25,11 @@ export const ButtonColors: Record<ButtonColor, ButtonColorSet> = {
     topBorder: "#1392F5",
     bottomBorder: "#084BEF",
     corner: "#2BA8F3",
+  },
+  red: {
+    base: "#DE322A",
+    topBorder: "#EF6158",
+    bottomBorder: "#B80F4C",
+    corner: "#F5655E",
   },
 };
