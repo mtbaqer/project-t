@@ -3,9 +3,8 @@ import styled, { css } from "styled-components";
 import Text from "./Text";
 import { ButtonColor } from "Theme/Colors";
 import { applyButtonColor } from "Theme/utils/applyButtonColor";
-import { Icon, Size } from "types/types";
+import { Size } from "types/types";
 import { Spaces } from "Theme/Spaces";
-import Image from "next/image";
 
 export interface Props {
   onClick?: () => void;
@@ -97,13 +96,6 @@ const ContentContainer = styled.div<{ size: Size }>`
     css`
       padding: 0 ${Spaces.medium};
     `};
-`;
-
-const IconContainer = styled.div`
-  position: absolute;
-  top: 0;
-  left: -25%;
-  height: 100%;
 `;
 
 const BottomBorder = styled(TopBorder)`

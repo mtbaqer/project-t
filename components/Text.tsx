@@ -26,27 +26,20 @@ const Content = styled.p<{ size: Size }>`
     size === "s"
       ? css`
           font-size: 20px;
+          ${ScreenSizes.medium} {
+            font-size: 16px;
+          }
           ${textStroke(2, "black")}
         `
       : size === "m"
       ? css`
           font-size: 30px;
+          ${ScreenSizes.medium} {
+            font-size: 20px;
+          }
           ${textStroke(3, "black")}
         `
       : css``}
-
-  ${ScreenSizes.medium} {
-    ${({ size }) =>
-      size === "s"
-        ? css`
-            font-size: 16px;
-          `
-        : size === "m"
-        ? css`
-            font-size: 20px;
-          `
-        : css``}
-  }
 `;
 
 export default Text;
