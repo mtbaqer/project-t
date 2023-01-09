@@ -40,7 +40,7 @@ const Container = styled.div`
 const CloseButtonContainer = styled.div`
   position: absolute;
   height: 100%;
-  top: 5px;
+  top: 2px;
   right: -5%;
 `;
 

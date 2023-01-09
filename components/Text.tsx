@@ -39,6 +39,17 @@ const Content = styled.p<{ size: Size }>`
           }
           ${textStroke(3, "black")}
         `
+      : size === "l"
+      ? css`
+          font-size: 40px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          ${ScreenSizes.medium} {
+            font-size: 24px;
+          }
+          ${textStroke(3, "black")}
+        `
       : css`
           font-size: 48px;
           display: flex;

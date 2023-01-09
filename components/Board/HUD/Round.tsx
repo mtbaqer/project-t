@@ -13,7 +13,7 @@ const BackButton: FunctionComponent<Props> = ({}) => {
   } = useAtomValue(roomAtom);
   return (
     <Container>
-      <Text size="l">
+      <Text size="xl">
         {round}/{maxRounds}
       </Text>
     </Container>

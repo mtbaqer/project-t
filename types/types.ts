@@ -59,7 +59,7 @@ export interface Settings {
   timePerRound: number;
 }
 
-export type Size = "s" | "m" | "l";
+export type Size = "s" | "m" | "l" | "xl";
 
 export interface AvatarImageMetadata {
   count: number;
