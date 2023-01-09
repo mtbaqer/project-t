@@ -43,6 +43,7 @@ const Content = styled.p<{ size: Size }>`
           font-size: 48px;
           display: flex;
           align-items: center;
+          justify-content: center;
           ${ScreenSizes.medium} {
             font-size: 24px;
           }

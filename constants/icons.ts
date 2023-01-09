@@ -34,3 +34,9 @@ export const Flag: Icon = {
   height: 27,
   draggable: false,
 };
+export const Close: Icon = {
+  src: `${BaseIconPath}/Close.svg`,
+  alt: "close",
+  width: 64,
+  height: 64,
+};

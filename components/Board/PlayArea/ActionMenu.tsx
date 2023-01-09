@@ -1,5 +1,7 @@
+import Panel from "@/components/Panel";
 import React, { FunctionComponent } from "react";
 import styled from "styled-components";
+import { Spaces } from "Theme/Spaces";
 import useRoomActions from "../../../hooks/useRoomActions";
 import { RoomStatus } from "../../../types/types";
 import Button from "../../Button";
@@ -24,22 +26,23 @@ const ActionMenu: FunctionComponent<Props> = ({ status, isNextHinter, isInCurren
 
   if (status === "paused") {
     return (
-      <PauseContainer>
-        <Div>PAUSED</Div>
-        {isInCurrentTeam && <Button onClick={onEndTurn} text="END TURN" />}
-        <Button onClick={onEndGame} text="END GAME" />
-      </PauseContainer>
+      <Panel title="PAUSED">
+        <Container>
+          {isInCurrentTeam && <Button onClick={onEndTurn} text="END TURN" color="blue" />}
+          <Button onClick={onEndGame} text="END GAME" color="red" />
+        </Container>
+      </Panel>
     );
   }
 
   return null;
 };
 
-const PauseContainer = styled.div`
+const Container = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 20px;
+  gap: ${Spaces.medium};
 `;
 
 export default ActionMenu;

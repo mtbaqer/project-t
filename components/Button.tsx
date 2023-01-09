@@ -3,23 +3,26 @@ import styled, { css } from "styled-components";
 import Text from "./Text";
 import { ButtonColor } from "Theme/Colors";
 import { applyButtonColor } from "Theme/utils/applyButtonColor";
-import { Size } from "types/types";
+import { Icon, Size } from "types/types";
 import { Spaces } from "Theme/Spaces";
+import Image from "next/image";
 
 export interface Props {
   onClick?: () => void;
-  text: String;
+  text?: String;
+  icon?: Icon;
   color?: ButtonColor;
   size?: Size;
 }
 
-const Button: FunctionComponent<Props> = ({ onClick, text, color = "black", size = "m" }) => {
+const Button: FunctionComponent<Props> = ({ onClick, text, icon, color = "black", size = "m" }) => {
   return (
     <ButtonContainer color={color} size={size} onClick={onClick}>
       <TopBorder color={color} />
       <ShinyCorner color={color} />
       <ContentContainer size={size}>
-        <Text size={size}>{text}</Text>
+        {icon && <Image {...icon} height={icon.height / 2} width={icon.width / 2} alt={icon.alt} />}
+        {text && <Text size={size}>{text}</Text>}
       </ContentContainer>
       <BottomBorder color={color} />
     </ButtonContainer>
@@ -50,7 +53,6 @@ const ButtonContainer = styled.button<{ color: ButtonColor; size: Size }>`
   ${({ size }) =>
     size === "s"
       ? css`
-          min-width: 110px;
           height: 60px;
         `
       : size === "m"
@@ -90,11 +92,14 @@ const ContentContainer = styled.div<{ size: Size }>`
   width: 100%;
   display: flex;
   position: relative;
+  justify-content: center;
+  align-items: center;
+  padding: 0 ${Spaces.medium};
 
   ${({ size }) =>
-    size !== "s" &&
+    size === "s" &&
     css`
-      padding: 0 ${Spaces.medium};
+      padding: 0 ${Spaces.small};
     `};
 `;
 
