@@ -1,3 +1,4 @@
+import Modal from "@/components/Modal";
 import Panel from "@/components/Panel";
 import React, { FunctionComponent } from "react";
 import styled from "styled-components";
@@ -26,12 +27,14 @@ const ActionMenu: FunctionComponent<Props> = ({ status, isNextHinter, isInCurren
 
   if (status === "paused") {
     return (
-      <Panel title="PAUSED" onClose={onResume}>
-        <Container>
-          {isInCurrentTeam && <Button onClick={onEndTurn} text="END TURN" color="blue" />}
-          <Button onClick={onEndGame} text="END GAME" color="red" />
-        </Container>
-      </Panel>
+      <Modal onClose={onResume}>
+        <Panel title="PAUSED" onClose={onResume}>
+          <Container>
+            {isInCurrentTeam && <Button onClick={onEndTurn} text="END TURN" color="blue" />}
+            <Button onClick={onEndGame} text="END GAME" color="red" />
+          </Container>
+        </Panel>
+      </Modal>
     );
   }
 
