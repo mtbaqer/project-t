@@ -39,4 +39,5 @@ export const Close: Icon = {
   alt: "close",
   width: 64,
   height: 64,
+  draggable: false,
 };
