@@ -11,7 +11,7 @@ interface Props {
   isInCurrentTeam: boolean;
 }
 
-const ActionArea: FunctionComponent<Props> = ({ status, isNextHinter, isInCurrentTeam }) => {
+const ActionMenu: FunctionComponent<Props> = ({ status, isNextHinter, isInCurrentTeam }) => {
   const { onStartTurn, onEndTurn, onEndGame } = useRoomActions();
 
   if (status === "waiting") {
@@ -42,4 +42,4 @@ const PauseContainer = styled.div`
   gap: 20px;
 `;
 
-export default ActionArea;
+export default ActionMenu;

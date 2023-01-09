@@ -5,7 +5,7 @@ import { roomAtom } from "../../../atoms/room";
 import { userAtom } from "../../../atoms/user";
 import CardArea from "./CardArea";
 import { Team } from "../../../types/types";
-import ActionArea from "./ActionArea";
+import ActionMenu from "./ActionMenu";
 import Feedback from "./Feedback";
 
 import Div from "../../Div";
@@ -52,7 +52,7 @@ const PlayArea: FunctionComponent<Props> = ({}) => {
   return (
     <Container center={status !== "playing"}>
       {status !== "playing" ? (
-        <ActionArea status={status} isNextHinter={isNextHinter} isInCurrentTeam={isInCurrentTeam} />
+        <ActionMenu status={status} isNextHinter={isNextHinter} isInCurrentTeam={isInCurrentTeam} />
       ) : (
         <>
           <Feedback />
