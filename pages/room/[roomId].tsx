@@ -25,6 +25,8 @@ const RoomPage: NextPage = () => {
   useHotkeys("Space", play);
 
   function renderContent() {
+    console.log(`Auth ${auth} - User: ${user}`);
+
     if (!auth || room.status === "loading") return null;
     if (!user) {
       if (room.playersHistory?.[auth.id]) return null;

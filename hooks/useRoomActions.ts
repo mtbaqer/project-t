@@ -154,6 +154,10 @@ export default function useRoomActions() {
       return newRoom;
     });
   }
+  function onReturnToGenerateRoom(){
+    //TODO: Why does this error out when trying to generate new room
+    router.push('/');
+  }
 
   function onEndGame() {
     runTransaction(roomRef, (room: Room) => {
@@ -177,5 +181,6 @@ export default function useRoomActions() {
     onFlagCard,
     onBackButton,
     onEndGame,
+    onReturnToGenerateRoom,
   };
 }

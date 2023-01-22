@@ -4,11 +4,13 @@ import useLobbyActions from "../../hooks/useLobbyActions";
 import { ScreenSizes } from "../../Theme/ScreenSizes";
 import { Spaces } from "../../Theme/Spaces";
 import Button from "../Button";
+import useRoomActions from "hooks/useRoomActions";
 
 interface Props {}
 
 const SettingsArea: FunctionComponent<Props> = ({}) => {
   const { onAddTeam, onRemoveTeam, onStartGame, onCopyLink } = useLobbyActions();
+  const { onReturnToGenerateRoom } = useRoomActions();
   const [isCopied, setIsCopied] = useState(false);
 
   useEffect(() => {
@@ -37,11 +39,19 @@ const SettingsArea: FunctionComponent<Props> = ({}) => {
             imageSource="/images/copy_link.svg"
           />
           <Button onClick={onStartGame} text="START" imageSource="/images/play.svg" />
+          <Button
+            text="RETURN TO GENERATE ROOM"
+            onClick={onReturnToGenerateRoom}
+            imageSource="/images/chevron-left.svg"
+          />
         </ButtonContainer>
       </SubContainer>
     </Container>
   );
 };
+function clicked() {
+  alert("hello");
+}
 
 const Container = styled.div`
   position: absolute;
