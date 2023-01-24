@@ -154,9 +154,9 @@ export default function useRoomActions() {
       return newRoom;
     });
   }
-  function onReturnToGenerateRoom(){
+  function onReturnToGenerateRoom() {
     //TODO: Why does this error out when trying to generate new room
-    router.push('/');
+    router.push("/");
   }
 
   function onEndGame() {

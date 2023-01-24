@@ -3,8 +3,7 @@ import styled from "styled-components";
 import useRoomActions from "hooks/useRoomActions";
 import Button from "../Button";
 
-interface Props {
-}
+interface Props {}
 
 const HomeButton: FunctionComponent<Props> = ({}) => {
   const { onReturnToGenerateRoom } = useRoomActions();

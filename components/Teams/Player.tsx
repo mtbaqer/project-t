@@ -47,13 +47,13 @@ const Container = styled.div<{ isHinter: boolean; mini: boolean }>`
   border-top-left-radius: 100px;
   border-bottom-right-radius: 25px;
   border-top-right-radius: 25px;
+
   ${({ isHinter }) =>
     isHinter
       ? css`
           border: 3px solid rgb(67 216 162);
         `
       : ""}
-
   ${({ mini }) =>
     mini &&
     css`
@@ -62,7 +62,6 @@ const Container = styled.div<{ isHinter: boolean; mini: boolean }>`
       justify-content: center;
       background-color: transparent;
     `}
-
   ${ScreenSizes.medium} {
     width: 36vw;
   }
@@ -106,6 +105,7 @@ const Name = styled.p`
   ${ScreenSizes.medium} {
     font-size: 14px;
   }
+
   flex-shrink: 1;
   overflow: hidden;
   text-overflow: ellipsis;
