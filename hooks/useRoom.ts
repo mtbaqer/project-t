@@ -20,16 +20,25 @@ export default function useRoom() {
   const { roomId } = router.query;
 
   useEffect(() => {
-    if (roomId) subscribeToRoom();
+    let unsubscribe = () => {};
+    if (roomId) {
+      unsubscribe = subscribeToRoom();
+    }
+
+    return () => {
+      unsubscribe();
+    };
   }, [roomId]);
 
   function subscribeToRoom() {
     const roomRef = ref(database, `rooms/${roomId}`);
 
-    onValue(roomRef, (snapshot) => {
+    return onValue(roomRef, (snapshot) => {
+      console.log("fetched Room");
       if (!snapshot.exists()) router.push("/");
       else {
         const room = snapshot.val() as Room;
+        console.log({ room: room.id });
         setRoom(room);
       }
     });
