@@ -51,9 +51,15 @@ export default function useLobbyActions() {
   async function onCopyLink() {
     await navigator.clipboard.writeText(window.location.href);
   }
+  function onSetting() {
+    // console.log("Set up settings");
+    const status: RoomStatus = "settings";
+    update(roomRef, { status });
+  }
 
   return {
     onPlayerChooseTeam,
+    onSetting,
     onAddTeam,
     onRemoveTeam,
     onStartGame,

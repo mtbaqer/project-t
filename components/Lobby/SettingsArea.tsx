@@ -8,7 +8,7 @@ import Button from "../Button";
 interface Props {}
 
 const SettingsArea: FunctionComponent<Props> = ({}) => {
-  const { onAddTeam, onRemoveTeam, onStartGame, onCopyLink } = useLobbyActions();
+  const { onSetting, onStartGame, onCopyLink } = useLobbyActions();
   const [isCopied, setIsCopied] = useState(false);
 
   useEffect(() => {
@@ -26,8 +26,9 @@ const SettingsArea: FunctionComponent<Props> = ({}) => {
     <Container>
       <SubContainer>
         <ButtonContainer>
-          <Button onClick={onAddTeam} text="ADD TEAM" imageSource="/images/correct.svg" />
-          <Button onClick={onRemoveTeam} text="REMOVE TEAM" imageSource="/images/wrong.svg" />
+          <Button onClick={onSetting} text="SETTINGS" />
+          {/* <Button onClick={onAddTeam} text="ADD TEAM" imageSource="/images/correct.svg" />
+          <Button onClick={onRemoveTeam} text="REMOVE TEAM" imageSource="/images/wrong.svg" /> */}
         </ButtonContainer>
 
         <ButtonContainer>

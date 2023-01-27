@@ -12,6 +12,7 @@ import useSound from "../../hooks/useSound";
 import Lobby from "../../components/Lobby/Lobby";
 import AvatarPrompt from "../../components/AvatarPrompt";
 import Results from "../../components/Results/Results";
+import Settings from "@/components/Settings/Settings";
 
 const SqueakpeaPath = "/sounds/Squeakpea.mp3";
 
@@ -34,6 +35,7 @@ const RoomPage: NextPage = () => {
     }
     if (room.status === "lobby") return <Lobby />;
     if (room.status === "ended") return <Results />;
+    if (room.status === "settings") return <Settings />;
     return <Board />;
   }
 
