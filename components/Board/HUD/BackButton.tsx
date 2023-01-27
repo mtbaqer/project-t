@@ -1,6 +1,5 @@
 import React, { FunctionComponent } from "react";
 import styled from "styled-components";
-import useRoomActions from "../../../hooks/useRoomActions";
 import Button from "../../Button";
 
 interface Props {
@@ -8,7 +7,6 @@ interface Props {
 }
 
 const BackButton: FunctionComponent<Props> = ({ setClicked }) => {
-  const { onBackButton } = useRoomActions();
   return (
     <Container>
       <Button

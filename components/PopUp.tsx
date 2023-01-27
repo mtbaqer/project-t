@@ -1,18 +1,20 @@
 import React, { FunctionComponent } from "react";
 import styled, { css } from "styled-components";
-import Image from "next/image";
 import { ScreenSizes } from "../Theme/ScreenSizes";
-import useResponsive from "../hooks/useResponsive";
+import Button from "./Button";
 
 export interface Props {
-  onClick?: () => void;
+  onClickYes?: () => void;
+  onClickNo?: () => void;
   text: String;
 }
 
-const PopUp: FunctionComponent<Props> = ({ onClick, text }) => {
+const PopUp: FunctionComponent<Props> = ({ onClickNo, onClickYes, text }) => {
   return (
-    <Container onClick={onClick}>
+    <Container>
       <Strong>{text}</Strong>
+      <Button text={"yes"} onClick={onClickYes} />
+      <Button text={"no"} onClick={onClickNo} />
     </Container>
   );
 };
@@ -27,40 +29,13 @@ const Container = styled.div<{ transparent?: boolean }>`
   border-radius: 7px;
   box-shadow: rgb(48, 26, 107) 0px 6px 0px 0px;
   min-width: 220px;
-  height: 50px;
+  height: 170px;
   padding: 0 10px;
   transform: scale(1.2);
   margin: 20px;
   text-transform: uppercase;
-
-  &:hover {
-    background-color: rgb(203, 181, 233);
-  }
-
-  &:active {
-    margin-top: 28px;
-    margin-bottom: 12px;
-    box-shadow: rgb(48, 26, 107) 0px 2px 0px 0px;
-  }
-
-  ${({ transparent }) =>
-    transparent &&
-    css`
-      background-color: rgba(38, 28, 92, 0.3);
-      border: 2px solid rgba(255, 255, 255, 0.6);
-      color: rgba(255, 255, 255, 0.6);
-      box-shadow: none;
-      min-width: 0;
-
-      &:hover {
-        background-color: rgba(255, 255, 255, 0.15);
-      }
-
-      &:active {
-        margin: 20px;
-        box-shadow: none;
-      }
-    `}
+  flex-direction: column;
+  position: fixed;
 
   ${ScreenSizes.medium} {
     transform: scale(1);
