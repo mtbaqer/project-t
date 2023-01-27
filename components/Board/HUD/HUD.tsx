@@ -1,17 +1,20 @@
-import React, { FunctionComponent } from "react";
+import React, { FunctionComponent, useState } from "react";
 import styled from "styled-components";
 import BackButton from "./BackButton";
 import Round from "./Round";
 import Timer from "./Timer";
+import PopUp from "../../PopUp";
 
 interface Props {}
 
 const HUD: FunctionComponent<Props> = ({}) => {
+  const [clicked, setClicked] = useState(false);
   return (
     <Container>
-      <BackButton />
+      <BackButton setClicked={setClicked} />
       <Timer />
       <Round />
+      {clicked && <PopUp text={"Do you want to return to lobby?"} />}
     </Container>
   );
 };

@@ -3,13 +3,22 @@ import styled from "styled-components";
 import useRoomActions from "../../../hooks/useRoomActions";
 import Button from "../../Button";
 
-interface Props {}
+interface Props {
+  setClicked: (clicked: boolean) => void;
+}
 
-const BackButton: FunctionComponent<Props> = ({}) => {
+const BackButton: FunctionComponent<Props> = ({ setClicked }) => {
   const { onBackButton } = useRoomActions();
   return (
     <Container>
-      <Button text="LOBBY" transparent onClick={onBackButton} imageSource="/images/chevron-left.svg" />
+      <Button
+        text="LOBBY"
+        transparent
+        onClick={() => {
+          setClicked(true);
+        }}
+        imageSource="/images/chevron-left.svg"
+      />
     </Container>
   );
 };

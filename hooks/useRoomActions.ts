@@ -138,7 +138,12 @@ export default function useRoomActions() {
     setDoc(currentWordRef, newWord);
   }
 
-  function onBackButton() {
+  function onBackButton(){
+    return 
+
+  }
+
+  function onBackButtonConfirmation() {
     runTransaction(roomRef, (room: Room) => {
       const teams = room.teams.map(({ members }) => ({ ...DefaultTeam, members: members ?? [] }));
       const newRoom: Room = {
@@ -176,6 +181,7 @@ export default function useRoomActions() {
     onRotateCard,
     onFlagCard,
     onBackButton,
+    onBackButtonConfirmation,
     onEndGame,
   };
 }
