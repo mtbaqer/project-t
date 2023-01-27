@@ -9,7 +9,7 @@ const HomeButton: FunctionComponent<Props> = ({}) => {
   const { onReturnToGenerateRoom } = useRoomActions();
   return (
     <Container>
-      <Button text="RETURN TO GENERATE ROOM" onClick={onReturnToGenerateRoom} imageSource="/images/chevron-left.svg" />
+      <Button text="LEAVE GAME" onClick={onReturnToGenerateRoom} imageSource="/images/chevron-left.svg" />
     </Container>
   );
 };
