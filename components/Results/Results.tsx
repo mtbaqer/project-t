@@ -6,11 +6,13 @@ import styled from "styled-components";
 import Confetti from "react-confetti";
 import useWindowSize from "@rooks/use-window-size";
 import { ScreenSizes } from "../../Theme/ScreenSizes";
+import useRoomActions from "hooks/useRoomActions";
 
 interface Props {}
 
 const Results: FunctionComponent<Props> = ({}) => {
   const room = useAtomValue(roomAtom);
+  const { onBackButton } = useRoomActions();
   const teams = room.teams;
 
   const { innerWidth, innerHeight } = useWindowSize();
@@ -25,7 +27,7 @@ const Results: FunctionComponent<Props> = ({}) => {
       <Confetti width={innerWidth ?? 0} height={innerHeight ?? 0} />
 
       <ButtonContainer>
-        <BackButton />
+        <BackButton onClick={onBackButton} />
       </ButtonContainer>
 
       <Title>Congratulations!</Title>

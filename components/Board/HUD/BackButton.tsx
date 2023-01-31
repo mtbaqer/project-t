@@ -3,20 +3,13 @@ import styled from "styled-components";
 import Button from "../../Button";
 
 interface Props {
-  setClicked: (clicked: boolean) => void;
+  onClick: () => void;
 }
 
-const BackButton: FunctionComponent<Props> = ({ setClicked }) => {
+const BackButton: FunctionComponent<Props> = ({ onClick }) => {
   return (
     <Container>
-      <Button
-        text="LOBBY"
-        transparent
-        onClick={() => {
-          setClicked(true);
-        }}
-        imageSource="/images/chevron-left.svg"
-      />
+      <Button text="LOBBY" transparent onClick={onClick} imageSource="/images/chevron-left.svg" />
     </Container>
   );
 };

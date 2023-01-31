@@ -11,9 +11,10 @@ interface Props {}
 const HUD: FunctionComponent<Props> = ({}) => {
   const [clicked, setClicked] = useState(false);
   const { onBackButton } = useRoomActions();
+
   return (
     <Container>
-      <BackButton setClicked={setClicked} />
+      <BackButton onClick={() => setClicked(true)} />
       <Timer />
       <Round />
       {clicked && (

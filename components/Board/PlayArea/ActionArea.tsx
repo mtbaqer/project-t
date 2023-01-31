@@ -1,4 +1,5 @@
-import React, { FunctionComponent } from "react";
+import PopUp from "@/components/PopUp";
+import React, { FunctionComponent, useState } from "react";
 import styled from "styled-components";
 import useRoomActions from "../../../hooks/useRoomActions";
 import { RoomStatus } from "../../../types/types";
@@ -13,6 +14,7 @@ interface Props {
 
 const ActionArea: FunctionComponent<Props> = ({ status, isNextHinter, isInCurrentTeam }) => {
   const { onStartTurn, onEndTurn, onEndGame } = useRoomActions();
+  const [endGameClicked, setEndGameClicked] = useState(false);
 
   if (status === "waiting") {
     return isNextHinter ? (
@@ -27,7 +29,21 @@ const ActionArea: FunctionComponent<Props> = ({ status, isNextHinter, isInCurren
       <PauseContainer>
         <Div>PAUSED</Div>
         {isInCurrentTeam && <Button onClick={onEndTurn} text="END TURN" />}
-        <Button onClick={onEndGame} text="END GAME" />
+        <Button
+          onClick={() => {
+            setEndGameClicked(true);
+          }}
+          text="END GAME"
+        />
+        {endGameClicked && (
+          <PopUp
+            onClickYes={onEndGame}
+            onClickNo={() => {
+              setEndGameClicked(false);
+            }}
+            text="Are you sure you want to end the game?"
+          />
+        )}
       </PauseContainer>
     );
   }
