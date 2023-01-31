@@ -38,10 +38,9 @@ const Container = styled.div`
   background-position: center center;
   background-repeat: no-repeat;
   background-size: cover;
-  min-height: 100vh;
+  gap: ${Spaces.large};
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
   align-items: center;
   padding-top: ${Spaces.large};
 `;

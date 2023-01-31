@@ -8,11 +8,12 @@ import Text from "./Text";
 
 interface Props {
   title?: string;
+  titleSize?: Size;
   onClose?: () => void;
   size?: Size;
 }
 
-const Panel: FunctionComponent<Props> = ({ title, onClose, children, size = "m" }) => {
+const Panel: FunctionComponent<Props> = ({ title, titleSize = "l", onClose, children, size = "m" }) => {
   return (
     <Container size={size}>
       {onClose && (
@@ -22,7 +23,7 @@ const Panel: FunctionComponent<Props> = ({ title, onClose, children, size = "m" 
       )}
       {title && (
         <TitleContainer>
-          <Text size="l">{title}</Text>
+          <Text size={titleSize}>{title}</Text>
           <TitleContainerShade />
         </TitleContainer>
       )}
