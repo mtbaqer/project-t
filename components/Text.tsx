@@ -23,7 +23,15 @@ const Content = styled.p<{ size: Size }>`
   padding: 0 3px;
 
   ${({ size }) =>
-    size === "s"
+    size === "xs"
+      ? css`
+          font-size: 16px;
+          ${ScreenSizes.medium} {
+            font-size: 12px;
+          }
+          ${textStroke(2, "black")}
+        `
+      : size === "s"
       ? css`
           font-size: 20px;
           ${ScreenSizes.medium} {

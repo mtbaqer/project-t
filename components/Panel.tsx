@@ -2,20 +2,24 @@ import { Close } from "constants/icons";
 import React, { FunctionComponent } from "react";
 import styled from "styled-components";
 import { Spaces } from "Theme/Spaces";
+import { Size } from "types/types";
 import Button from "./Button";
 import Text from "./Text";
 
 interface Props {
   title?: string;
   onClose?: () => void;
+  size?: Size;
 }
 
-const Panel: FunctionComponent<Props> = ({ title, onClose, children }) => {
+const Panel: FunctionComponent<Props> = ({ title, onClose, children, size = "m" }) => {
   return (
-    <Container>
-      <CloseButtonContainer>
-        <Button size="s" icon={Close} color="red" onClick={onClose} />
-      </CloseButtonContainer>
+    <Container size={size}>
+      {onClose && (
+        <CloseButtonContainer>
+          <Button size="s" icon={Close} color="red" onClick={onClose} />
+        </CloseButtonContainer>
+      )}
       {title && (
         <TitleContainer>
           <Text size="l">{title}</Text>
@@ -28,8 +32,8 @@ const Panel: FunctionComponent<Props> = ({ title, onClose, children }) => {
   );
 };
 
-const Container = styled.div`
-  width: 390px;
+const Container = styled.div<{ size: Size }>`
+  width: ${({ size }) => (size === "m" ? "390px" : "40%")};
   background-color: #105ce4;
   border: 3px solid black;
   border-radius: 5px;
