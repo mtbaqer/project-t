@@ -8,9 +8,9 @@ import Button from "../Button";
 interface Props {}
 
 const SettingsArea: FunctionComponent<Props> = ({}) => {
-  const { onSetting, onStartGame, onCopyLink } = useLobbyActions();
+  const { onSetting, onStartGame, onCopyLink, onSetNumberOfTeams, onSetNumberOfRounds, onSetTimePerRound } =
+    useLobbyActions();
   const [isCopied, setIsCopied] = useState(false);
-
   useEffect(() => {
     if (isCopied) {
       setTimeout(() => setIsCopied(false), 10000);
@@ -26,9 +26,35 @@ const SettingsArea: FunctionComponent<Props> = ({}) => {
     <Container>
       <SubContainer>
         <ButtonContainer>
-          <Button onClick={onSetting} text="SETTINGS" />
-          {/* <Button onClick={onAddTeam} text="ADD TEAM" imageSource="/images/correct.svg" />
-          <Button onClick={onRemoveTeam} text="REMOVE TEAM" imageSource="/images/wrong.svg" /> */}
+          {/* TODO: update the state so the selector is always correct for the current value */}
+          <label>
+            Number of teams:
+            <select onChange={(e) => onSetNumberOfTeams(e.target.value)}>
+              <option value="2">2</option>
+              <option value="3">3</option>
+              <option value="4">4</option>
+              <option value="5">5</option>
+              <option value="6">6</option>
+            </select>
+          </label>
+          <label>
+            Number of rounds:
+            <select defaultValue="10" onChange={(e) => onSetNumberOfRounds(e.target.value)}>
+              <option value="5">5</option>
+              <option value="10">10</option>
+              <option value="15">15</option>
+              <option value="20">20</option>
+            </select>
+          </label>
+          <label>
+            Time per round:
+            <select defaultValue="60" onChange={(e) => onSetTimePerRound(e.target.value)}>
+              <option value="30">30 s</option>
+              <option value="45">45 s</option>
+              <option value="60">60 s</option>
+              <option value="75">75 s</option>
+            </select>
+          </label>
         </ButtonContainer>
 
         <ButtonContainer>
