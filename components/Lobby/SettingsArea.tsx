@@ -1,3 +1,5 @@
+import { roomAtom } from "atoms/room";
+import { useAtomValue } from "jotai/utils";
 import React, { FunctionComponent, useEffect, useState } from "react";
 import styled from "styled-components";
 import useLobbyActions from "../../hooks/useLobbyActions";
@@ -8,9 +10,9 @@ import Button from "../Button";
 interface Props {}
 
 const SettingsArea: FunctionComponent<Props> = ({}) => {
-  const { onSetting, onStartGame, onCopyLink, onSetNumberOfTeams, onSetNumberOfRounds, onSetTimePerRound } =
-    useLobbyActions();
+  const { onStartGame, onCopyLink, onSetNumberOfTeams, onSetNumberOfRounds, onSetTimePerRound } = useLobbyActions();
   const [isCopied, setIsCopied] = useState(false);
+  const room = useAtomValue(roomAtom);
   useEffect(() => {
     if (isCopied) {
       setTimeout(() => setIsCopied(false), 10000);
@@ -26,10 +28,9 @@ const SettingsArea: FunctionComponent<Props> = ({}) => {
     <Container>
       <SubContainer>
         <ButtonContainer>
-          {/* TODO: update the state so the selector is always correct for the current value */}
           <label>
             Number of teams:
-            <select onChange={(e) => onSetNumberOfTeams(e.target.value)}>
+            <select value={String(room.teams.length - 1)} onChange={(e) => onSetNumberOfTeams(e.target.value)}>
               <option value="2">2</option>
               <option value="3">3</option>
               <option value="4">4</option>
@@ -39,7 +40,7 @@ const SettingsArea: FunctionComponent<Props> = ({}) => {
           </label>
           <label>
             Number of rounds:
-            <select defaultValue="10" onChange={(e) => onSetNumberOfRounds(e.target.value)}>
+            <select value={String(room.settings.maxRounds)} onChange={(e) => onSetNumberOfRounds(e.target.value)}>
               <option value="5">5</option>
               <option value="10">10</option>
               <option value="15">15</option>
@@ -48,7 +49,7 @@ const SettingsArea: FunctionComponent<Props> = ({}) => {
           </label>
           <label>
             Time per round:
-            <select defaultValue="60" onChange={(e) => onSetTimePerRound(e.target.value)}>
+            <select value={String(room.settings.timePerRound)} onChange={(e) => onSetTimePerRound(e.target.value)}>
               <option value="30">30 s</option>
               <option value="45">45 s</option>
               <option value="60">60 s</option>
