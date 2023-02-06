@@ -41,3 +41,11 @@ export const Close: Icon = {
   height: 64,
   draggable: false,
 };
+
+export const Logo: Icon = {
+  src: `${BaseIconPath}/logo.png`,
+  alt: "Say Don't Say Logo",
+  width: 1356 / 3,
+  height: 698 / 3,
+  draggable: false,
+};

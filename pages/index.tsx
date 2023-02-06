@@ -9,6 +9,7 @@ import HowToPlay from "../components/Home/HowToPlay";
 import { Spaces } from "Theme/Spaces";
 import About from "../components/Home/About";
 import Footer from "@/components/Home/Footer";
+import { Logo } from "constants/icons";
 
 const Home: NextPage = () => {
   const { navigateToNewRoom } = useNewRoomActions();
@@ -21,7 +22,7 @@ const Home: NextPage = () => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <Container>
-        <Image src="/images/logo.png" alt="Say Don't Say" width={1356 / 3} height={698 / 3} />
+        <Image priority {...Logo} alt="Say Don't Say Logo" />
         <Button onClick={navigateToNewRoom} text={"Create Room"} color="yellow" />
         <TextSection>
           <About />
