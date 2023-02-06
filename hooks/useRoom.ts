@@ -34,11 +34,9 @@ export default function useRoom() {
     const roomRef = ref(database, `rooms/${roomId}`);
 
     return onValue(roomRef, (snapshot) => {
-      console.log("fetched Room");
       if (!snapshot.exists()) router.push("/");
       else {
         const room = snapshot.val() as Room;
-        console.log({ room: room.id });
         setRoom(room);
       }
     });
