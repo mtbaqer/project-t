@@ -40,6 +40,8 @@ const Container = styled.div<{ size: Size }>`
   border-radius: 5px;
   box-shadow: 0 3px 0 0 black, 0 5px 0 0 rgba(0, 0, 0, 0.25);
   position: relative;
+  display: flex;
+  flex-direction: column;
 `;
 
 const CloseButtonContainer = styled.div`
@@ -64,7 +66,8 @@ const TitleContainerShade = styled.div`
 `;
 
 const Content = styled.div`
-  padding: ${Spaces.large};
+  padding: ${Spaces.medium};
+  flex: 1;
 `;
 
 const BottomBorder = styled.div`
