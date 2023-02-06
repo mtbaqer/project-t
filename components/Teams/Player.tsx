@@ -54,7 +54,6 @@ const Container = styled.div<{ isHinter: boolean; mini: boolean }>`
           border: 3px solid rgb(67 216 162);
         `
       : ""}
-
   ${({ mini }) =>
     mini &&
     css`
