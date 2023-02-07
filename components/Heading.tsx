@@ -13,7 +13,6 @@ const Heading: FunctionComponent<Props & HTMLProps<HTMLHeadingElement>> = ({ chi
 const H3 = styled.h3<{ styled: boolean }>`
   color: rgb(92, 255, 182);
   font-size: 22px;
-  font-weight: 900;
   outline-color: black;
   text-transform: uppercase;
   text-shadow: rgb(23, 5, 87) 3px 0px 0px, rgb(23, 5, 87) 2.83487px 0.981584px 0px,

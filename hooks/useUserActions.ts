@@ -18,10 +18,10 @@ export default function useUserActions() {
   const roomRef = ref(database, `rooms/${roomId}`);
   const spectatorsMembersRef = child(roomRef, "teams/0/members");
 
-  async function addUser(name: string, avatarUrl: string) {
+  async function addUser(name: string, avatarUrls: string[]) {
     if (auth) {
       const timestamp = getTimestamp().toString();
-      const user = { id: auth.id, name, avatarUrl, timestamp };
+      const user = { id: auth.id, name, avatarUrls, timestamp };
       await addToPlayers(user);
       await addToPlayersHistory(user);
       await addToSpectators(timestamp);

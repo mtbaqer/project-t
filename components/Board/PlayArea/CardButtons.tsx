@@ -3,6 +3,9 @@ import styled, { css } from "styled-components";
 import useRoomActions from "../../../hooks/useRoomActions";
 import Image from "next/image";
 import useResponsive from "../../../hooks/useResponsive";
+import { Flag, Flippation, Rotation } from "constants/icons";
+import MiniButton from "@/components/MiniButton";
+import { Spaces } from "Theme/Spaces";
 
 interface Props {
   isHinter: boolean;
@@ -18,17 +21,17 @@ const CardButtons: FunctionComponent<Props> = ({ isHinter }) => {
     <>
       <ButtonsContainer>
         <MiniButton onClick={onFlagCard}>
-          <Image src="/images/flag.svg" alt="flag" width={imageWidth} height={imageHeight} />
+          <Image {...Flag} alt={Flag.alt} />
         </MiniButton>
       </ButtonsContainer>
       <ButtonsContainer bottom>
         {isHinter && (
           <>
             <MiniButton onClick={onFlipCard}>
-              <Image src="/images/flip.svg" alt="flip" width={imageWidth} height={imageHeight} />
+              <Image {...Flippation} alt={Flippation.alt} />
             </MiniButton>
             <MiniButton onClick={onRotateCard}>
-              <Image src="/images/rotate.svg" alt="rotate" width={imageWidth} height={imageHeight} />
+              <Image {...Rotation} alt={Rotation.alt} />
             </MiniButton>
           </>
         )}
@@ -52,12 +55,7 @@ const ButtonsContainer = styled.div<{ bottom?: boolean }>`
       : css`
           top: 0;
         `}
-`;
-
-const MiniButton = styled.button`
-  margin: 5px 0;
-  display: flex;
-  align-items: center;
+  gap: ${Spaces.xSmall};
 `;
 
 export default CardButtons;
