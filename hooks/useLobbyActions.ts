@@ -48,7 +48,7 @@ export default function useLobbyActions() {
       if (teams.length < 2) canBeStarted = false;
       teams.forEach((team, index) => {
         if (index != 0 && team.members?.length < 2) canBeStarted = false;
-        if (index != 0) numberOfTotalTeamPlayers += team.members.length;
+        if (index != 0) numberOfTotalTeamPlayers += team.members?.length;
         if (numberOfTotalTeamPlayers > 12) canBeStarted = false;
       });
       return teams;
