@@ -41,7 +41,7 @@ const ActionArea: FunctionComponent<Props> = ({ status, isNextHinter, isInCurren
             onClickNo={() => {
               setEndGameClicked(false);
             }}
-            text="Are you sure you want to end the game?"
+            text="Are you really sure you want to end the game?"
           />
         )}
       </PauseContainer>
