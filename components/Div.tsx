@@ -18,7 +18,6 @@ const StyledDiv = styled.div`
   color: rgb(231, 224, 255);
   border-radius: 10px;
   font-size: 22px;
-  font-weight: 900;
 
   ${ScreenSizes.medium} {
     width: 255px;

@@ -5,8 +5,8 @@ module.exports = {
   theme: {
     extend: {},
     fontFamily: {
-      sans: ["Nunito", "sans-serif"],
-      serif: ["Nunito", "serif"],
+      sans: ["Lilita One", "sans-serif"],
+      serif: ["Lilita One", "serif"],
     },
   },
   variants: {

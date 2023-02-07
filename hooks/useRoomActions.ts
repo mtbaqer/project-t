@@ -10,13 +10,16 @@ import cleanupDisconnectedPlayers from "../utils/cleanupDisconnectedPlayers";
 import fetchCards from "../utils/fetchCards";
 import getTimestamp from "../utils/getTimestamp";
 import checkIfGameEndedStatus from "../utils/checkIfGameEndedStatus";
+import { useUpdateAtom } from "jotai/utils";
+import { userAtom } from "atoms/user";
 
 const database = getDatabase();
 const firestore = getFirestore();
 
 export default function useRoomActions() {
+  const setRoom = useUpdateAtom(roomAtom);
   const room = useAtomValue(roomAtom);
-
+  const setUser = useUpdateAtom(userAtom);
   const router = useRouter();
   const { roomId } = router.query;
 
@@ -154,6 +157,11 @@ export default function useRoomActions() {
       return newRoom;
     });
   }
+  function onReturnToGenerateRoom() {
+    router.push("/");
+    setRoom(DefaultRoom);
+    setUser(null);
+  }
 
   function onEndGame() {
     runTransaction(roomRef, (room: Room) => {
@@ -177,5 +185,6 @@ export default function useRoomActions() {
     onFlagCard,
     onBackButton,
     onEndGame,
+    onReturnToGenerateRoom,
   };
 }
