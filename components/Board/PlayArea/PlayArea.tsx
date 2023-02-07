@@ -1,5 +1,5 @@
 import { useAtomValue } from "jotai/utils";
-import React, { FunctionComponent } from "react";
+import React, { FunctionComponent, useState } from "react";
 import styled, { css } from "styled-components";
 import { roomAtom } from "../../../atoms/room";
 import { userAtom } from "../../../atoms/user";
@@ -9,11 +9,14 @@ import ActionArea from "./ActionArea";
 import Feedback from "./Feedback";
 
 import Div from "../../Div";
+import useSound from "../../../hooks/useSound";
+const SqueakpeaPath = "/sounds/Squeakpea.mp3";
 
 interface Props {}
 
 const PlayArea: FunctionComponent<Props> = ({}) => {
   const { timestamp } = useAtomValue(userAtom)!;
+  const { play } = useSound(SqueakpeaPath);
   const room = useAtomValue(roomAtom);
 
   const status = room.status;
@@ -25,6 +28,13 @@ const PlayArea: FunctionComponent<Props> = ({}) => {
   const isNextHinter = checkIsNextHinter();
 
   const canSeeCard = !isInCurrentTeam || isHinter;
+
+  const [currentTeamScore, changeCurrentTeamScore] = useState(currentTeam.score);
+  if (currentTeam.score < currentTeamScore) {
+    changeCurrentTeamScore(currentTeamScore - 1);
+    play();
+    console.log(`change: ${currentTeam.score} -> ${currentTeamScore}`);
+  }
 
   function checkIsHinter() {
     const hinterIndex = currentTeam.currentMemberIndex;
