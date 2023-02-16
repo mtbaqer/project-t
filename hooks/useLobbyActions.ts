@@ -29,17 +29,37 @@ export default function useLobbyActions() {
     });
   }
 
-  function onAddTeam() {
+  function onSetNumberOfTeams(numberOfTeams: string) {
+    let desiredNumberOfTeams = parseInt(numberOfTeams);
     runTransaction(teamsRef, (teams: Team[]) => {
-      if (teams.length < 7) teams.push(DefaultTeam);
+      let difference = desiredNumberOfTeams + 1 - teams.length;
+      if (difference > 0) {
+        for (let i = 0; i < difference; i++) {
+          teams.push(DefaultTeam);
+        }
+      }
+      if (difference < 0) {
+        difference *= -1;
+        for (let i = 0; i < difference; i++) {
+          teams.pop();
+        }
+      }
       return teams;
     });
   }
+  function onSetNumberOfRounds(numberOfRounds: string) {
+    let rounds = parseInt(numberOfRounds);
+    runTransaction(roomRef, (room: Room) => {
+      room.settings.maxRounds = rounds;
+      return room;
+    });
+  }
 
-  function onRemoveTeam() {
-    runTransaction(teamsRef, (teams: Team[]) => {
-      if (teams.length > 3) teams.pop();
-      return teams;
+  function onSetTimePerRound(timePerRound: string) {
+    let time = parseInt(timePerRound);
+    runTransaction(roomRef, (room: Room) => {
+      room.settings.timePerRound = time;
+      return room;
     });
   }
 
@@ -54,9 +74,10 @@ export default function useLobbyActions() {
 
   return {
     onPlayerChooseTeam,
-    onAddTeam,
-    onRemoveTeam,
     onStartGame,
     onCopyLink,
+    onSetNumberOfTeams,
+    onSetNumberOfRounds,
+    onSetTimePerRound,
   };
 }
