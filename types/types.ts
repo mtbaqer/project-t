@@ -1,3 +1,5 @@
+import { ButtonColors } from "Theme/Colors";
+
 export interface Team {
   members: string[];
   score: number;
@@ -7,7 +9,7 @@ export interface Team {
 export interface User {
   id: string;
   name: string;
-  avatarUrl: string;
+  avatarUrls: string[];
   timestamp: string;
 }
 
@@ -56,3 +58,21 @@ export interface Settings {
   // packIds: string[];
   timePerRound: number;
 }
+
+export type Size = "xs" | "s" | "m" | "l" | "xl";
+
+export interface AvatarImageMetadata {
+  count: number;
+  path: string;
+  alt: string;
+}
+
+export interface Icon {
+  src: string;
+  alt: string;
+  width: number;
+  height: number;
+  draggable?: boolean;
+}
+
+export type StatePair = [number, (value: number) => void];

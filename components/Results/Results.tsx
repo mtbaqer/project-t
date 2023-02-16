@@ -57,7 +57,6 @@ const Title = styled.div`
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  font-weight: bold;
   font-size: 10vw;
 `;
 
@@ -66,8 +65,6 @@ const Winner = styled.div`
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  font-family: "Nunito";
-  font-weight: bold;
   font-size: 30px;
   margin-bottom: 20px;
 
@@ -79,7 +76,6 @@ const TeamsTable = styled.table`
   margin-left: 100px;
   margin-right: 100px;
   justify-content: center;
-  font-weight: bold;
   font-size: 20px;
 
   ${ScreenSizes.medium} {

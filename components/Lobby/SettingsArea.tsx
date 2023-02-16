@@ -59,12 +59,8 @@ const SettingsArea: FunctionComponent<Props> = ({}) => {
         </ButtonContainer>
 
         <ButtonContainer>
-          <Button
-            onClick={handleCopyLink}
-            text={isCopied ? "LINK COPIED" : "COPY LINK"}
-            imageSource="/images/copy_link.svg"
-          />
-          <Button onClick={onStartGame} text="START" imageSource="/images/play.svg" />
+          <Button onClick={handleCopyLink} text={isCopied ? "LINK COPIED!" : "COPY LINK"} />
+          <Button onClick={onStartGame} text="START" color="yellow" />
         </ButtonContainer>
       </SubContainer>
     </Container>

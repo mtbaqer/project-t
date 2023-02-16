@@ -1,114 +1,110 @@
 import React, { FunctionComponent } from "react";
 import styled, { css } from "styled-components";
+import Text from "./Text";
+import { ButtonColor } from "Theme/Colors";
+import { applyButtonColor } from "Theme/utils/applyButtonColor";
+import { Icon, Size } from "types/types";
+import { Spaces } from "Theme/Spaces";
 import Image from "next/image";
-import { ScreenSizes } from "../Theme/ScreenSizes";
-import useResponsive from "../hooks/useResponsive";
 
 export interface Props {
   onClick?: () => void;
-  text: String;
-  imageSource?: string;
-  transparent?: boolean;
+  text?: String;
+  icon?: Icon;
+  color?: ButtonColor;
+  size?: Size;
 }
 
-const Button: FunctionComponent<Props> = ({ onClick, text, imageSource, transparent }) => {
-  const { isTabletOrMobile } = useResponsive();
-  const [imageWidth, imageHeight] = isTabletOrMobile ? [20, 25] : [27.6, 34.8];
-
+const Button: FunctionComponent<Props> = ({ onClick, text, icon, color = "black", size = "m" }) => {
   return (
-    <Container transparent={transparent} onClick={onClick}>
-      {imageSource && <Image src={imageSource} alt="" width={imageWidth} height={imageHeight} />}
-      <Strong>{text}</Strong>
-    </Container>
+    <ButtonContainer color={color} size={size} onClick={onClick}>
+      <TopBorder color={color} />
+      <ShinyCorner color={color} />
+      <ContentContainer size={size}>
+        {icon && <Image {...icon} height={icon.height / 2} width={icon.width / 2} alt={icon.alt} />}
+        {text && <Text size={size}>{text}</Text>}
+      </ContentContainer>
+      <BottomBorder color={color} />
+    </ButtonContainer>
   );
 };
 
-const Container = styled.button<{ transparent?: boolean }>`
-  background-color: rgb(255, 255, 255);
-  color: rgb(48, 26, 107);
-  border-color: rgb(48, 26, 107);
+const ButtonContainer = styled.button<{ color: ButtonColor; size: Size }>`
+  ${applyButtonColor("base")}
+  border: 3px solid black;
+  -ms-transform: skewX(-5deg);
+  -webkit-transform: skewX(-5deg);
+  transform: skewX(-5deg);
   display: flex;
-  align-items: center;
+  flex-direction: column;
+  justify-content: space-between;
   text-align: center;
-  border-radius: 7px;
-  box-shadow: rgb(48, 26, 107) 0px 6px 0px 0px;
-  min-width: 220px;
-  height: 50px;
-  padding: 0 10px;
-  transform: scale(1.2);
-  margin: 20px;
+  border-radius: 4px;
+  overflow: hidden;
   text-transform: uppercase;
+  box-shadow: black 0 3px 0 0, 0 5px 0 0 rgba(0, 0, 0, 0.25);
+  -webkit-backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
+  -webkit-background-clip: content-box;
+  background-clip: content-box;
+  position: relative;
 
-  &:hover {
-    background-color: rgb(203, 181, 233);
-  }
+  ${({ size }) =>
+    size === "s"
+      ? css`
+          height: 50px;
+        `
+      : size === "m"
+      ? css`
+          min-width: 210px;
+          height: 70px;
+        `
+      : css``}
 
   &:active {
-    margin-top: 28px;
-    margin-bottom: 12px;
-    box-shadow: rgb(48, 26, 107) 0px 2px 0px 0px;
-  }
-
-  ${({ transparent }) =>
-    transparent &&
-    css`
-      background-color: rgba(38, 28, 92, 0.3);
-      border: 2px solid rgba(255, 255, 255, 0.6);
-      color: rgba(255, 255, 255, 0.6);
-      box-shadow: none;
-      min-width: 0;
-
-      &:hover {
-        background-color: rgba(255, 255, 255, 0.15);
-      }
-
-      &:active {
-        margin: 20px;
-        box-shadow: none;
-      }
-    `}
-
-  ${ScreenSizes.medium} {
-    transform: scale(1);
-    min-width: 140px;
-    height: 40px;
-    padding: 0 5px;
-    border-radius: 4px;
-    box-shadow: rgb(48 26 107) 0px 3px 0px 0px;
-    margin: 20px 0 0 0;
-
-    &:active {
-      margin-top: 22px;
-      margin-bottom: -2px;
-      box-shadow: rgb(48, 26, 107) 0px 1px 0px 0px;
-    }
-
-    ${({ transparent }) =>
-      transparent &&
-      css`
-        box-shadow: none;
-        border-radius: 7px;
-        min-width: 0;
-        max-width: 120px;
-        margin: 0;
-
-        &:active {
-          margin: 0;
-          box-shadow: none;
-        }
-      `}
+    scale: calc(0.95);
   }
 `;
 
-const Strong = styled.strong`
-  font-size: 19px;
-  flex: 1;
-  font-weight: 800;
-  margin: 0 20px;
+const TopBorder = styled.span<{ color: ButtonColor }>`
+  height: 4px;
+  width: 100%;
+  ${applyButtonColor("topBorder")}
+`;
 
-  ${ScreenSizes.medium} {
-    font-size: 12px;
-  }
+const ShinyCorner = styled.span<{ color: ButtonColor }>`
+  position: absolute;
+  top: 1px;
+  right: -8px;
+  ${applyButtonColor("corner")}
+  width: 16px;
+  height: 5px;
+  -ms-transform: rotate(45deg);
+  -webkit-transform: rotate(45deg);
+  transform: rotate(45deg);
+`;
+
+const ContentContainer = styled.div<{ size: Size }>`
+  -ms-transform: skewX(5deg);
+  -webkit-transform: skewX(5deg);
+  transform: skewX(5deg);
+  width: 100%;
+  display: flex;
+  position: relative;
+  justify-content: center;
+  align-items: center;
+  padding: 0 ${Spaces.medium};
+
+  ${({ size }) =>
+    size === "s" &&
+    css`
+      padding: 0 ${Spaces.small};
+    `};
+`;
+
+const BottomBorder = styled(TopBorder)`
+  ${applyButtonColor("bottomBorder")}
 `;
 
 export default Button;
