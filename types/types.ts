@@ -51,7 +51,7 @@ export interface Room {
   lastGuess: boolean;
 }
 
-export type RoomStatus = "loading" | "lobby" | "waiting" | "playing" | "paused" | "ended" | "settings";
+export type RoomStatus = "loading" | "lobby" | "waiting" | "playing" | "paused" | "ended";
 
 export interface Settings {
   maxRounds: number;

@@ -71,14 +71,9 @@ export default function useLobbyActions() {
   async function onCopyLink() {
     await navigator.clipboard.writeText(window.location.href);
   }
-  function onSetting() {
-    const status: RoomStatus = "settings";
-    update(roomRef, { status });
-  }
 
   return {
     onPlayerChooseTeam,
-    onSetting,
     onStartGame,
     onCopyLink,
     onSetNumberOfTeams,
