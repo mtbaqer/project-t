@@ -1,6 +1,7 @@
 import Modal from "@/components/Modal";
 import Panel from "@/components/Panel";
-import React, { FunctionComponent } from "react";
+import ConfirmationPopUp from "@/components/ConfirmationPopUp";
+import React, { FunctionComponent, useState } from "react";
 import styled from "styled-components";
 import { Spaces } from "Theme/Spaces";
 import useRoomActions from "../../../hooks/useRoomActions";
@@ -16,6 +17,7 @@ interface Props {
 
 const ActionMenu: FunctionComponent<Props> = ({ status, isNextHinter, isInCurrentTeam }) => {
   const { onStartTurn, onResume, onEndTurn, onEndGame } = useRoomActions();
+  const [popUpVisible, setPopUpVisible] = useState(false);
 
   if (status === "waiting") {
     return isNextHinter ? (
@@ -27,14 +29,29 @@ const ActionMenu: FunctionComponent<Props> = ({ status, isNextHinter, isInCurren
 
   if (status === "paused") {
     return (
-      <Modal onClose={onResume}>
-        <Panel title="PAUSED" onClose={onResume}>
-          <Container>
-            {isInCurrentTeam && <Button onClick={onEndTurn} text="END TURN" color="blue" />}
-            <Button onClick={onEndGame} text="END GAME" color="red" />
-          </Container>
-        </Panel>
-      </Modal>
+      <>
+        <Modal onClose={onResume}>
+          <Panel title="PAUSED" onClose={onResume}>
+            <Container>
+              {isInCurrentTeam && <Button onClick={onEndTurn} text="END TURN" color="blue" />}
+              <Button onClick={() => setPopUpVisible(true)} text="END GAME" color="red" />
+            </Container>
+          </Panel>
+        </Modal>
+        {popUpVisible && (
+          <Modal
+            onClose={() => {
+              setPopUpVisible(false);
+            }}
+          >
+            <ConfirmationPopUp
+              text={"Are you sure you want to end the game?"}
+              onClickYes={onEndGame}
+              onClickNo={() => setPopUpVisible(false)}
+            />
+          </Modal>
+        )}
+      </>
     );
   }
 

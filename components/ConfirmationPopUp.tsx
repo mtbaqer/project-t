@@ -11,7 +11,7 @@ export interface Props {
   text: String;
 }
 
-const PopUp: FunctionComponent<Props> = ({ onClickNo, onClickYes, text }) => {
+const ConfirmationPopUp: FunctionComponent<Props> = ({ onClickNo, onClickYes, text }) => {
   return (
     <Container>
       <Strong>{text}</Strong>
@@ -89,4 +89,4 @@ const Strong = styled.strong`
   }
 `;
 
-export default PopUp;
+export default ConfirmationPopUp;
