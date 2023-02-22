@@ -1,7 +1,5 @@
-import { child, getDatabase, increment, ref, runTransaction, update } from "firebase/database";
-import { useAtomValue } from "jotai/utils";
+import { child, getDatabase, ref, runTransaction, update } from "firebase/database";
 import { useRouter } from "next/router";
-import { roomAtom } from "../atoms/room";
 import { DefaultTeam } from "../constants/room";
 import { Room, RoomStatus, Team } from "../types/types";
 import cleanupDisconnectedPlayers from "../utils/cleanupDisconnectedPlayers";
@@ -64,8 +62,24 @@ export default function useLobbyActions() {
   }
 
   function onStartGame() {
-    const status: RoomStatus = "waiting";
-    update(roomRef, { status });
+    let canBeStarted = true;
+    let numberOfTotalTeamPlayers: number;
+    runTransaction(teamsRef, (teams: Team[]) => {
+      if (teams.length < 2) canBeStarted = false;
+      teams.forEach((team, index) => {
+        team.members ??= [];
+        if (index != 0 && team.members?.length < 2) canBeStarted = false;
+        if (index != 0) numberOfTotalTeamPlayers += team.members?.length;
+        if (numberOfTotalTeamPlayers > 12) canBeStarted = false;
+      });
+      return teams;
+    });
+    if (canBeStarted) {
+      const status: RoomStatus = "waiting";
+      update(roomRef, { status });
+    } else {
+      alert("There must be at least two players on each team and no more than 12 players total!");
+    }
   }
 
   async function onCopyLink() {
