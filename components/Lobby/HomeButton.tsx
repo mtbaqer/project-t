@@ -4,13 +4,14 @@ import useRoomActions from "hooks/useRoomActions";
 import Button from "../Button";
 import { Spaces } from "Theme/Spaces";
 
-interface Props {}
+interface Props {
+  onClick: () => void;
+}
 
-const HomeButton: FunctionComponent<Props> = ({}) => {
-  const { onReturnToGenerateRoom } = useRoomActions();
+const HomeButton: FunctionComponent<Props> = ({ onClick }) => {
   return (
     <Container>
-      <Button text="Leave" color="red" onClick={onReturnToGenerateRoom} size="s" />
+      <Button text="Leave" color="red" onClick={onClick} size="s" />
     </Container>
   );
 };

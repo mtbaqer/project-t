@@ -4,13 +4,14 @@ import styled from "styled-components";
 import useRoomActions from "../../../hooks/useRoomActions";
 import Button from "../../Button";
 
-interface Props {}
+interface Props {
+  onClick: () => void;
+}
 
-const BackButton: FunctionComponent<Props> = ({}) => {
-  const { onBackButton } = useRoomActions();
+const BackButton: FunctionComponent<Props> = ({ onClick }) => {
   return (
     <Container>
-      <Button text="LOBBY" size="s" color="red" onClick={onBackButton} />
+      <Button text="LOBBY" size="s" color="red" onClick={onClick} />
     </Container>
   );
 };
