@@ -28,6 +28,7 @@ const ButtonContainer = styled.div<{}>`
   gap: ${Spaces.small};
 `;
 
+//TODO: Update this to match the style
 const Container = styled.div<{ transparent?: boolean }>`
   background-color: #248cf4;
   color: rgb(48, 26, 107);

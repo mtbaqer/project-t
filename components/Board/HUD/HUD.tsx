@@ -27,7 +27,7 @@ const HUD: FunctionComponent<Props> = ({}) => {
           }}
         >
           <ConfirmationPopUp
-            text={"Are you sure you want to exit this room?"}
+            text={"Are you sure you want to return to the lobby?"}
             onClickYes={onBackButton}
             onClickNo={() => setPopUpVisible(false)}
           />
