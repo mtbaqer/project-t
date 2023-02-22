@@ -1,5 +1,6 @@
 import React, { FunctionComponent } from "react";
 import styled, { css } from "styled-components";
+import { Spaces } from "Theme/Spaces";
 import { ScreenSizes } from "../Theme/ScreenSizes";
 import Button from "./Button";
 import Heading from "./Heading";
@@ -24,6 +25,7 @@ const PopUp: FunctionComponent<Props> = ({ onClickNo, onClickYes, text }) => {
 
 const ButtonContainer = styled.div<{}>`
   display: flex;
+  gap: ${Spaces.small};
 `;
 
 const Container = styled.div<{ transparent?: boolean }>`
@@ -42,7 +44,7 @@ const Container = styled.div<{ transparent?: boolean }>`
   margin: 20px;
   text-transform: uppercase;
   flex-direction: column;
-  position: fixed;
+  gap: ${Spaces.small};
 
   ${ScreenSizes.medium} {
     transform: scale(1);

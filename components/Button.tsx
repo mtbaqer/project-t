@@ -53,7 +53,7 @@ const ButtonContainer = styled.button<{ color: ButtonColor; size: Size }>`
   ${({ size }) =>
     size === "s"
       ? css`
-          height: 60px;
+          height: 50px;
         `
       : size === "m"
       ? css`

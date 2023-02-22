@@ -4,11 +4,12 @@ import Teams from "../Teams/Teams";
 import HomeButton from "../Lobby/HomeButton";
 import PopUp from "../PopUp";
 import useRoomActions from "hooks/useRoomActions";
+import Modal from "../Modal";
 
 interface Props {}
 
 const Lobby: FunctionComponent<Props> = ({}) => {
-  const [clicked, setClicked] = useState(false);
+  const [popUpVisible, setPopUpVisible] = useState(false);
   const { onReturnToGenerateRoom } = useRoomActions();
 
   return (
@@ -16,16 +17,22 @@ const Lobby: FunctionComponent<Props> = ({}) => {
       <SettingsArea />
       <HomeButton
         onClick={() => {
-          setClicked(true);
+          setPopUpVisible(true);
         }}
       />
       <Teams lobby />
-      {clicked && (
-        <PopUp
-          text={"Are you sure you want to exit this room?"}
-          onClickYes={onReturnToGenerateRoom}
-          onClickNo={() => setClicked(false)}
-        />
+      {popUpVisible && (
+        <Modal
+          onClose={() => {
+            setPopUpVisible(false);
+          }}
+        >
+          <PopUp
+            text={"Are you sure you want to exit this room?"}
+            onClickYes={onReturnToGenerateRoom}
+            onClickNo={() => setPopUpVisible(false)}
+          />
+        </Modal>
       )}
       ;
     </>
