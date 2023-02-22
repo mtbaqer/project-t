@@ -9,8 +9,6 @@ const database = getDatabase();
 export default function useLobbyActions() {
   const router = useRouter();
   const { roomId } = router.query;
-  let canBeStarted = true;
-  let numberOfTotalTeamPlayers: number;
 
   const roomRef = ref(database, `rooms/${roomId}`);
   const teamsRef = child(roomRef, "teams");
@@ -44,9 +42,12 @@ export default function useLobbyActions() {
   }
 
   function onStartGame() {
+    let canBeStarted = true;
+    let numberOfTotalTeamPlayers: number;
     runTransaction(teamsRef, (teams: Team[]) => {
       if (teams.length < 2) canBeStarted = false;
       teams.forEach((team, index) => {
+        team.members ??= [];
         if (index != 0 && team.members?.length < 2) canBeStarted = false;
         if (index != 0) numberOfTotalTeamPlayers += team.members?.length;
         if (numberOfTotalTeamPlayers > 12) canBeStarted = false;
@@ -56,6 +57,8 @@ export default function useLobbyActions() {
     if (canBeStarted) {
       const status: RoomStatus = "waiting";
       update(roomRef, { status });
+    } else {
+      alert("There must be at least two players on each team and no more than 12 players total!");
     }
   }
 
