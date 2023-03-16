@@ -28,6 +28,7 @@ const AvatarCustomization: FunctionComponent<Props> = ({ controllers }) => {
 
   const { isTabletOrMobile } = useResponsive();
 
+  // TODO: clean this up
   const responsiveAvatarWidth = isTabletOrMobile ? AvatarWidth / 2 : AvatarWidth;
   const responsiveAvatarHeight = isTabletOrMobile ? AvatarHeight / 2 : AvatarHeight;
 
@@ -39,6 +40,7 @@ const AvatarCustomization: FunctionComponent<Props> = ({ controllers }) => {
             <Image
               {...LeftArrow}
               alt={LeftArrow.alt}
+              // TODO: clean this up
               width={isTabletOrMobile ? LeftArrow.width * 0.7 : LeftArrow.width}
               height={isTabletOrMobile ? LeftArrow.height * 0.7 : LeftArrow.height}
               draggable={false}
@@ -64,6 +66,7 @@ const AvatarCustomization: FunctionComponent<Props> = ({ controllers }) => {
             <Image
               {...RightArrow}
               alt={RightArrow.alt}
+              // TODO: clean this up
               width={isTabletOrMobile ? RightArrow.width * 0.7 : RightArrow.width}
               height={isTabletOrMobile ? RightArrow.height * 0.7 : RightArrow.height}
               draggable={false}
