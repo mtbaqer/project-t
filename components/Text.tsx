@@ -1,18 +1,23 @@
 import React, { FunctionComponent } from "react";
 import styled, { css } from "styled-components";
 import { ScreenSizes } from "Theme/ScreenSizes";
-import { Size } from "types/types";
+import { Alignment, Size } from "types/types";
 import textStroke from "Theme/utils/textStroke";
 
 interface Props {
   size?: Size;
+  align?: Alignment;
 }
 
-const Text: FunctionComponent<Props> = ({ children, size = "m" }) => {
-  return <Content size={size}>{children}</Content>;
+const Text: FunctionComponent<Props> = ({ children, size = "m", align = "center" }) => {
+  return (
+    <Content size={size} align={align}>
+      {children}
+    </Content>
+  );
 };
 
-const Content = styled.p<{ size: Size }>`
+const Content = styled.p<{ size: Size; align: Alignment }>`
   flex: 1;
   font-weight: 400;
   color: white;
@@ -20,6 +25,7 @@ const Content = styled.p<{ size: Size }>`
   text-overflow: ellipsis;
   overflow: hidden;
   padding: 0 3px;
+  text-align: ${({ align }) => align};
 
   ${({ size }) =>
     size === "xs"
@@ -27,7 +33,7 @@ const Content = styled.p<{ size: Size }>`
           letter-spacing: normal;
           font-size: 16px;
           ${ScreenSizes.medium} {
-            font-size: 12px;
+            font-size: 10px;
           }
           ${textStroke(1, "black")}
         `

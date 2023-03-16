@@ -7,6 +7,8 @@ import { LeftArrow, RightArrow } from "constants/icons";
 import { Spaces } from "Theme/Spaces";
 import { AvatarController } from "./AvatarPrompt";
 import { toSrc } from "utils/toSrc";
+import useResponsive from "hooks/useResponsive";
+import { ScreenSizes } from "Theme/ScreenSizes";
 
 interface Props {
   controllers: AvatarController[];
@@ -24,26 +26,51 @@ const AvatarCustomization: FunctionComponent<Props> = ({ controllers }) => {
     setValue(newValue);
   };
 
+  const { isTabletOrMobile } = useResponsive();
+
+  // TODO: clean this up
+  const responsiveAvatarWidth = isTabletOrMobile ? AvatarWidth / 2 : AvatarWidth;
+  const responsiveAvatarHeight = isTabletOrMobile ? AvatarHeight / 2 : AvatarHeight;
+
   return (
     <Container>
       <ArrowsContainer>
         {controllers.map((controller, index) => (
           <Arrow key={index} onClick={decreaseValue(...controller)}>
-            <Image {...LeftArrow} alt={LeftArrow.alt} draggable={false} />
+            <Image
+              {...LeftArrow}
+              alt={LeftArrow.alt}
+              // TODO: clean this up
+              width={isTabletOrMobile ? LeftArrow.width * 0.7 : LeftArrow.width}
+              height={isTabletOrMobile ? LeftArrow.height * 0.7 : LeftArrow.height}
+              draggable={false}
+            />
           </Arrow>
         ))}
       </ArrowsContainer>
-      <Images>
+      <Images width={responsiveAvatarWidth} height={responsiveAvatarHeight}>
         {controllers.map(([state, metadata], index) => (
           <ImageContainer key={index}>
-            <Image alt={metadata.alt} src={toSrc(metadata.path, state[0])} width={AvatarWidth} height={AvatarHeight} />
+            <Image
+              alt={metadata.alt}
+              src={toSrc(metadata.path, state[0])}
+              width={responsiveAvatarWidth}
+              height={responsiveAvatarHeight}
+            />
           </ImageContainer>
         ))}
       </Images>
       <ArrowsContainer>
         {controllers.map((controller, index) => (
           <Arrow key={index} onClick={increaseValue(...controller)}>
-            <Image {...RightArrow} alt={RightArrow.alt} draggable={false} />
+            <Image
+              {...RightArrow}
+              alt={RightArrow.alt}
+              // TODO: clean this up
+              width={isTabletOrMobile ? RightArrow.width * 0.7 : RightArrow.width}
+              height={isTabletOrMobile ? RightArrow.height * 0.7 : RightArrow.height}
+              draggable={false}
+            />
           </Arrow>
         ))}
       </ArrowsContainer>
@@ -60,6 +87,11 @@ const ArrowsContainer = styled.div`
   flex-direction: column-reverse;
   padding-bottom: ${Spaces.medium};
   gap: ${Spaces.medium};
+
+  ${ScreenSizes.medium} {
+    padding-bottom: ${Spaces.xSmall};
+    gap: ${Spaces.small};
+  }
 `;
 
 const Arrow = styled.button`
@@ -68,10 +100,10 @@ const Arrow = styled.button`
   }
 `;
 
-const Images = styled.div`
+const Images = styled.div<{ width: number; height: number }>`
   position: relative;
-  width: ${AvatarWidth}px;
-  height: ${AvatarHeight}px;
+  width: ${({ width }) => width}px;
+  height: ${({ height }) => height}px;
 `;
 
 const ImageContainer = styled.div`

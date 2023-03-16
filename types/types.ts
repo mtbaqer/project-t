@@ -60,6 +60,7 @@ export interface Settings {
 }
 
 export type Size = "xs" | "s" | "m" | "l" | "xl";
+export type Alignment = "left" | "center" | "right";
 
 export interface AvatarImageMetadata {
   count: number;

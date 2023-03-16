@@ -5,21 +5,19 @@ import HomeButton from "../Lobby/HomeButton";
 import ConfirmationPopUp from "../ConfirmationPopUp";
 import useRoomActions from "hooks/useRoomActions";
 import Modal from "../Modal";
+import useResponsive from "hooks/useResponsive";
 
 interface Props {}
 
 const Lobby: FunctionComponent<Props> = ({}) => {
   const [popUpVisible, setPopUpVisible] = useState(false);
   const { onReturnToGenerateRoom } = useRoomActions();
+  const { isDesktopOrLaptop } = useResponsive();
 
   return (
     <>
       <SettingsArea />
-      <HomeButton
-        onClick={() => {
-          setPopUpVisible(true);
-        }}
-      />
+      {isDesktopOrLaptop && <HomeButton onClick={() => setPopUpVisible(true)} />}
       <Teams lobby />
       {popUpVisible && (
         <Modal

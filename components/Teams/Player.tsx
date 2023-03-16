@@ -39,7 +39,6 @@ const Player: FunctionComponent<Props> = ({ isHinter = false, timestamp, mini = 
 };
 
 const Container = styled.div<{ isHinter: boolean; mini: boolean }>`
-  margin: 5px 0;
   background-color: #b116ed;
   width: 350px;
   height: 70px;

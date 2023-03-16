@@ -15,6 +15,7 @@ const SettingsArea: FunctionComponent<Props> = ({}) => {
   const { onStartGame, onCopyLink, onSetNumberOfTeams, onSetNumberOfRounds, onSetTimePerRound } = useLobbyActions();
   const [isCopied, setIsCopied] = useState(false);
   const room = useAtomValue(roomAtom);
+
   useEffect(() => {
     if (isCopied) {
       setTimeout(() => setIsCopied(false), 10000);
@@ -77,12 +78,12 @@ const Container = styled.div`
   width: 100%;
   display: flex;
   justify-content: center;
-  align-items: center;
+  align-items: flex-end;
   flex: 1 0 0;
+  padding-bottom: 10%;
 
   ${ScreenSizes.medium} {
     align-items: flex-end;
-    padding-bottom: 10%;
   }
 `;
 

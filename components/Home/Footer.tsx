@@ -12,7 +12,9 @@ const Footer: FunctionComponent<Props> = ({}) => {
         <Text size="xs">{"Terms of Service"}</Text>
       </TextContainer>
       <TextContainer>
-        <Text size="xs">{"Copyright @ 2023 Say Don't Say Group"}</Text>
+        <Text size="xs" align="center">
+          {"Copyright @ 2023 Say Don't Say Group"}
+        </Text>
       </TextContainer>
       <TextContainer>
         <Text size="xs">{"Credits"}</Text>

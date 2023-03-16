@@ -110,6 +110,7 @@ const Members = styled.ul<{ grid: boolean }>`
   justify-content: center;
   align-items: center;
   width: 100%;
+  gap: ${Spaces.small};
 
   ${({ grid }) =>
     grid
