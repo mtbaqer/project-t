@@ -10,11 +10,9 @@ import { Spaces } from "Theme/Spaces";
 import About from "../components/Home/About";
 import Footer from "@/components/Home/Footer";
 import { Logo } from "constants/icons";
-import useResponsive from "hooks/useResponsive";
 
 const Home: NextPage = () => {
   const { navigateToNewRoom } = useNewRoomActions();
-  const { isDesktopOrLaptop } = useResponsive();
 
   return (
     <>
@@ -26,12 +24,10 @@ const Home: NextPage = () => {
       <Container>
         <Image priority {...Logo} alt="Say Don't Say Logo" />
         <Button onClick={navigateToNewRoom} text={"Create Room"} color="yellow" />
-        {isDesktopOrLaptop && (
-          <TextSection>
-            <About />
-            <HowToPlay />
-          </TextSection>
-        )}
+        <TextSection>
+          <About />
+          <HowToPlay />
+        </TextSection>
         <Footer />
       </Container>
     </>
