@@ -1,6 +1,7 @@
 import { Close } from "constants/icons";
 import React, { FunctionComponent } from "react";
 import styled from "styled-components";
+import { ScreenSizes } from "Theme/ScreenSizes";
 import { Spaces } from "Theme/Spaces";
 import { Size } from "types/types";
 import Button from "./Button";
@@ -42,6 +43,10 @@ const Container = styled.div<{ size: Size }>`
   position: relative;
   display: flex;
   flex-direction: column;
+
+  ${ScreenSizes.medium} {
+    width: 90%;
+  }
 `;
 
 const CloseButtonContainer = styled.div`

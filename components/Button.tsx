@@ -6,6 +6,7 @@ import { applyButtonColor } from "Theme/utils/applyButtonColor";
 import { Icon, Size } from "types/types";
 import { Spaces } from "Theme/Spaces";
 import Image from "next/image";
+import { ScreenSizes } from "Theme/ScreenSizes";
 
 export interface Props {
   onClick?: () => void;
@@ -64,6 +65,20 @@ const ButtonContainer = styled.button<{ color: ButtonColor; size: Size }>`
 
   &:active {
     scale: calc(0.95);
+  }
+
+  ${ScreenSizes.medium} {
+    ${({ size }) =>
+      size === "s"
+        ? css`
+            height: 50px;
+          `
+        : size === "m"
+        ? css`
+            min-width: 168px;
+            height: 60px;
+          `
+        : css``}
   }
 `;
 

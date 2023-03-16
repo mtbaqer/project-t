@@ -9,7 +9,7 @@ interface Props {
   align?: Alignment;
 }
 
-const Text: FunctionComponent<Props> = ({ children, size = "m", align = "left" }) => {
+const Text: FunctionComponent<Props> = ({ children, size = "m", align = "center" }) => {
   return (
     <Content size={size} align={align}>
       {children}
